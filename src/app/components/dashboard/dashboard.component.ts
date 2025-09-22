@@ -139,9 +139,9 @@ export class DashboardComponent implements OnInit {
   selectedModality: 'CT' | 'MR' | 'US' | 'CR' | 'all' = 'all';
   
   // Date filter
-  startDate: string;
-  endDate: string;
-  todayDate: string;
+  startDate: string = '';
+  endDate: string = '';
+  todayDate: string = '';
 
   // Modal
   showAssignModal = false;
