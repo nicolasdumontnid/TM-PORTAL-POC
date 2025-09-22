@@ -1,0 +1,89 @@
+<div class="container">
+  <div class="header">
+    <div class="logo">🏥 Clinique du Parc</div>
+    <div class="subtitle">Medical Reporting System</div>
+  </div>
+  
+  <div class="patient-info">
+    <div class="info-section">
+      <h3>Patient Information</h3>
+      <div class="info-row">
+        <span class="label">Name:</span>
+        <span class="value">{{patientData.name}}</span>
+      </div>
+      <div class="info-row">
+        <span class="label">Date of Birth:</span>
+        <span class="value">{{patientData.dateOfBirth}}</span>
+      </div>
+      <div class="info-row">
+        <span class="label">Address:</span>
+        <span class="value">{{patientData.address}}</span>
+      </div>
+    </div>
+    
+    <div class="info-section">
+      <h3>Prescribing Doctor</h3>
+      <div class="info-row">
+        <span class="label">Name:</span>
+        <span class="value">{{doctorData.name}}</span>
+      </div>
+      <div class="info-row">
+        <span class="label">Specialty:</span>
+        <span class="value">{{doctorData.specialty}}</span>
+      </div>
+      <div class="info-row">
+        <span class="label">Hospital:</span>
+        <span class="value">{{doctorData.hospital}}</span>
+      </div>
+    </div>
+  </div>
+  
+  <div class="report-section">
+    <div class="section-header">Indication</div>
+    <div class="section-content">
+      <textarea [(ngModel)]="reportSections.indication" placeholder="Enter indication..."></textarea>
+    </div>
+  </div>
+  
+  <div class="report-section">
+    <div class="section-header">Technical Information</div>
+    <div class="section-content">
+      <textarea [(ngModel)]="reportSections.technicalInformation" placeholder="Enter technical information..."></textarea>
+    </div>
+  </div>
+  
+  <div class="report-section">
+    <div class="section-header">Report</div>
+    <div class="section-content">
+      <textarea [(ngModel)]="reportSections.report" placeholder="Enter report..."></textarea>
+    </div>
+  </div>
+  
+  <div class="report-section">
+    <div class="section-header">Conclusion</div>
+    <div class="section-content">
+      <textarea [(ngModel)]="reportSections.conclusion" placeholder="Enter conclusion..."></textarea>
+    </div>
+  </div>
+  
+  <div class="report-section">
+    <div class="section-header">Billing</div>
+    <div class="section-content">
+      <textarea [(ngModel)]="reportSections.billing" placeholder="Enter billing information..."></textarea>
+    </div>
+  </div>
+  
+  <div class="report-section">
+    <div class="section-header">Findings</div>
+    <div class="section-content">
+      <textarea [(ngModel)]="reportSections.findings" placeholder="Enter findings..."></textarea>
+    </div>
+  </div>
+  
+  <div class="actions">
+    <button class="btn btn-secondary" (click)="onSecondOpinion()">Second Opinion</button>
+    <button class="btn btn-warning" (click)="onHold()">On Hold</button>
+    <button class="btn btn-primary" (click)="onSign()">Sign</button>
+    <button class="btn btn-success" (click)="onSignAndNext()">Sign & Next</button>
+  </div>
+</div>
