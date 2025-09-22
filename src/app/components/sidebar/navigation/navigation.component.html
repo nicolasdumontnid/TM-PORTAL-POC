@@ -1,0 +1,23 @@
+<div *ngFor="let section of navSections$ | async" class="sidebar-nav">
+  <h3 class="nav-title">{{section.title}}</h3>
+  <ul>
+    <li 
+      *ngFor="let item of section.items" 
+      class="nav-item"
+      [class.active]="(activeNavItem$ | async) === item.id"
+      (click)="onNavItemClick(item.id)"
+    >
+      <a href="javascript:void(0)">
+        <i [class]="item.icon" 
+           [class.alert-icon]="item.isAlert"></i>
+        <div class="nav-item-main">
+          <span>{{item.label}}</span>
+          <i *ngIf="item.id === 'overdue'" class="ph ph-bell-ringing notification-bell"></i>
+        </div>
+        <span *ngIf="item.count" 
+              class="count"
+              [class.alert]="item.isAlert">{{item.count}}</span>
+      </a>
+    </li>
+  </ul>
+</div>

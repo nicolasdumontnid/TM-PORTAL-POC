@@ -1,0 +1,36 @@
+<div class="content-header">
+  <div class="header-left">
+    <h1>{{pageTitle$ | async}}</h1>
+    <button 
+      class="header-btn"
+      [class.expanded]="expandAllClass | async"
+      (click)="toggleExpandAll()"
+    >
+      <span>{{expandAllText | async}}</span>
+      <i class="ph ph-caret-down-bold"></i>
+    </button>
+    <div class="sort-container">
+      <button class="header-btn" (click)="toggleSortDropdown()">
+        <span>Sort by: {{currentSort | async}}</span>
+        <i class="ph ph-caret-down-bold"></i>
+      </button>
+      <div 
+        class="sort-dropdown"
+        [style.display]="(showSortDropdown | async) ? 'block' : 'none'"
+      >
+        <a href="javascript:void(0)" (click)="selectSort('date-desc', 'Date DESC')">Date DESC</a>
+        <a href="javascript:void(0)" (click)="selectSort('date-asc', 'Date ASC')">Date ASC</a>
+        <a href="javascript:void(0)" (click)="selectSort('patient-name', 'Patient Name')">Patient Name</a>
+      </div>
+    </div>
+  </div>
+  <div class="search-container">
+    <i class="ph ph-magnifying-glass"></i>
+    <input 
+      type="search" 
+      placeholder="Search exams..."
+      [(ngModel)]="searchQuery"
+      (input)="onSearch()"
+    >
+  </div>
+</div>

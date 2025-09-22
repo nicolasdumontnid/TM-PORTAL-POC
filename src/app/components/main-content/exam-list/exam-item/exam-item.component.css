@@ -1,0 +1,155 @@
+.exam-item {
+  margin-bottom: 15px;
+  border-radius: 8px;
+  overflow: hidden;
+  background-color: var(--exam-bg);
+  box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+  transition: background-color 0.3s ease;
+}
+
+.exam-info-bar {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 15px;
+  color: var(--exam-text);
+  font-size: 0.85rem;
+}
+
+.exam-info-bar > div {
+  padding: 4px 8px;
+  border-right: 1px solid #718096;
+  white-space: nowrap;
+}
+
+html[data-theme="dark"] .exam-info-bar > div {
+  border-right: 1px solid #566573;
+}
+
+.exam-info-bar > div:last-child {
+  border-right: none;
+}
+
+.patient-name {
+  font-weight: 600;
+}
+
+.exam-info-bar .indication {
+  flex-grow: 1;
+  white-space: normal;
+  min-width: 200px;
+}
+
+.exam-info-bar .ai-btn {
+  border: none;
+  border-radius: 6px;
+  font-weight: 600;
+  font-size: 0.8rem;
+  padding: 6px 18px;
+  color: white;
+  cursor: pointer;
+  transition: opacity 0.2s ease;
+  margin-left: 10px;
+}
+
+.exam-info-bar .ai-btn:hover {
+  opacity: 0.9;
+}
+
+.exam-info-bar .ai-btn.green {
+  background-color: var(--online-green);
+}
+
+.exam-info-bar .ai-btn.red {
+  background-color: var(--alert-red);
+}
+
+.exam-info-bar .ai-btn.orange {
+  background-color: #f39c12;
+}
+
+.exam-info-bar .actions {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  border-right: none;
+  margin-left: auto;
+}
+
+.exam-info-bar .actions i {
+  font-size: 1.2rem;
+  cursor: pointer;
+  transition: color 0.2s ease;
+}
+
+.exam-info-bar .actions i:hover {
+  color: var(--primary-color);
+}
+
+.exam-info-bar .actions .toggle-btn {
+  transition: transform 0.3s ease;
+}
+
+.exam-info-bar .actions .toggle-btn.open {
+  transform: rotate(180deg);
+}
+
+.exam-thumbnails-container {
+  display: none;
+  gap: 10px;
+  padding: 10px 15px;
+  background-color: #455A64;
+  overflow-x: auto;
+  transition: background-color 0.3s ease;
+}
+
+html[data-theme="dark"] .exam-thumbnails-container {
+  background-color: #2C3E50;
+}
+
+.exam-thumbnails-container.visible {
+  display: flex;
+}
+
+.exam-thumbnails-container::-webkit-scrollbar {
+  height: 8px;
+}
+
+.exam-thumbnails-container::-webkit-scrollbar-track {
+  background: #34495E;
+  border-radius: 4px;
+}
+
+.exam-thumbnails-container::-webkit-scrollbar-thumb {
+  background: #566573;
+  border-radius: 4px;
+}
+
+.exam-thumbnails-container .thumb {
+  flex-shrink: 0;
+  text-align: center;
+}
+
+.exam-thumbnails-container .thumb img {
+  width: 100px;
+  height: 100px;
+  object-fit: cover;
+  border-radius: 6px;
+  border: 2px solid #566573;
+}
+
+html[data-theme="dark"] .exam-thumbnails-container .thumb img {
+  border: 2px solid #566573;
+}
+
+.exam-thumbnails-container .thumb p {
+  font-size: 0.75rem;
+  color: var(--exam-text);
+  margin-top: 5px;
+}
+
+@media (max-width: 768px) {
+  .exam-info-bar {
+    font-size: 0.8rem;
+  }
+}

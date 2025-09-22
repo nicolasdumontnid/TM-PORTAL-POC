@@ -1,0 +1,7 @@
+<div class="exam-list">
+  <app-exam-item 
+    *ngFor="let exam of exams$ | async; trackBy: trackByExamId"
+    [exam]="exam"
+    (dblclick)="onExamDoubleClick()">
+  </app-exam-item>
+</div>

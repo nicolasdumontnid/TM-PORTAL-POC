@@ -1,0 +1,16 @@
+<div class="user-profile">
+  <div *ngIf="currentUser$ | async as user" [class.collapsed-user]="collapsed">
+    <img [src]="user.avatar" [alt]="user.name + ' Avatar'" class="avatar">
+    <div class="user-info" *ngIf="!collapsed">
+      <div class="name">{{user.name}}</div>
+      <div class="title">{{user.title}}</div>
+    </div>
+  </div>
+  <div class="user-actions" [class.collapsed-actions]="collapsed">
+    <i 
+      [class]="(currentTheme$ | async) === 'dark' ? 'ph ph-sun' : 'ph ph-moon'"
+      (click)="toggleTheme()"
+    ></i>
+    <i class="ph ph-gear" *ngIf="!collapsed"></i>
+  </div>
+</div>

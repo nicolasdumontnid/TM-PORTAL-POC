@@ -1,0 +1,22 @@
+.exam-list {
+  overflow-y: auto;
+  padding-right: 15px;
+}
+
+.exam-list::-webkit-scrollbar {
+  width: 6px;
+}
+
+.exam-list::-webkit-scrollbar-track {
+  background: var(--bg-main);
+  border-radius: 3px;
+}
+
+.exam-list::-webkit-scrollbar-thumb {
+  background: var(--border-color);
+  border-radius: 3px;
+}
+
+.exam-list::-webkit-scrollbar-thumb:hover {
+  background: #ccc;
+}

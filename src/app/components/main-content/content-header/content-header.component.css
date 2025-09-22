@@ -1,0 +1,130 @@
+.content-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+  flex-shrink: 0;
+  gap: 20px;
+}
+
+.header-left {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.content-header h1 {
+  font-size: 1.8rem;
+  color: var(--exam-bg);
+}
+
+html[data-theme="dark"] .content-header h1 {
+  color: var(--text-primary);
+}
+
+.header-btn {
+  background-color: var(--bg-container);
+  border: 1px solid var(--border-color);
+  color: var(--text-primary);
+  padding: 8px 12px;
+  border-radius: 10px;
+  cursor: pointer;
+  font-family: 'Poppins', sans-serif;
+  font-weight: 500;
+  font-size: 0.85rem;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  transition: all 0.2s ease;
+}
+
+.header-btn:hover {
+  background-color: var(--bg-main);
+  border-color: #ccc;
+}
+
+html[data-theme="dark"] .header-btn:hover {
+  border-color: var(--text-secondary);
+}
+
+.header-btn i {
+  font-size: 1.2rem;
+  transition: transform 0.3s ease;
+}
+
+.header-btn.expanded i {
+  transform: rotate(180deg);
+}
+
+.sort-container {
+  position: relative;
+}
+
+.sort-dropdown {
+  position: absolute;
+  top: calc(100% + 5px);
+  left: 0;
+  background-color: var(--bg-container);
+  border: 1px solid var(--border-color);
+  border-radius: 10px;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+  z-index: 10;
+  width: 150px;
+  overflow: hidden;
+}
+
+.sort-dropdown a {
+  display: block;
+  padding: 10px 15px;
+  color: var(--text-primary);
+  text-decoration: none;
+  font-size: 0.9rem;
+}
+
+.sort-dropdown a:hover {
+  background-color: var(--bg-main);
+}
+
+.search-container {
+  position: relative;
+  width: 100%;
+  max-width: 300px;
+}
+
+.search-container i {
+  position: absolute;
+  left: 15px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--text-secondary);
+}
+
+.search-container input {
+  width: 100%;
+  padding: 10px 15px 10px 40px;
+  border-radius: 12px;
+  border: 1px solid var(--border-color);
+  background-color: var(--bg-container);
+  color: var(--text-primary);
+  font-family: 'Poppins', sans-serif;
+  font-size: 0.9rem;
+  outline: none;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.search-container input:focus {
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 3px var(--primary-light);
+}
+
+@media (max-width: 992px) {
+  .content-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  
+  .search-container {
+    max-width: none;
+    width: 100%;
+  }
+}

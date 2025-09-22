@@ -1,0 +1,25 @@
+<aside class="sidebar-left" [class.collapsed]="collapsed">
+  <div class="logo">
+    <i class="ph ph-hospital"></i>
+    <span *ngIf="!collapsed">Telemis Portal</span>
+  </div>
+  
+  <div class="sidebar-content" *ngIf="!collapsed">
+    <app-navigation></app-navigation>
+    <app-chat-list></app-chat-list>
+  </div>
+
+  <div class="sidebar-icons" *ngIf="collapsed">
+    <div class="nav-icons">
+      <i class="ph ph-inbox-fill nav-icon" title="Inbox"></i>
+      <i class="ph ph-clock-counter-clockwise nav-icon" title="Pending"></i>
+      <i class="ph ph-users-three nav-icon" title="Second Opinion"></i>
+      <i class="ph ph-check-circle nav-icon" title="Completed"></i>
+      <i class="ph ph-warning-circle nav-icon" title="Overdue"></i>
+      <i class="ph ph-presentation-chart nav-icon" title="Tumor board"></i>
+      <i class="ph ph-globe-hemisphere-west nav-icon" title="Remote site"></i>
+    </div>
+  </div>
+
+  <app-user-profile [collapsed]="collapsed"></app-user-profile>
+</aside>

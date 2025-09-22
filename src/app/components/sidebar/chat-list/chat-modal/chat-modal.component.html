@@ -1,0 +1,62 @@
+<div class="modal-backdrop" (click)="onBackdropClick($event)">
+  <div class="modal-content">
+    <div class="modal-header">
+      <div class="contact-info">
+        <img [src]="contact.avatar" [alt]="contact.name + ' Avatar'" class="avatar">
+        <div class="contact-details">
+          <h3>{{contact.name}}</h3>
+          <span class="status" [class.online]="contact.isOnline">
+            {{contact.isOnline ? 'Online' : 'Offline'}}
+          </span>
+        </div>
+      </div>
+      <button class="close-btn" (click)="onClose()">
+        <i class="ph ph-x"></i>
+      </button>
+    </div>
+
+    <div class="modal-body">
+      <div class="messages-container" *ngIf="conversation$ | async as conversation">
+        <div 
+          *ngFor="let message of conversation.messages"
+          class="message"
+          [class.own-message]="message.isFromCurrentUser"
+        >
+          <div class="message-content">
+            <div class="message-text">{{message.content}}</div>
+            <div class="message-time">
+              {{message.timestamp | date:'short'}}
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="message-input-container">
+        <input 
+          type="text" 
+          [(ngModel)]="newMessage"
+          placeholder="Type your message..."
+          class="message-input"
+          (keyup.enter)="sendMessage()"
+        >
+        <button 
+          class="send-btn"
+          (click)="sendMessage()"
+          [disabled]="!newMessage.trim()"
+        >
+          <i class="ph ph-paper-plane-tilt"></i>
+        </button>
+      </div>
+    </div>
+
+    <div class="modal-footer">
+      <button class="action-btn primary" (click)="openExam()">
+        <i class="ph ph-eye"></i>
+        Open Exam
+      </button>
+      <button class="action-btn secondary" (click)="onClose()">
+        Close
+      </button>
+    </div>
+  </div>
+</div>

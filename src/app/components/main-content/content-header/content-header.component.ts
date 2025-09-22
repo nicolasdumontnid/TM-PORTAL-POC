@@ -1,0 +1,82 @@
+import { Component, ChangeDetectionStrategy, OnInit } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
+import { BehaviorSubject, Observable, map, switchMap, startWith } from 'rxjs';
+import { NavigationService } from '../../../services/navigation.service';
+import { ExamService } from '../../../services/exam.service';
+
+@Component({
+  selector: 'app-content-header',
+  standalone: true,
+  imports: [CommonModule, FormsModule],
+  templateUrl: './content-header.component.html',
+  styleUrl: './content-header.component.css',
+  changeDetection: ChangeDetectionStrategy.OnPush
+})
+export class ContentHeaderComponent implements OnInit {
+  searchQuery = '';
+  private isExpandedAllSubject = new BehaviorSubject<boolean>(false);
+  isExpandedAll$ = this.isExpandedAllSubject.asObservable();
+  showSortDropdown = new BehaviorSubject<boolean>(false);
+  currentSort = new BehaviorSubject<string>('Date DESC');
+  pageTitle$!: Observable<string>;
+
+  constructor(
+    private navigationService: NavigationService,
+    private examService: ExamService
+  ) {}
+
+  ngOnInit(): void {
+    this.pageTitle$ = this.navigationService.getActiveNavItem().pipe(
+      map(activeItem => {
+        switch (activeItem) {
+          case 'inbox': return 'Inbox';
+          case 'pending': return 'Pending';
+          case 'second-opinion': return 'Second Opinion';
+          case 'completed': return 'Completed';
+          case 'overdue': return 'Overdue';
+          case 'tumor-board': return 'Tumor Board';
+          case 'remote-site': return 'Remote Site';
+          default: return 'Inbox';
+        }
+      })
+    );
+
+    // Track if all exams are expanded
+    this.examService.getAll().subscribe(exams => {
+      const allExpanded = exams.length > 0 && exams.every(exam => exam.isExpanded);
+      this.isExpandedAllSubject.next(allExpanded);
+    });
+  }
+
+  expandAllText = this.isExpandedAll$.pipe(
+    map(isExpanded => isExpanded ? 'Collapse All' : 'Expand All')
+  );
+
+  expandAllClass = this.isExpandedAll$.pipe(
+    map(isExpanded => isExpanded ? 'expanded' : '')
+  );
+
+  toggleExpandAll(): void {
+    if (this.isExpandedAllSubject.value) {
+      this.examService.collapseAll().subscribe();
+    } else {
+      this.examService.expandAll().subscribe();
+    }
+  }
+  
+  toggleSortDropdown(): void {
+    this.showSortDropdown.next(!this.showSortDropdown.value);
+  }
+
+  selectSort(sort: string, label: string): void {
+    this.currentSort.next(label);
+    this.showSortDropdown.next(false);
+    // Implement sorting logic
+  }
+
+  onSearch(): void {
+    // Implement search logic
+    console.log('Searching for:', this.searchQuery);
+  }
+}
