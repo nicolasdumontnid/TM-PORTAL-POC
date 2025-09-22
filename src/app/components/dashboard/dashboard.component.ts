@@ -235,6 +235,10 @@ export class DashboardComponent implements OnInit {
   }
 
   get selectAllButtonText(): string {
-    return this.filteredExams.every(exam => exam.isSelected) ? 'Deselect All' : 'Select All';
+    return this.areAllFilteredExamsSelected ? 'Deselect All' : 'Select All';
+  }
+
+  get areAllFilteredExamsSelected(): boolean {
+    return this.filteredExams.length > 0 && this.filteredExams.every(exam => exam.isSelected);
   }
 }
