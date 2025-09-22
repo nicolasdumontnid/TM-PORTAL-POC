@@ -6,6 +6,8 @@
   overflow: hidden;
   transition: border-color 0.3s ease;
   width: 280px;
+  position: relative;
+  height: 100vh;
 }
 
 .sidebar-left.collapsed {
@@ -44,9 +46,11 @@ html[data-theme="dark"] .logo {
 }
 
 .sidebar-content {
+  flex: 1;
   overflow-y: auto;
   padding: 0 20px;
-  height: 100%;
+  padding-bottom: 100px;
+  min-height: 0;
 }
 
 .sidebar-content::-webkit-scrollbar {
@@ -63,8 +67,11 @@ html[data-theme="dark"] .logo {
 }
 
 .sidebar-icons {
-  padding: 0 20px;
   flex: 1;
+  padding: 0 20px;
+  padding-bottom: 100px;
+  overflow-y: auto;
+  min-height: 0;
 }
 
 .nav-icons {
@@ -94,5 +101,7 @@ html[data-theme="dark"] .logo {
     border-bottom: 1px solid var(--border-color);
     padding: 0;
     padding-bottom: 15px;
+    height: auto;
+    position: relative;
   }
 }

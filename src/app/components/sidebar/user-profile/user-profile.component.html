@@ -1,4 +1,4 @@
-<div class="user-profile">
+<div class="user-profile" [class.collapsed]="collapsed">
   <div *ngIf="currentUser$ | async as user" [class.collapsed-user]="collapsed">
     <img [src]="user.avatar" [alt]="user.name + ' Avatar'" class="avatar">
     <div class="user-info" *ngIf="!collapsed">
