@@ -1,5 +1,7 @@
 import { Component, ChangeDetectionStrategy, OnInit, Output, EventEmitter } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { NavigationService } from '../../services/navigation.service';
+import { ExamService } from '../../services/exam.service';
 
 interface Doctor {
   id: string;
@@ -37,6 +39,11 @@ interface KPI {
 })
 export class DashboardComponent implements OnInit {
   @Output() close = new EventEmitter<void>();
+
+  constructor(
+    private navigationService: NavigationService,
+    private examService: ExamService
+  ) {}
 
   kpis: KPI[] = [
     { label: 'Unreported Today', value: 12, description: 'Exams not reported today' },
@@ -251,6 +258,15 @@ export class DashboardComponent implements OnInit {
       }
     }
     return true;
+  }
+
+  closeAndGoToInbox(): void {
+    // Set navigation to inbox
+    this.navigationService.setActiveNavItem('inbox');
+    this.examService.setFilter('inbox');
+    
+    // Close dashboard
+    this.close.emit();
   }
 
   onClose(): void {

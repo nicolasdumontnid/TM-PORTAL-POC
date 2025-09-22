@@ -326,6 +326,16 @@
   background: #34495e;
 }
 
+.close-btn-action {
+  background: var(--bg-main);
+  color: var(--text-primary);
+  border: 1px solid var(--border-color);
+}
+
+.close-btn-action:hover:not(:disabled) {
+  background: var(--border-color);
+}
+
 /* Modal Styles */
 .modal-backdrop {
   position: fixed;
