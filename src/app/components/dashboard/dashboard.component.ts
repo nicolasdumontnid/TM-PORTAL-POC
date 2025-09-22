@@ -1,4 +1,3 @@
-import { Component, ChangeDetectionStrategy, OnInit } from '@angular/core';
 import { Component, ChangeDetectionStrategy, OnInit, Output, EventEmitter } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
