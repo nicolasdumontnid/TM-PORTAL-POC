@@ -1,4 +1,4 @@
-import { Component, ChangeDetectionStrategy, Input } from '@angular/core';
+import { Component, ChangeDetectionStrategy, Input, Output, EventEmitter } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { NavigationComponent } from './navigation/navigation.component';
 import { ChatListComponent } from './chat-list/chat-list.component';
@@ -14,4 +14,9 @@ import { UserProfileComponent } from './user-profile/user-profile.component';
 })
 export class SidebarComponent {
   @Input() collapsed = false;
+  @Output() logoClick = new EventEmitter<void>();
+  
+  onLogoClick(): void {
+    this.logoClick.emit();
+  }
 }

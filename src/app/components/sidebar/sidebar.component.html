@@ -1,5 +1,5 @@
 <aside class="sidebar-left" [class.collapsed]="collapsed">
-  <div class="logo">
+  <div class="logo" (click)="onLogoClick()">
     <i class="ph ph-hospital"></i>
     <span *ngIf="!collapsed">Telemis Portal</span>
   </div>
