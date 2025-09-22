@@ -233,4 +233,8 @@ export class DashboardComponent implements OnInit {
     if (daysOld === 1) return '1 day ago';
     return `${daysOld} days ago`;
   }
+
+  get selectAllButtonText(): string {
+    return this.filteredExams.every(exam => exam.isSelected) ? 'Deselect All' : 'Select All';
+  }
 }

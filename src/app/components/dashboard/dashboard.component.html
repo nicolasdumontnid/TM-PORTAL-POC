@@ -93,7 +93,7 @@
     <div class="exams-header">
       <h2>Exams ({{filteredExams.length}})</h2>
       <button class="select-all-btn" (click)="selectAllExams()">
-        {{filteredExams.every(exam => exam.isSelected) ? 'Deselect All' : 'Select All'}}
+        {{selectAllButtonText}}
       </button>
     </div>
     
