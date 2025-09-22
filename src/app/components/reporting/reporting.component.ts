@@ -2,6 +2,20 @@ import { Component, ChangeDetectionStrategy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 
+interface Nodule {
+  id: number;
+  name: string;
+  size: number;
+  change: number | null;
+  changePercent: number | null;
+}
+
+interface Measurement {
+  date: string;
+  label: string;
+  nodules: Nodule[];
+}
+
 @Component({
   selector: 'app-reporting',
   standalone: true,
@@ -28,11 +42,12 @@ export class ReportingComponent {
     technicalInformation: 'CT scan of the abdomen with IV contrast. Slice thickness: 5mm. Reconstruction: axial, coronal, and sagittal planes.',
     report: 'The CT scan shows marked improvement compared to previous studies. The previously identified lesion in the upper right quadrant has decreased in size by approximately 40%.',
     conclusion: 'Significant improvement following chemotherapy treatment. No new metastatic lesions detected. Continue current treatment protocol.',
-    billing: 'CT Abdomen with contrast - Code: 74177'
+    billing: 'CT Abdomen with contrast - Code: 74177',
+    findings: ''
   };
 
   // Measurements data
-  measurements = [
+  measurements: Measurement[] = [
     {
       date: '2023-03-28',
       label: 'Baseline',
@@ -59,9 +74,9 @@ export class ReportingComponent {
     }
   ];
 
-  selectedMeasurement = this.measurements[0];
+  selectedMeasurement: Measurement = this.measurements[0];
 
-  selectMeasurement(measurement: any): void {
+  selectMeasurement(measurement: Measurement): void {
     this.selectedMeasurement = measurement;
   };
 
@@ -86,7 +101,7 @@ export class ReportingComponent {
     return change < 0 ? 'decrease' : change > 0 ? 'increase' : 'stable';
   }
 
-  getEvolutionData(noduleId: number): any[] {
+  getEvolutionData(noduleId: number): { date: string; size: number }[] {
     return this.measurements.map(m => {
       const nodule = m.nodules.find(n => n.id === noduleId);
       return {
