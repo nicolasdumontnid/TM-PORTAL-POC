@@ -527,11 +527,12 @@
   font-size: 0.7rem;
   font-weight: 600;
   white-space: nowrap;
+  z-index: 15;
 }
 
 .x-axis {
   position: absolute;
-  bottom: -30px;
+  bottom: 0px;
   left: 0;
   right: 0;
   height: 25px;
@@ -612,6 +613,86 @@
   margin-top: 5px;
 }
 
+/* Exam Point Tooltip */
+.exam-tooltip {
+  position: fixed;
+  background: var(--bg-container);
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  padding: 15px;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+  z-index: 1000;
+  max-width: 350px;
+  min-width: 280px;
+  pointer-events: none;
+}
+
+.tooltip-header {
+  margin-bottom: 12px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.tooltip-header h4 {
+  margin: 0 0 4px 0;
+  color: var(--text-primary);
+  font-size: 1rem;
+  font-weight: 600;
+}
+
+.tooltip-date {
+  margin: 0;
+  color: var(--text-secondary);
+  font-size: 0.85rem;
+}
+
+.tooltip-content {
+  margin-bottom: 12px;
+}
+
+.tooltip-content p {
+  margin: 0 0 6px 0;
+  font-size: 0.85rem;
+  color: var(--text-primary);
+}
+
+.tooltip-content strong {
+  color: var(--primary-color);
+  font-weight: 600;
+}
+
+.tooltip-thumbnails {
+  border-top: 1px solid var(--border-color);
+  padding-top: 12px;
+}
+
+.tooltip-thumbnails h5 {
+  margin: 0 0 8px 0;
+  color: var(--text-primary);
+  font-size: 0.9rem;
+  font-weight: 600;
+}
+
+.thumbnails-grid {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.tooltip-thumbnail {
+  width: 60px;
+  height: 60px;
+  object-fit: cover;
+  border-radius: 4px;
+  border: 1px solid var(--border-color);
+  filter: grayscale(100%);
+  transition: filter 0.2s ease;
+}
+
+.tooltip-thumbnail:hover {
+  filter: grayscale(0%);
+}
+
 @media (max-width: 768px) {
   .calendar-map-body {
     flex-direction: column;
@@ -629,5 +710,10 @@
   
   .detail-row {
     justify-content: center;
+  }
+  
+  .exam-tooltip {
+    max-width: 280px;
+    min-width: 250px;
   }
 }

@@ -36,7 +36,7 @@ export class VisualPatientComponent implements OnInit {
     view: 'department',
     department: 'ALL',
     anatomy: 'ALL',
-    timeline: 'ALL'
+    timeline: '3 Years'
   });
   graphicFilter$ = this.graphicFilterSubject.asObservable();
   filteredExamPoints$!: Observable<ExamPoint[]>;
@@ -274,9 +274,23 @@ export class VisualPatientComponent implements OnInit {
     
     const x = ((examPoint.date.getTime() - minDate) / dateRange) * 85 + 10; // 10% margin, 85% width
     
-    const regionIndex = this.anatomicalRegions.findIndex(region => 
-      examPoint.anatomicalRegion.includes(region));
-    const y = regionIndex >= 0 ? (regionIndex + 0.5) * (100 / this.anatomicalRegions.length) : 50;
+    const currentFilter = this.graphicFilterSubject.value;
+    let regionIndex = 0;
+    
+    if (currentFilter.view === 'department') {
+      // Find department index
+      this.departments$.subscribe(departments => {
+        const deptIndex = departments.findIndex(dept => dept.name === examPoint.department);
+        regionIndex = deptIndex >= 0 ? deptIndex : 0;
+      });
+    } else {
+      // Find anatomical region index
+      regionIndex = this.anatomicalRegions.findIndex(region => 
+        examPoint.anatomicalRegion.includes(region));
+      regionIndex = regionIndex >= 0 ? regionIndex : 0;
+    }
+    
+    const y = (regionIndex + 0.5) * (100 / this.anatomicalRegions.length);
     
     return { x, y };
   }
@@ -1001,5 +1015,33 @@ export class VisualPatientComponent implements OnInit {
 
   trackByBlockId(index: number, block: VisualPatientBlock): string {
     return block.id;
+  }
+
+  getYAxisLabels(): string[] {
+    const currentFilter = this.graphicFilterSubject.value;
+    
+    if (currentFilter.view === 'department') {
+      // Return department names
+      let departmentNames: string[] = [];
+      this.departments$.subscribe(departments => {
+        departmentNames = departments.map(dept => dept.name);
+      });
+      return departmentNames.length > 0 ? departmentNames : ['Radiology', 'Neurology', 'Pulmonology', 'Gastroenterology', 'Oncology'];
+    } else {
+      // Return anatomical regions
+      return this.anatomicalRegions;
+    }
+  }
+
+  getExamThumbnails(examPoint: ExamPoint): { url: string; filename: string }[] {
+    // Mock thumbnails based on exam type - in real app, this would come from the exam data
+    const mockThumbnails = [
+      { url: 'https://i.ibb.co/JqjTz3j/scan-thumb-1.png', filename: 'axial_1.dcm' },
+      { url: 'https://i.ibb.co/9gZ2YjM/scan-thumb-2.png', filename: 'axial_2.dcm' },
+      { url: 'https://i.ibb.co/yQdZn5P/scan-thumb-3.png', filename: 'sagittal_1.dcm' }
+    ];
+    
+    // Return 2-3 random thumbnails for demo
+    return mockThumbnails.slice(0, Math.floor(Math.random() * 2) + 2);
   }
 }

@@ -298,10 +298,10 @@
               <ng-container *ngIf="filteredExamPoints$ | async as examPoints">
                 <!-- Y-axis labels -->
                 <div class="y-axis">
-                  <div *ngFor="let region of anatomicalRegions; let i = index"
+                  <div *ngFor="let label of getYAxisLabels(); let i = index"
                        class="y-axis-label" 
                        [style.top.%]="(i / anatomicalRegions.length) * 100">
-                    {{region}}
+                    {{label}}
                   </div>
                 </div>
                 
@@ -328,8 +328,12 @@
                        [class.future-point]="examPoint.isFuture"
                        [style.left.%]="getExamPointPosition(examPoint, examPoints).x"
                        [style.top.%]="getExamPointPosition(examPoint, examPoints).y"
+                       (mouseenter)="onExamPointHover(examPoint, $event)"
+                       (mouseleave)="onExamPointLeave()"
                        (click)="openReporting(examPoint)">
-                    <div class="exam-point-label">
+                    <div class="exam-point-label" 
+                         (mouseenter)="onExamPointHover(examPoint, $event)"
+                         (mouseleave)="onExamPointLeave()">
                       {{examPoint.examName}}<br>
                       <small>{{examPoint.date | date:'dd/MM/yy'}}</small>
                     </div>
@@ -367,6 +371,31 @@
         <div class="block-footer">
           <button class="see-all-btn">see all -></button>
         </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Exam Point Tooltip -->
+  <div *ngIf="hoveredExamPoint" 
+       class="exam-tooltip"
+       [style.left.px]="tooltipPosition.x + 10"
+       [style.top.px]="tooltipPosition.y - 10">
+    <div class="tooltip-header">
+      <h4>{{hoveredExamPoint.examName}}</h4>
+      <p class="tooltip-date">{{hoveredExamPoint.date | date:'dd/MM/yyyy'}}</p>
+    </div>
+    <div class="tooltip-content">
+      <p><strong>Department:</strong> {{hoveredExamPoint.department}}</p>
+      <p><strong>Anatomical Region:</strong> {{hoveredExamPoint.anatomicalRegion}}</p>
+      <p><strong>Description:</strong> {{hoveredExamPoint.description}}</p>
+    </div>
+    <div class="tooltip-thumbnails" *ngIf="getExamThumbnails(hoveredExamPoint).length > 0">
+      <h5>Medical Images:</h5>
+      <div class="thumbnails-grid">
+        <img *ngFor="let thumbnail of getExamThumbnails(hoveredExamPoint)" 
+             [src]="thumbnail.url" 
+             [alt]="thumbnail.filename"
+             class="tooltip-thumbnail">
       </div>
     </div>
   </div>
