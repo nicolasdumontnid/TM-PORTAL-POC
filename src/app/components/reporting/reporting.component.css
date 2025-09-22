@@ -197,4 +197,247 @@ textarea:focus {
     width: 100%;
     max-width: 300px;
   }
+  
+  .findings-container {
+    flex-direction: column;
+  }
+  
+  .measurement-timeline {
+    flex-direction: row;
+    overflow-x: auto;
+    min-width: auto;
+  }
+  
+  .evolution-section {
+    min-width: auto;
+  }
+}
+/* Findings - Measurements Styles */
+.findings-container {
+  display: flex;
+  gap: 20px;
+  min-height: 400px;
+}
+
+.measurement-timeline {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  min-width: 150px;
+}
+
+.timeline-item {
+  background: #2c3e50;
+  border-radius: 8px;
+  padding: 12px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  border: 2px solid transparent;
+}
+
+.timeline-item:hover {
+  background: #34495e;
+}
+
+.timeline-item.active {
+  background: #14B8A6;
+  border-color: #0f9488;
+}
+
+.timeline-item.empty {
+  background: #7f8c8d;
+  cursor: default;
+}
+
+.timeline-item.empty:hover {
+  background: #7f8c8d;
+}
+
+.timeline-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: white;
+}
+
+.timeline-info {
+  flex: 1;
+}
+
+.timeline-date {
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.timeline-label {
+  font-size: 10px;
+  opacity: 0.8;
+}
+
+.images-section {
+  flex: 1;
+  min-width: 300px;
+}
+
+.image-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 15px;
+}
+
+.image-item {
+  text-align: center;
+}
+
+.medical-image-container {
+  position: relative;
+  background: #2c3e50;
+  border-radius: 8px;
+  overflow: hidden;
+  aspect-ratio: 1;
+}
+
+.medical-scan {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  filter: grayscale(100%) contrast(1.2);
+}
+
+.measurement-overlay {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: #ffd700;
+  font-weight: bold;
+  font-size: 12px;
+}
+
+.measurement-line {
+  width: 40px;
+  height: 2px;
+  background: #ffd700;
+  margin: 0 auto 4px;
+  position: relative;
+}
+
+.measurement-line::before,
+.measurement-line::after {
+  content: '';
+  position: absolute;
+  width: 2px;
+  height: 8px;
+  background: #ffd700;
+  top: -3px;
+}
+
+.measurement-line::before {
+  left: 0;
+}
+
+.measurement-line::after {
+  right: 0;
+}
+
+.measurement-value {
+  text-align: center;
+  text-shadow: 1px 1px 2px rgba(0,0,0,0.8);
+}
+
+.image-label {
+  margin-top: 8px;
+  font-size: 12px;
+  color: #666;
+  font-weight: 500;
+}
+
+.evolution-section {
+  min-width: 250px;
+  background: #f8f9fa;
+  border-radius: 8px;
+  padding: 15px;
+}
+
+.evolution-header {
+  text-align: center;
+  margin-bottom: 15px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid #dee2e6;
+}
+
+.evolution-header h4 {
+  color: #495057;
+  font-size: 14px;
+  margin: 0;
+}
+
+.charts-container {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.chart-item {
+  background: #2c3e50;
+  border-radius: 8px;
+  padding: 12px;
+  color: white;
+}
+
+.chart-header {
+  text-align: center;
+  margin-bottom: 10px;
+}
+
+.nodule-name {
+  font-size: 12px;
+  font-weight: 600;
+  color: #ecf0f1;
+}
+
+.chart-container {
+  height: 80px;
+  margin-bottom: 10px;
+}
+
+.evolution-chart {
+  width: 100%;
+  height: 100%;
+  background: #34495e;
+  border-radius: 4px;
+}
+
+.measurement-stats {
+  display: flex;
+  justify-content: space-around;
+  gap: 10px;
+}
+
+.stat-item {
+  text-align: center;
+  flex: 1;
+}
+
+.stat-value {
+  font-size: 12px;
+  font-weight: 600;
+  padding: 4px 8px;
+  border-radius: 4px;
+  background: #34495e;
+}
+
+.stat-value.decrease {
+  color: #2ecc71;
+  background: rgba(46, 204, 113, 0.2);
+}
+
+.stat-value.increase {
+  color: #e74c3c;
+  background: rgba(231, 76, 60, 0.2);
+}
+
+.stat-value.stable {
+  color: #f39c12;
+  background: rgba(243, 156, 18, 0.2);
 }
