@@ -1,0 +1,16 @@
+<main class="main-content">
+  <div *ngIf="!(showVisualPatient$ | async) && !(showDashboard$ | async)">
+    <app-content-header></app-content-header>
+    <app-exam-list (examDoubleClick)="onExamDoubleClick()"></app-exam-list>
+  </div>
+  
+  <app-visual-patient 
+    *ngIf="showVisualPatient$ | async"
+    (close)="onCloseVisualPatient()">
+  </app-visual-patient>
+  
+  <app-dashboard 
+    *ngIf="showDashboard$ | async">
+    (close)="onHideDashboard()"
+  </app-dashboard>
+</main>
