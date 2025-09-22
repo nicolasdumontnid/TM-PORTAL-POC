@@ -324,9 +324,5 @@ export class DashboardComponent implements OnInit {
     return true;
   }
 
-  closeAndGoToInbox(): void {
-    // Reload the entire application to go back to the starting point
-    window.location.reload();
-  }
 
 }
