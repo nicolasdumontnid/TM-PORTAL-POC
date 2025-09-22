@@ -148,39 +148,39 @@ textarea:focus {
 }
 
 .btn-secondary { 
-  background: #6c757d; 
-  color: white; 
+  background: #6c757d !important; 
+  color: white !important; 
 }
 
 .btn-secondary:hover { 
-  background: #5a6268; 
+  background: #5a6268 !important; 
 }
 
 .btn-warning { 
-  background: #ffc107; 
-  color: #212529; 
+  background: #6c757d !important; 
+  color: white !important; 
 }
 
 .btn-warning:hover { 
-  background: #e0a800; 
+  background: #5a6268 !important; 
 }
 
 .btn-primary { 
-  background: #14B8A6; 
-  color: white; 
+  background: #28a745 !important; 
+  color: white !important; 
 }
 
 .btn-primary:hover { 
-  background: #0f9488; 
+  background: #218838 !important; 
 }
 
 .btn-success { 
-  background: #28a745; 
-  color: white; 
+  background: #28a745 !important; 
+  color: white !important; 
 }
 
 .btn-success:hover { 
-  background: #218838; 
+  background: #218838 !important; 
 }
 
 @media (max-width: 768px) {
@@ -212,80 +212,45 @@ textarea:focus {
     min-width: auto;
   }
 }
-/* Findings - Measurements Styles */
-.findings-container {
-  display: flex;
-  gap: 20px;
-  min-height: 400px;
-}
 
-.measurement-timeline {
+/* Findings Matrix Styles */
+.findings-matrix {
   display: flex;
   flex-direction: column;
-  gap: 10px;
-  min-width: 150px;
-}
-
-.timeline-item {
-  background: #2c3e50;
-  border-radius: 8px;
-  padding: 12px;
-  cursor: pointer;
-  transition: all 0.2s ease;
-  border: 2px solid transparent;
-}
-
-.timeline-item:hover {
-  background: #34495e;
-}
-
-.timeline-item.active {
-  background: #14B8A6;
-  border-color: #0f9488;
-}
-
-.timeline-item.empty {
-  background: #7f8c8d;
-  cursor: default;
-}
-
-.timeline-item.empty:hover {
-  background: #7f8c8d;
-}
-
-.timeline-header {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  color: white;
-}
-
-.timeline-info {
-  flex: 1;
-}
-
-.timeline-date {
-  font-size: 12px;
-  font-weight: 600;
-}
-
-.timeline-label {
-  font-size: 10px;
-  opacity: 0.8;
-}
-
-.images-section {
-  flex: 1;
-  min-width: 300px;
-}
-
-.image-grid {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
   gap: 15px;
 }
 
-.image-item {
+.matrix-header {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 15px;
+}
+
+.matrix-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 15px;
+  align-items: start;
+}
+
+.matrix-cell {
+  background: white;
+  border-radius: 8px;
+  padding: 15px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.header-cell {
+  background: #14B8A6;
+  color: white;
+  text-align: center;
+  font-weight: 600;
+  font-size: 14px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.image-cell {
   text-align: center;
 }
 
@@ -295,6 +260,7 @@ textarea:focus {
   border-radius: 8px;
   overflow: hidden;
   aspect-ratio: 1;
+  margin-bottom: 10px;
 }
 
 .medical-scan {
@@ -346,77 +312,42 @@ textarea:focus {
 }
 
 .image-label {
-  margin-top: 8px;
   font-size: 12px;
   color: #666;
   font-weight: 500;
 }
 
-.evolution-section {
-  min-width: 250px;
-  background: #f8f9fa;
-  border-radius: 8px;
-  padding: 15px;
-}
-
-.evolution-header {
-  text-align: center;
-  margin-bottom: 15px;
-  padding-bottom: 10px;
-  border-bottom: 1px solid #dee2e6;
-}
-
-.evolution-header h4 {
-  color: #495057;
-  font-size: 14px;
-  margin: 0;
-}
-
-.charts-container {
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
-}
-
-.chart-item {
+.chart-cell {
   background: #2c3e50;
-  border-radius: 8px;
-  padding: 12px;
   color: white;
 }
 
-.chart-header {
+.chart-title {
   text-align: center;
-  margin-bottom: 10px;
-}
-
-.nodule-name {
-  font-size: 12px;
   font-weight: 600;
+  margin-bottom: 10px;
   color: #ecf0f1;
+  font-size: 14px;
 }
 
 .chart-container {
-  height: 80px;
-  margin-bottom: 10px;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
 }
 
 .evolution-chart {
   width: 100%;
-  height: 100%;
+  height: 120px;
   background: #34495e;
   border-radius: 4px;
+  margin-bottom: 10px;
 }
 
-.measurement-stats {
+.chart-stats {
   display: flex;
   justify-content: space-around;
   gap: 10px;
-}
-
-.stat-item {
-  text-align: center;
-  flex: 1;
 }
 
 .stat-value {
@@ -440,4 +371,15 @@ textarea:focus {
 .stat-value.stable {
   color: #f39c12;
   background: rgba(243, 156, 18, 0.2);
+}
+
+@media (max-width: 768px) {
+  .matrix-header,
+  .matrix-row {
+    grid-template-columns: 1fr;
+  }
+  
+  .findings-matrix {
+    gap: 10px;
+  }
 }

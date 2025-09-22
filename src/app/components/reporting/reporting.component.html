@@ -74,119 +74,117 @@
   </div>
   
   <div class="report-section">
-    <div class="section-header">Findings - Measurements</div>
+    <div class="section-header">Findings</div>
     <div class="section-content">
-      <div class="findings-container">
-        <!-- Measurement Timeline -->
-        <div class="measurement-timeline">
-          <div 
-            *ngFor="let measurement of measurements" 
-            class="timeline-item"
-            [class.active]="selectedMeasurement === measurement"
-            (click)="selectMeasurement(measurement)"
-          >
-            <div class="timeline-header">
-              <i class="fas fa-cog"></i>
-              <div class="timeline-info">
-                <div class="timeline-date">{{measurement.date}}</div>
-                <div class="timeline-label">{{measurement.label}}</div>
+      <div class="findings-matrix">
+        <!-- Header Row -->
+        <div class="matrix-header">
+          <div class="matrix-cell header-cell">6 months ago</div>
+          <div class="matrix-cell header-cell">Today</div>
+          <div class="matrix-cell header-cell">Evolution</div>
+        </div>
+        
+        <!-- Nodule 1 Row -->
+        <div class="matrix-row">
+          <div class="matrix-cell image-cell">
+            <div class="medical-image-container">
+              <img src="https://images.unsplash.com/photo-1559757148-5c350d0d3c56?ixlib=rb-4.0.3&auto=format&fit=crop&w=200&q=80" 
+                   alt="Medical scan 6 months ago" class="medical-scan">
+              <div class="measurement-overlay">
+                <div class="measurement-line"></div>
+                <div class="measurement-value">15.2mm</div>
               </div>
             </div>
+            <div class="image-label">Nodule 1 - Baseline</div>
           </div>
           
-          <!-- Empty slot -->
-          <div class="timeline-item empty">
-            <div class="timeline-header">
-              <i class="fas fa-cog"></i>
-              <div class="timeline-info">
-                <div class="timeline-label">Empty</div>
+          <div class="matrix-cell image-cell">
+            <div class="medical-image-container">
+              <img src="https://images.unsplash.com/photo-1559757148-5c350d0d3c56?ixlib=rb-4.0.3&auto=format&fit=crop&w=200&q=80" 
+                   alt="Medical scan today" class="medical-scan">
+              <div class="measurement-overlay">
+                <div class="measurement-line"></div>
+                <div class="measurement-value">14.2mm</div>
+              </div>
+            </div>
+            <div class="image-label">Nodule 1 - Current</div>
+          </div>
+          
+          <div class="matrix-cell chart-cell">
+            <div class="chart-container">
+              <div class="chart-title">Nodule 1</div>
+              <svg class="evolution-chart" viewBox="0 0 200 100">
+                <!-- Grid lines -->
+                <defs>
+                  <pattern id="grid1" width="20" height="10" patternUnits="userSpaceOnUse">
+                    <path d="M 20 0 L 0 0 0 10" fill="none" stroke="#444" stroke-width="0.5"/>
+                  </pattern>
+                </defs>
+                <rect width="200" height="100" fill="url(#grid1)" />
+                
+                <!-- Evolution line for Nodule 1: 15.2 -> 14.6 -> 14.2 -->
+                <circle cx="30" cy="30" r="3" fill="#ff6b6b"/>
+                <line x1="30" y1="30" x2="100" y2="40" stroke="#ff6b6b" stroke-width="2"/>
+                <circle cx="100" cy="40" r="3" fill="#ff6b6b"/>
+                <line x1="100" y1="40" x2="170" y2="45" stroke="#ff6b6b" stroke-width="2"/>
+                <circle cx="170" cy="45" r="4" fill="#ff6b6b" stroke="#fff" stroke-width="2"/>
+              </svg>
+              <div class="chart-stats">
+                <span class="stat-value decrease">-6.6%</span>
+                <span class="stat-value decrease">-1.0mm</span>
               </div>
             </div>
           </div>
         </div>
-
-        <!-- Images Section -->
-        <div class="images-section">
-          <div class="image-grid">
-            <div *ngFor="let nodule of selectedMeasurement.nodules" class="image-item">
-              <div class="medical-image-container">
-                <img src="https://images.unsplash.com/photo-1559757148-5c350d0d3c56?ixlib=rb-4.0.3&auto=format&fit=crop&w=300&q=80" 
-                     alt="Medical scan" class="medical-scan">
-                <div class="measurement-overlay">
-                  <div class="measurement-line"></div>
-                  <div class="measurement-value">{{nodule.size}}mm</div>
-                </div>
+        
+        <!-- Nodule 2 Row -->
+        <div class="matrix-row">
+          <div class="matrix-cell image-cell">
+            <div class="medical-image-container">
+              <img src="https://images.unsplash.com/photo-1576091160399-112ba8d25d1f?ixlib=rb-4.0.3&auto=format&fit=crop&w=200&q=80" 
+                   alt="Medical scan 6 months ago" class="medical-scan">
+              <div class="measurement-overlay">
+                <div class="measurement-line"></div>
+                <div class="measurement-value">12.8mm</div>
               </div>
-              <div class="image-label">{{nodule.name}}</div>
             </div>
-          </div>
-        </div>
-
-        <!-- Evolution Charts -->
-        <div class="evolution-section">
-          <div class="evolution-header">
-            <h4>Evolution Individual</h4>
+            <div class="image-label">Nodule 2 - Baseline</div>
           </div>
           
-          <div class="charts-container">
-            <div *ngFor="let nodule of selectedMeasurement.nodules" class="chart-item">
-              <div class="chart-header">
-                <span class="nodule-name">{{nodule.name}}</span>
+          <div class="matrix-cell image-cell">
+            <div class="medical-image-container">
+              <img src="https://images.unsplash.com/photo-1576091160399-112ba8d25d1f?ixlib=rb-4.0.3&auto=format&fit=crop&w=200&q=80" 
+                   alt="Medical scan today" class="medical-scan">
+              <div class="measurement-overlay">
+                <div class="measurement-line"></div>
+                <div class="measurement-value">10.0mm</div>
               </div>
-              
-              <div class="chart-container">
-                <svg class="evolution-chart" viewBox="0 0 200 100">
-                  <!-- Grid lines -->
-                  <defs>
-                    <pattern id="grid" width="20" height="10" patternUnits="userSpaceOnUse">
-                      <path d="M 20 0 L 0 0 0 10" fill="none" stroke="#444" stroke-width="0.5"/>
-                    </pattern>
-                  </defs>
-                  <rect width="200" height="100" fill="url(#grid)" />
-                  
-                  <!-- Evolution line -->
-                  <ng-container *ngFor="let data of getEvolutionData(nodule.id); let i = index">
-                    <circle 
-                      *ngIf="i < getEvolutionData(nodule.id).length - 1"
-                      [attr.cx]="30 + (i * 60)" 
-                      [attr.cy]="80 - (data.size - 8) * 4" 
-                      r="3" 
-                      fill="#ff6b6b"
-                    />
-                    <line 
-                      *ngIf="i < getEvolutionData(nodule.id).length - 1"
-                      [attr.x1]="30 + (i * 60)"
-                      [attr.y1]="80 - (data.size - 8) * 4"
-                      [attr.x2]="30 + ((i + 1) * 60)"
-                      [attr.y2]="80 - (getEvolutionData(nodule.id)[i + 1].size - 8) * 4"
-                      stroke="#ff6b6b"
-                      stroke-width="2"
-                    />
-                  </ng-container>
-                  
-                  <!-- Current point -->
-                  <circle 
-                    [attr.cx]="30 + ((getEvolutionData(nodule.id).length - 1) * 60)" 
-                    [attr.cy]="80 - (nodule.size - 8) * 4" 
-                    r="4" 
-                    fill="#ff6b6b"
-                    stroke="#fff"
-                    stroke-width="2"
-                  />
-                </svg>
-              </div>
-              
-              <div class="measurement-stats">
-                <div class="stat-item">
-                  <span class="stat-value" [class]="getChangeClass(nodule.changePercent)">
-                    {{nodule.changePercent !== null ? (nodule.changePercent > 0 ? '+' : '') + nodule.changePercent + '%' : '--'}}
-                  </span>
-                </div>
-                <div class="stat-item">
-                  <span class="stat-value" [class]="getChangeClass(nodule.change)">
-                    {{nodule.change !== null ? (nodule.change > 0 ? '+' : '') + nodule.change + 'mm' : '--'}}
-                  </span>
-                </div>
+            </div>
+            <div class="image-label">Nodule 2 - Current</div>
+          </div>
+          
+          <div class="matrix-cell chart-cell">
+            <div class="chart-container">
+              <div class="chart-title">Nodule 2</div>
+              <svg class="evolution-chart" viewBox="0 0 200 100">
+                <!-- Grid lines -->
+                <defs>
+                  <pattern id="grid2" width="20" height="10" patternUnits="userSpaceOnUse">
+                    <path d="M 20 0 L 0 0 0 10" fill="none" stroke="#444" stroke-width="0.5"/>
+                  </pattern>
+                </defs>
+                <rect width="200" height="100" fill="url(#grid2)" />
+                
+                <!-- Evolution line for Nodule 2: 12.8 -> 10.4 -> 10.0 -->
+                <circle cx="30" cy="35" r="3" fill="#ff6b6b"/>
+                <line x1="30" y1="35" x2="100" y2="55" stroke="#ff6b6b" stroke-width="2"/>
+                <circle cx="100" cy="55" r="3" fill="#ff6b6b"/>
+                <line x1="100" y1="55" x2="170" y2="60" stroke="#ff6b6b" stroke-width="2"/>
+                <circle cx="170" cy="60" r="4" fill="#ff6b6b" stroke="#fff" stroke-width="2"/>
+              </svg>
+              <div class="chart-stats">
+                <span class="stat-value decrease">-21.9%</span>
+                <span class="stat-value decrease">-2.8mm</span>
               </div>
             </div>
           </div>
