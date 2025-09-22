@@ -320,7 +320,7 @@ export class VisualPatientComponent implements OnInit {
     const reportingWindow = window.open('', '_blank', 'width=1200,height=800,scrollbars=yes,resizable=yes');
     if (reportingWindow) {
       // Charger le fichier HTML externe
-      fetch('/src/assets/reporting.html')
+      fetch('/src/app/reporting.html')
         .then(response => response.text())
         .then(htmlContent => {
           reportingWindow.document.open();
