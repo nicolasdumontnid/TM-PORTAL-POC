@@ -1,14 +1,18 @@
 import { Component } from '@angular/core';
 import { bootstrapApplication } from '@angular/platform-browser';
 import { CommonModule } from '@angular/common';
-import { ReportingComponent } from './app/components/reporting/reporting.component';
+import { SidebarComponent } from './app/components/sidebar/sidebar.component';
+import { MainContentComponent } from './app/components/main-content/main-content.component';
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [CommonModule, ReportingComponent],
+  imports: [CommonModule, SidebarComponent, MainContentComponent],
   template: `
-    <app-reporting></app-reporting>
+    <div class="app-container">
+      <app-sidebar></app-sidebar>
+      <app-main-content></app-main-content>
+    </div>
   `,
 })
 export class App {

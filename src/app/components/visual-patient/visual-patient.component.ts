@@ -317,21 +317,663 @@ export class VisualPatientComponent implements OnInit {
   }
 
   openReportingWindow(): void {
-    const reportingWindow = window.open('', '_blank', 'width=1200,height=800,scrollbars=yes,resizable=yes');
+    const reportingWindow = window.open('about:blank', '_blank', 'width=1200,height=800,scrollbars=yes,resizable=yes');
     if (reportingWindow) {
-      // Charger le fichier HTML externe
-      fetch('/src/app/reporting.html')
-        .then(response => response.text())
-        .then(htmlContent => {
-          reportingWindow.document.open();
-          reportingWindow.document.write(htmlContent);
-          reportingWindow.document.close();
-          reportingWindow.focus();
-        })
-        .catch(error => {
-          console.error('Erreur lors du chargement du fichier reporting.html:', error);
-          reportingWindow.close();
-        });
+      // Create a complete HTML document with Angular component
+      const htmlContent = `
+        <!DOCTYPE html>
+        <html lang="en">
+        <head>
+          <meta charset="UTF-8">
+          <meta name="viewport" content="width=device-width, initial-scale=1.0">
+          <title>Medical Reporting - Clinique du Parc</title>
+          <link rel="preconnect" href="https://fonts.googleapis.com">
+          <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+          <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+          <style>
+            * {
+              box-sizing: border-box;
+              margin: 0;
+              padding: 0;
+            }
+            
+            body { 
+              font-family: 'Poppins', sans-serif; 
+              margin: 0; 
+              padding: 20px; 
+              background: #f8f9fa;
+              color: #333;
+              line-height: 1.6;
+            }
+            
+            .container {
+              max-width: 1200px;
+              margin: 0 auto;
+            }
+            
+            .header { 
+              display: flex; 
+              justify-content: space-between; 
+              align-items: center; 
+              margin-bottom: 30px; 
+              padding-bottom: 20px;
+              border-bottom: 2px solid #14B8A6;
+            }
+            
+            .logo { 
+              font-size: 24px; 
+              font-weight: bold; 
+              color: #14B8A6;
+            }
+            
+            .template-selector {
+              display: flex;
+              align-items: center;
+            }
+            
+            .template-dropdown {
+              padding: 8px 12px;
+              border: 1px solid #ddd;
+              border-radius: 6px;
+              background: white;
+              color: #333;
+              font-family: inherit;
+              font-size: 14px;
+              cursor: pointer;
+              min-width: 200px;
+              transition: border-color 0.2s ease;
+            }
+            
+            .template-dropdown:focus {
+              outline: none;
+              border-color: #14B8A6;
+              box-shadow: 0 0 0 2px rgba(20, 184, 166, 0.1);
+            }
+            
+            .template-dropdown:hover {
+              border-color: #14B8A6;
+            }
+            
+            .patient-info { 
+              display: flex; 
+              justify-content: space-between; 
+              margin-bottom: 30px;
+              background: white;
+              padding: 20px;
+              border-radius: 8px;
+              box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+              gap: 20px;
+            }
+            
+            .info-section { 
+              flex: 1;
+            }
+            
+            .info-section h3 { 
+              margin: 0 0 15px 0; 
+              color: #14B8A6; 
+              font-size: 18px;
+              font-weight: 600;
+            }
+            
+            .info-row { 
+              margin-bottom: 8px; 
+              display: flex;
+              align-items: flex-start;
+            }
+            
+            .label { 
+              font-weight: 600; 
+              color: #666; 
+              display: inline-block; 
+              width: 120px;
+              flex-shrink: 0;
+            }
+            
+            .value {
+              flex: 1;
+              color: #333;
+            }
+            
+            .report-section { 
+              margin-bottom: 20px;
+              background: white;
+              border-radius: 8px;
+              overflow: hidden;
+              box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            }
+            
+            .section-header { 
+              background: #14B8A6; 
+              color: white; 
+              padding: 12px 20px; 
+              font-weight: 600;
+              text-transform: uppercase;
+              font-size: 14px;
+              letter-spacing: 0.5px;
+            }
+            
+            .section-content { 
+              padding: 20px; 
+            }
+            
+            textarea { 
+              width: 100%; 
+              min-height: 100px; 
+              border: 1px solid #ddd; 
+              border-radius: 4px; 
+              padding: 12px; 
+              font-family: inherit; 
+              font-size: 14px;
+              resize: vertical;
+              line-height: 1.5;
+              background: #fff;
+            }
+            
+            textarea:focus { 
+              outline: none; 
+              border-color: #14B8A6; 
+              box-shadow: 0 0 0 2px rgba(20, 184, 166, 0.1);
+            }
+            
+            .actions { 
+              display: flex; 
+              gap: 15px; 
+              justify-content: center; 
+              margin-top: 30px;
+              padding-top: 20px;
+              border-top: 1px solid #eee;
+              flex-wrap: wrap;
+            }
+            
+            .btn { 
+              padding: 12px 24px; 
+              border: none; 
+              border-radius: 6px; 
+              font-weight: 600; 
+              cursor: pointer; 
+              transition: all 0.2s;
+              font-size: 14px;
+              min-width: 120px;
+            }
+            
+            .btn:hover {
+              transform: translateY(-1px);
+              box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+            }
+            
+            .btn-secondary { 
+              background: #6c757d !important; 
+              color: white !important; 
+            }
+            
+            .btn-secondary:hover { 
+              background: #5a6268 !important; 
+            }
+            
+            .btn-warning { 
+              background: #6c757d !important; 
+              color: white !important; 
+            }
+            
+            .btn-warning:hover { 
+              background: #5a6268 !important; 
+            }
+            
+            .btn-primary { 
+              background: #28a745 !important; 
+              color: white !important; 
+            }
+            
+            .btn-primary:hover { 
+              background: #218838 !important; 
+            }
+            
+            .btn-success { 
+              background: #28a745 !important; 
+              color: white !important; 
+            }
+            
+            .btn-success:hover { 
+              background: #218838 !important; 
+            }
+            
+            /* Findings Matrix Styles */
+            .findings-matrix {
+              display: flex;
+              flex-direction: column;
+              gap: 15px;
+            }
+            
+            .matrix-header {
+              display: grid;
+              grid-template-columns: 1fr 1fr 1fr;
+              gap: 15px;
+            }
+            
+            .matrix-row {
+              display: grid;
+              grid-template-columns: 1fr 1fr 1fr;
+              gap: 15px;
+              align-items: start;
+            }
+            
+            .matrix-cell {
+              background: white;
+              border-radius: 8px;
+              padding: 15px;
+              box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            }
+            
+            .header-cell {
+              background: #14B8A6;
+              color: white;
+              text-align: center;
+              font-weight: 600;
+              font-size: 14px;
+              text-transform: uppercase;
+              letter-spacing: 0.5px;
+            }
+            
+            .image-cell {
+              text-align: center;
+            }
+            
+            .medical-image-container {
+              position: relative;
+              background: #2c3e50;
+              border-radius: 8px;
+              overflow: hidden;
+              aspect-ratio: 1;
+              margin-bottom: 10px;
+            }
+            
+            .medical-scan {
+              width: 100%;
+              height: 100%;
+              object-fit: cover;
+              filter: grayscale(100%) contrast(1.2);
+            }
+            
+            .measurement-overlay {
+              position: absolute;
+              top: 50%;
+              left: 50%;
+              transform: translate(-50%, -50%);
+              color: #ffd700;
+              font-weight: bold;
+              font-size: 12px;
+            }
+            
+            .measurement-line {
+              width: 40px;
+              height: 2px;
+              background: #ffd700;
+              margin: 0 auto 4px;
+              position: relative;
+            }
+            
+            .measurement-line::before,
+            .measurement-line::after {
+              content: '';
+              position: absolute;
+              width: 2px;
+              height: 8px;
+              background: #ffd700;
+              top: -3px;
+            }
+            
+            .measurement-line::before {
+              left: 0;
+            }
+            
+            .measurement-line::after {
+              right: 0;
+            }
+            
+            .measurement-value {
+              text-align: center;
+              text-shadow: 1px 1px 2px rgba(0,0,0,0.8);
+            }
+            
+            .image-label {
+              font-size: 12px;
+              color: #666;
+              font-weight: 500;
+            }
+            
+            .chart-cell {
+              background: #2c3e50;
+              color: white;
+            }
+            
+            .chart-title {
+              text-align: center;
+              font-weight: 600;
+              margin-bottom: 10px;
+              color: #ecf0f1;
+              font-size: 14px;
+            }
+            
+            .chart-container {
+              display: flex;
+              flex-direction: column;
+              height: 100%;
+            }
+            
+            .evolution-chart {
+              width: 100%;
+              height: 120px;
+              background: #34495e;
+              border-radius: 4px;
+              margin-bottom: 10px;
+            }
+            
+            .chart-stats {
+              display: flex;
+              justify-content: space-around;
+              gap: 10px;
+            }
+            
+            .stat-value {
+              font-size: 12px;
+              font-weight: 600;
+              padding: 4px 8px;
+              border-radius: 4px;
+              background: #34495e;
+            }
+            
+            .stat-value.decrease {
+              color: #2ecc71;
+              background: rgba(46, 204, 113, 0.2);
+            }
+            
+            .stat-value.increase {
+              color: #e74c3c;
+              background: rgba(231, 76, 60, 0.2);
+            }
+            
+            .stat-value.stable {
+              color: #f39c12;
+              background: rgba(243, 156, 18, 0.2);
+            }
+            
+            @media (max-width: 768px) {
+              .patient-info {
+                flex-direction: column;
+              }
+              
+              .actions {
+                flex-direction: column;
+                align-items: center;
+              }
+              
+              .btn {
+                width: 100%;
+                max-width: 300px;
+              }
+              
+              .matrix-header,
+              .matrix-row {
+                grid-template-columns: 1fr;
+              }
+              
+              .findings-matrix {
+                gap: 10px;
+              }
+            }
+          </style>
+        </head>
+        <body>
+          <div class="container">
+            <div class="header">
+              <div class="logo">🏥 Clinique du Parc</div>
+              <div class="template-selector">
+                <select id="templateSelect" class="template-dropdown" onchange="onTemplateChange()">
+                  <option value="">Select template...</option>
+                  <option value="CT Chest negative">CT Chest negative</option>
+                  <option value="CT Chest positive">CT Chest positive</option>
+                </select>
+              </div>
+            </div>
+            
+            <div class="patient-info">
+              <div class="info-section">
+                <h3>Patient Information</h3>
+                <div class="info-row">
+                  <span class="label">Name:</span>
+                  <span class="value">Jean Dupont</span>
+                </div>
+                <div class="info-row">
+                  <span class="label">Date of Birth:</span>
+                  <span class="value">March 15, 1975</span>
+                </div>
+                <div class="info-row">
+                  <span class="label">Address:</span>
+                  <span class="value">123 Rue de la Paix, 75001 Paris, France</span>
+                </div>
+              </div>
+              
+              <div class="info-section">
+                <h3>Prescribing Doctor</h3>
+                <div class="info-row">
+                  <span class="label">Name:</span>
+                  <span class="value">Dr. Marie Dubois</span>
+                </div>
+                <div class="info-row">
+                  <span class="label">Specialty:</span>
+                  <span class="value">Oncologist</span>
+                </div>
+                <div class="info-row">
+                  <span class="label">Hospital:</span>
+                  <span class="value">Clinique du Parc</span>
+                </div>
+              </div>
+            </div>
+            
+            <div class="report-section">
+              <div class="section-header">Indication</div>
+              <div class="section-content">
+                <textarea id="indication" placeholder="Enter indication...">Cancer staging, six months after chemotherapy</textarea>
+              </div>
+            </div>
+            
+            <div class="report-section">
+              <div class="section-header">Technical Information</div>
+              <div class="section-content">
+                <textarea id="technicalInformation" placeholder="Enter technical information...">CT scan of the abdomen with IV contrast. Slice thickness: 5mm. Reconstruction: axial, coronal, and sagittal planes.</textarea>
+              </div>
+            </div>
+            
+            <div class="report-section">
+              <div class="section-header">Report</div>
+              <div class="section-content">
+                <textarea id="report" placeholder="Enter report...">The CT scan shows marked improvement compared to previous studies. The previously identified lesion in the upper right quadrant has decreased in size by approximately 40%.</textarea>
+              </div>
+            </div>
+            
+            <div class="report-section">
+              <div class="section-header">Conclusion</div>
+              <div class="section-content">
+                <textarea id="conclusion" placeholder="Enter conclusion...">Significant improvement following chemotherapy treatment. No new metastatic lesions detected. Continue current treatment protocol.</textarea>
+              </div>
+            </div>
+            
+            <div class="report-section">
+              <div class="section-header">Billing</div>
+              <div class="section-content">
+                <textarea id="billing" placeholder="Enter billing information...">CT Abdomen with contrast - Code: 74177</textarea>
+              </div>
+            </div>
+            
+            <div class="report-section">
+              <div class="section-header">Findings</div>
+              <div class="section-content">
+                <div class="findings-matrix">
+                  <!-- Header Row -->
+                  <div class="matrix-header">
+                    <div class="matrix-cell header-cell">6 months ago</div>
+                    <div class="matrix-cell header-cell">Today</div>
+                    <div class="matrix-cell header-cell">Evolution</div>
+                  </div>
+                  
+                  <!-- Nodule 1 Row -->
+                  <div class="matrix-row">
+                    <div class="matrix-cell image-cell">
+                      <div class="medical-image-container">
+                        <img src="https://images.unsplash.com/photo-1559757148-5c350d0d3c56?ixlib=rb-4.0.3&auto=format&fit=crop&w=200&q=80" 
+                             alt="Medical scan 6 months ago" class="medical-scan">
+                        <div class="measurement-overlay">
+                          <div class="measurement-line"></div>
+                          <div class="measurement-value">15.2mm</div>
+                        </div>
+                      </div>
+                      <div class="image-label">Nodule 1 - Baseline</div>
+                    </div>
+                    
+                    <div class="matrix-cell image-cell">
+                      <div class="medical-image-container">
+                        <img src="https://images.unsplash.com/photo-1559757148-5c350d0d3c56?ixlib=rb-4.0.3&auto=format&fit=crop&w=200&q=80" 
+                             alt="Medical scan today" class="medical-scan">
+                        <div class="measurement-overlay">
+                          <div class="measurement-line"></div>
+                          <div class="measurement-value">14.2mm</div>
+                        </div>
+                      </div>
+                      <div class="image-label">Nodule 1 - Current</div>
+                    </div>
+                    
+                    <div class="matrix-cell chart-cell">
+                      <div class="chart-container">
+                        <div class="chart-title">Nodule 1</div>
+                        <svg class="evolution-chart" viewBox="0 0 200 100">
+                          <defs>
+                            <pattern id="grid1" width="20" height="10" patternUnits="userSpaceOnUse">
+                              <path d="M 20 0 L 0 0 0 10" fill="none" stroke="#444" stroke-width="0.5"/>
+                            </pattern>
+                          </defs>
+                          <rect width="200" height="100" fill="url(#grid1)" />
+                          
+                          <circle cx="30" cy="30" r="3" fill="#ff6b6b"/>
+                          <line x1="30" y1="30" x2="100" y2="40" stroke="#ff6b6b" stroke-width="2"/>
+                          <circle cx="100" cy="40" r="3" fill="#ff6b6b"/>
+                          <line x1="100" y1="40" x2="170" y2="45" stroke="#ff6b6b" stroke-width="2"/>
+                          <circle cx="170" cy="45" r="4" fill="#ff6b6b" stroke="#fff" stroke-width="2"/>
+                        </svg>
+                        <div class="chart-stats">
+                          <span class="stat-value decrease">-6.6%</span>
+                          <span class="stat-value decrease">-1.0mm</span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  
+                  <!-- Nodule 2 Row -->
+                  <div class="matrix-row">
+                    <div class="matrix-cell image-cell">
+                      <div class="medical-image-container">
+                        <img src="https://images.unsplash.com/photo-1576091160399-112ba8d25d1f?ixlib=rb-4.0.3&auto=format&fit=crop&w=200&q=80" 
+                             alt="Medical scan 6 months ago" class="medical-scan">
+                        <div class="measurement-overlay">
+                          <div class="measurement-line"></div>
+                          <div class="measurement-value">12.8mm</div>
+                        </div>
+                      </div>
+                      <div class="image-label">Nodule 2 - Baseline</div>
+                    </div>
+                    
+                    <div class="matrix-cell image-cell">
+                      <div class="medical-image-container">
+                        <img src="https://images.unsplash.com/photo-1576091160399-112ba8d25d1f?ixlib=rb-4.0.3&auto=format&fit=crop&w=200&q=80" 
+                             alt="Medical scan today" class="medical-scan">
+                        <div class="measurement-overlay">
+                          <div class="measurement-line"></div>
+                          <div class="measurement-value">10.0mm</div>
+                        </div>
+                      </div>
+                      <div class="image-label">Nodule 2 - Current</div>
+                    </div>
+                    
+                    <div class="matrix-cell chart-cell">
+                      <div class="chart-container">
+                        <div class="chart-title">Nodule 2</div>
+                        <svg class="evolution-chart" viewBox="0 0 200 100">
+                          <defs>
+                            <pattern id="grid2" width="20" height="10" patternUnits="userSpaceOnUse">
+                              <path d="M 20 0 L 0 0 0 10" fill="none" stroke="#444" stroke-width="0.5"/>
+                            </pattern>
+                          </defs>
+                          <rect width="200" height="100" fill="url(#grid2)" />
+                          
+                          <circle cx="30" cy="35" r="3" fill="#ff6b6b"/>
+                          <line x1="30" y1="35" x2="100" y2="55" stroke="#ff6b6b" stroke-width="2"/>
+                          <circle cx="100" cy="55" r="3" fill="#ff6b6b"/>
+                          <line x1="100" y1="55" x2="170" y2="60" stroke="#ff6b6b" stroke-width="2"/>
+                          <circle cx="170" cy="60" r="4" fill="#ff6b6b" stroke="#fff" stroke-width="2"/>
+                        </svg>
+                        <div class="chart-stats">
+                          <span class="stat-value decrease">-21.9%</span>
+                          <span class="stat-value decrease">-2.8mm</span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            
+            <div class="actions">
+              <button class="btn btn-secondary" onclick="onSecondOpinion()">Second Opinion</button>
+              <button class="btn btn-warning" onclick="onHold()">On Hold</button>
+              <button class="btn btn-primary" onclick="onSign()">Sign</button>
+              <button class="btn btn-success" onclick="onSignAndNext()">Sign & Next</button>
+            </div>
+          </div>
+          
+          <script>
+            function onTemplateChange() {
+              const select = document.getElementById('templateSelect');
+              const selectedTemplate = select.value;
+              
+              if (selectedTemplate === 'CT Chest negative') {
+                document.getElementById('indication').value = 'Routine chest CT scan for annual screening';
+                document.getElementById('technicalInformation').value = 'CT scan of the chest without contrast. Slice thickness: 1.25mm. Reconstruction: axial, coronal, and sagittal planes. Inspiration breath-hold technique.';
+                document.getElementById('report').value = 'The chest CT demonstrates normal lung parenchyma bilaterally. No pulmonary nodules, masses, or consolidations are identified. The mediastinal structures appear normal with no lymphadenopathy. Heart size is within normal limits. No pleural effusion or pneumothorax.';
+                document.getElementById('conclusion').value = 'Normal chest CT examination. No evidence of pulmonary pathology. Recommend routine follow-up as clinically indicated.';
+                document.getElementById('billing').value = 'CT Chest without contrast - Code: 71250';
+              } else if (selectedTemplate === 'CT Chest positive') {
+                document.getElementById('indication').value = 'Evaluation of persistent cough and chest pain';
+                document.getElementById('technicalInformation').value = 'CT scan of the chest with IV contrast. Slice thickness: 1.25mm. Reconstruction: axial, coronal, and sagittal planes. Post-contrast images obtained.';
+                document.getElementById('report').value = 'The chest CT reveals a 2.3 cm spiculated nodule in the right upper lobe with associated pleural retraction. Multiple smaller nodules are noted in both lungs, the largest measuring 8mm in the left lower lobe. Mediastinal lymphadenopathy is present with enlarged paratracheal and subcarinal nodes.';
+                document.getElementById('conclusion').value = 'Findings highly suspicious for primary lung malignancy with metastatic disease. Recommend urgent oncology consultation and tissue sampling for definitive diagnosis.';
+                document.getElementById('billing').value = 'CT Chest with contrast - Code: 71260';
+              }
+            }
+            
+            function onSecondOpinion() {
+              console.log('Second Opinion requested');
+            }
+            
+            function onHold() {
+              console.log('Report put on hold');
+            }
+            
+            function onSign() {
+              console.log('Report signed');
+            }
+            
+            function onSignAndNext() {
+              console.log('Report signed and moving to next');
+            }
+          </script>
+        </body>
+        </html>
+      `;
+      
+      reportingWindow.document.open();
+      reportingWindow.document.write(htmlContent);
+      reportingWindow.document.close();
+      reportingWindow.focus();
     }
   }
       
