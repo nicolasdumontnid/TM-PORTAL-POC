@@ -36,5 +36,7 @@ export class MainContentComponent {
   
   onHideDashboard(): void {
     this.showDashboardSubject.next(false);
+    // Reset to inbox when closing dashboard
+    window.location.reload();
   }
 }
