@@ -239,6 +239,15 @@ export class DashboardComponent implements OnInit {
   }
 
   get areAllFilteredExamsSelected(): boolean {
-    return this.filteredExams.length > 0 && this.filteredExams.every(exam => exam.isSelected);
+    if (this.filteredExams.length === 0) {
+      return false;
+    }
+    
+    for (const exam of this.filteredExams) {
+      if (!exam.isSelected) {
+        return false;
+      }
+    }
+    return true;
   }
 }
