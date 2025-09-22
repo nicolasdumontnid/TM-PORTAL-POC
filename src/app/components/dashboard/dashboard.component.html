@@ -104,7 +104,7 @@
             <th class="checkbox-col">
               <input 
                 type="checkbox" 
-                [checked]="filteredExams.length > 0 && filteredExams.every(exam => exam.isSelected)"
+                [checked]="areAllFilteredExamsSelected"
                 (change)="selectAllExams()"
               >
             </th>
