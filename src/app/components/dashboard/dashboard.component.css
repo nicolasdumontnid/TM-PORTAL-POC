@@ -336,90 +336,53 @@
   background: var(--border-color);
 }
 
-/* Time Filter Styles */
-.time-filter-container {
+/* Date Filter Styles */
+.date-filter-container {
   display: flex;
   flex-direction: column;
-  gap: 15px;
+  gap: 10px;
 }
 
-.time-labels {
+.date-inputs {
   display: flex;
-  justify-content: space-between;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+
+.date-input-group {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  flex: 1;
+  min-width: 150px;
+}
+
+.date-input-group label {
   font-size: 0.9rem;
   font-weight: 600;
   color: var(--text-primary);
 }
 
-.slider-container {
-  position: relative;
-  height: 40px;
-}
-
-.time-slider {
-  position: absolute;
+.date-input {
   width: 100%;
-  height: 6px;
-  border-radius: 3px;
-  background: var(--bg-main);
+  padding: 10px 12px;
+  border: 1px solid var(--border-color);
+  border-radius: 6px;
+  background: var(--bg-container);
+  color: var(--text-primary);
+  font-family: 'Poppins', sans-serif;
+  font-size: 0.9rem;
   outline: none;
-  -webkit-appearance: none;
-  appearance: none;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
 }
 
-.time-slider:first-child {
-  z-index: 1;
+.date-input:focus {
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 2px rgba(20, 184, 166, 0.1);
 }
 
-.time-slider:last-child {
-  z-index: 2;
-}
-
-.time-slider::-webkit-slider-thumb {
-  -webkit-appearance: none;
-  appearance: none;
-  width: 20px;
-  height: 20px;
-  border-radius: 50%;
-  background: var(--primary-color);
-  cursor: pointer;
-  border: 2px solid white;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.2);
-}
-
-.time-slider::-moz-range-thumb {
-  width: 20px;
-  height: 20px;
-  border-radius: 50%;
-  background: var(--primary-color);
-  cursor: pointer;
-  border: 2px solid white;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.2);
-}
-
-.time-slider::-webkit-slider-track {
-  width: 100%;
-  height: 6px;
-  border-radius: 3px;
-  background: var(--border-color);
-}
-
-.time-slider::-moz-range-track {
-  width: 100%;
-  height: 6px;
-  border-radius: 3px;
-  background: var(--border-color);
-  border: none;
-}
-
-.time-info {
-  text-align: center;
-}
-
-.time-info-text {
-  font-size: 0.85rem;
-  color: var(--text-secondary);
-  font-style: italic;
+.date-input:hover {
+  border-color: var(--primary-color);
 }
 
 /* Modal Styles */
@@ -598,6 +561,14 @@
   
   .filter-btn {
     width: 100%;
+  }
+  
+  .date-inputs {
+    flex-direction: column;
+  }
+  
+  .date-input-group {
+    min-width: auto;
   }
   
   .exams-header {

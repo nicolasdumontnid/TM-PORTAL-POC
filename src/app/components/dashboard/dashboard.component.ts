@@ -138,13 +138,10 @@ export class DashboardComponent implements OnInit {
   selectedDoctor: string | null = null;
   selectedModality: 'CT' | 'MR' | 'US' | 'CR' | 'all' = 'all';
   
-  // Time filter
-  timeSliderMin = -30; // -30 days
-  timeSliderMax = 0;   // today
-  timeRange = {
-    start: -30,
-    end: 0
-  };
+  // Date filter
+  startDate: string;
+  endDate: string;
+  todayDate: string;
 
   // Modal
   showAssignModal = false;
@@ -152,6 +149,21 @@ export class DashboardComponent implements OnInit {
 
   ngOnInit(): void {
     this.updateCounts();
+    this.initializeDates();
+  }
+
+  private initializeDates(): void {
+    const today = new Date();
+    const thirtyDaysAgo = new Date();
+    thirtyDaysAgo.setDate(today.getDate() - 30);
+    
+    this.todayDate = this.formatDateForInput(today);
+    this.endDate = this.formatDateForInput(today);
+    this.startDate = this.formatDateForInput(thirtyDaysAgo);
+  }
+
+  private formatDateForInput(date: Date): string {
+    return date.toISOString().split('T')[0];
   }
 
   get filteredExams(): Exam[] {
@@ -162,10 +174,10 @@ export class DashboardComponent implements OnInit {
       const modalityMatch = this.selectedModality === 'all' || exam.modality === this.selectedModality;
       
       // Time range filter
-      const today = new Date();
-      const startDate = new Date(today.getTime() + this.timeRange.start * 24 * 60 * 60 * 1000);
-      const endDate = new Date(today.getTime() + this.timeRange.end * 24 * 60 * 60 * 1000);
-      const timeMatch = exam.examDate >= startDate && exam.examDate <= endDate;
+      const startDateObj = new Date(this.startDate);
+      const endDateObj = new Date(this.endDate);
+      endDateObj.setHours(23, 59, 59, 999); // Include the entire end date
+      const timeMatch = exam.examDate >= startDateObj && exam.examDate <= endDateObj;
       
       return reportStatusMatch && siteMatch && doctorMatch && modalityMatch && timeMatch;
     });
@@ -215,30 +227,12 @@ export class DashboardComponent implements OnInit {
     return this.exams.filter(exam => exam.modality === modality).length;
   }
 
-  updateTimeStart(event: any): void {
-    const value = parseInt(event.target.value);
-    if (value <= this.timeRange.end) {
-      this.timeRange.start = value;
-    }
+  updateStartDate(event: any): void {
+    this.startDate = event.target.value;
   }
 
-  updateTimeEnd(event: any): void {
-    const value = parseInt(event.target.value);
-    if (value >= this.timeRange.start) {
-      this.timeRange.end = value;
-    }
-  }
-
-  getDateLabel(daysOffset: number): string {
-    const date = new Date();
-    date.setDate(date.getDate() + daysOffset);
-    return date.toLocaleDateString('fr-FR', { day: '2-digit', month: '2-digit' });
-  }
-
-  getDaysAgoText(daysOffset: number): string {
-    if (daysOffset === 0) return 'today';
-    if (daysOffset === -1) return '1 day ago';
-    return `${Math.abs(daysOffset)} days ago`;
+  updateEndDate(event: any): void {
+    this.endDate = event.target.value;
   }
   toggleExamSelection(exam: Exam): void {
     exam.isSelected = !exam.isSelected;
