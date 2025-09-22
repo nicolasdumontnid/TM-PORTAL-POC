@@ -1,4 +1,5 @@
 import { Component, ChangeDetectionStrategy, OnInit } from '@angular/core';
+import { Component, ChangeDetectionStrategy, OnInit, Output, EventEmitter } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 interface Doctor {
@@ -36,6 +37,8 @@ interface KPI {
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class DashboardComponent implements OnInit {
+  @Output() close = new EventEmitter<void>();
+
   kpis: KPI[] = [
     { label: 'Unreported Today', value: 12, description: 'Exams not reported today' },
     { label: 'Unreported This Week', value: 9, description: 'Exams not reported this week' },
@@ -249,5 +252,9 @@ export class DashboardComponent implements OnInit {
       }
     }
     return true;
+  }
+
+  onClose(): void {
+    this.close.emit();
   }
 }
