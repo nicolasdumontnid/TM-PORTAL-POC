@@ -273,7 +273,4 @@ export class DashboardComponent implements OnInit {
     this.close.emit();
   }
 
-  onClose(): void {
-    this.close.emit();
-  }
 }
