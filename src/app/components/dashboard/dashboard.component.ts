@@ -230,6 +230,10 @@ export class DashboardComponent implements OnInit {
     this.updateCounts();
   }
 
+  onClose() {
+    this.close.emit();
+  }
+
   private updateCounts(): void {
     // Update doctor exam counts
     this.doctors.forEach(doctor => {
