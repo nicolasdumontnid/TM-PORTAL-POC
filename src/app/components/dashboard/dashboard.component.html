@@ -108,31 +108,31 @@
     <!-- Time Filter -->
     <div class="filter-group">
       <h3>Time Range</h3>
-      <div class="time-filter-container">
-        <div class="time-labels">
-          <span class="time-label">{{getDateLabel(timeRange.start)}}</span>
-          <span class="time-label">{{getDateLabel(timeRange.end)}}</span>
-        </div>
-        <div class="slider-container">
-          <input 
-            type="range" 
-            class="time-slider" 
-            [min]="timeSliderMin" 
-            [max]="timeSliderMax" 
-            [value]="timeRange.start"
-            (input)="updateTimeStart($event)"
-          >
-          <input 
-            type="range" 
-            class="time-slider" 
-            [min]="timeSliderMin" 
-            [max]="timeSliderMax" 
-            [value]="timeRange.end"
-            (input)="updateTimeEnd($event)"
-          >
-        </div>
-        <div class="time-info">
-          <span class="time-info-text">From {{getDaysAgoText(timeRange.start)}} to {{getDaysAgoText(timeRange.end)}}</span>
+      <div class="date-filter-container">
+        <div class="date-inputs">
+          <div class="date-input-group">
+            <label for="startDate">Start Date:</label>
+            <input 
+              type="date" 
+              id="startDate"
+              class="date-input"
+              [value]="startDate"
+              [max]="endDate"
+              (change)="updateStartDate($event)"
+            >
+          </div>
+          <div class="date-input-group">
+            <label for="endDate">End Date:</label>
+            <input 
+              type="date" 
+              id="endDate"
+              class="date-input"
+              [value]="endDate"
+              [min]="startDate"
+              [max]="todayDate"
+              (change)="updateEndDate($event)"
+            >
+          </div>
         </div>
       </div>
     </div>
