@@ -325,12 +325,8 @@ export class DashboardComponent implements OnInit {
   }
 
   closeAndGoToInbox(): void {
-    // Set navigation to inbox
-    this.navigationService.setActiveNavItem('inbox');
-    this.examService.setFilter('inbox');
-    
-    // Close dashboard
-    this.close.emit();
+    // Reload the entire application to go back to the starting point
+    window.location.reload();
   }
 
 }
