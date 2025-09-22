@@ -2,6 +2,7 @@
   padding: 20px;
   background-color: var(--bg-main);
   min-height: 100vh;
+  max-height: 100vh;
   overflow-y: auto;
 }
 
