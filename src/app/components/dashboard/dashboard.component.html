@@ -14,8 +14,6 @@
 
   <!-- Selection Section -->
   <div class="selection-section">
-    <h2>Filters</h2>
-    
     <!-- Report Status Filter -->
     <div class="filter-group">
       <h3>Report Status</h3>
@@ -62,6 +60,80 @@
         >
           Site Policlinique ({{getPolicliniqueSiteCount()}})
         </button>
+      </div>
+    </div>
+
+    <!-- Modality Filter -->
+    <div class="filter-group">
+      <h3>Modality</h3>
+      <div class="filter-buttons">
+        <button 
+          class="filter-btn"
+          [class.active]="selectedModality === 'all'"
+          (click)="selectModality('all')"
+        >
+          All Modalities ({{exams.length}})
+        </button>
+        <button 
+          class="filter-btn"
+          [class.active]="selectedModality === 'CT'"
+          (click)="selectModality('CT')"
+        >
+          CT ({{getModalityCount('CT')}})
+        </button>
+        <button 
+          class="filter-btn"
+          [class.active]="selectedModality === 'MR'"
+          (click)="selectModality('MR')"
+        >
+          MR ({{getModalityCount('MR')}})
+        </button>
+        <button 
+          class="filter-btn"
+          [class.active]="selectedModality === 'US'"
+          (click)="selectModality('US')"
+        >
+          US ({{getModalityCount('US')}})
+        </button>
+        <button 
+          class="filter-btn"
+          [class.active]="selectedModality === 'CR'"
+          (click)="selectModality('CR')"
+        >
+          CR ({{getModalityCount('CR')}})
+        </button>
+      </div>
+    </div>
+
+    <!-- Time Filter -->
+    <div class="filter-group">
+      <h3>Time Range</h3>
+      <div class="time-filter-container">
+        <div class="time-labels">
+          <span class="time-label">{{getDateLabel(timeRange.start)}}</span>
+          <span class="time-label">{{getDateLabel(timeRange.end)}}</span>
+        </div>
+        <div class="slider-container">
+          <input 
+            type="range" 
+            class="time-slider" 
+            [min]="timeSliderMin" 
+            [max]="timeSliderMax" 
+            [value]="timeRange.start"
+            (input)="updateTimeStart($event)"
+          >
+          <input 
+            type="range" 
+            class="time-slider" 
+            [min]="timeSliderMin" 
+            [max]="timeSliderMax" 
+            [value]="timeRange.end"
+            (input)="updateTimeEnd($event)"
+          >
+        </div>
+        <div class="time-info">
+          <span class="time-info-text">From {{getDaysAgoText(timeRange.start)}} to {{getDaysAgoText(timeRange.end)}}</span>
+        </div>
       </div>
     </div>
 

@@ -21,6 +21,8 @@ interface Exam {
   assignedDoctor?: string;
   isSelected: boolean;
   priority: 'normal' | 'high';
+  modality: 'CT' | 'MR' | 'US' | 'CR';
+  examDate: Date;
 }
 
 interface KPI {
@@ -70,7 +72,9 @@ export class DashboardComponent implements OnInit {
       isReported: false,
       site: 'principal',
       isSelected: false,
-      priority: 'normal'
+      priority: 'normal',
+      modality: 'CT',
+      examDate: new Date('2025-01-15')
     },
     {
       id: '2',
@@ -81,7 +85,9 @@ export class DashboardComponent implements OnInit {
       isReported: false,
       site: 'policlinique',
       isSelected: false,
-      priority: 'high'
+      priority: 'high',
+      modality: 'MR',
+      examDate: new Date('2025-01-12')
     },
     {
       id: '3',
@@ -93,7 +99,9 @@ export class DashboardComponent implements OnInit {
       site: 'principal',
       assignedDoctor: 'Nicolas Dumont',
       isSelected: false,
-      priority: 'normal'
+      priority: 'normal',
+      modality: 'CR',
+      examDate: new Date('2025-01-10')
     },
     {
       id: '4',
@@ -104,7 +112,9 @@ export class DashboardComponent implements OnInit {
       isReported: false,
       site: 'policlinique',
       isSelected: false,
-      priority: 'normal'
+      priority: 'normal',
+      modality: 'MR',
+      examDate: new Date('2025-01-08')
     },
     {
       id: '5',
@@ -116,7 +126,9 @@ export class DashboardComponent implements OnInit {
       site: 'principal',
       assignedDoctor: 'Damien Suchy',
       isSelected: false,
-      priority: 'normal'
+      priority: 'normal',
+      modality: 'CT',
+      examDate: new Date('2025-01-05')
     }
   ];
 
@@ -124,6 +136,15 @@ export class DashboardComponent implements OnInit {
   selectedReportStatus: 'reported' | 'unreported' = 'unreported';
   selectedSite: 'principal' | 'policlinique' | 'all' = 'all';
   selectedDoctor: string | null = null;
+  selectedModality: 'CT' | 'MR' | 'US' | 'CR' | 'all' = 'all';
+  
+  // Time filter
+  timeSliderMin = -30; // -30 days
+  timeSliderMax = 0;   // today
+  timeRange = {
+    start: -30,
+    end: 0
+  };
 
   // Modal
   showAssignModal = false;
@@ -138,8 +159,15 @@ export class DashboardComponent implements OnInit {
       const reportStatusMatch = this.selectedReportStatus === 'reported' ? exam.isReported : !exam.isReported;
       const siteMatch = this.selectedSite === 'all' || exam.site === this.selectedSite;
       const doctorMatch = !this.selectedDoctor || exam.assignedDoctor === this.selectedDoctor;
+      const modalityMatch = this.selectedModality === 'all' || exam.modality === this.selectedModality;
       
-      return reportStatusMatch && siteMatch && doctorMatch;
+      // Time range filter
+      const today = new Date();
+      const startDate = new Date(today.getTime() + this.timeRange.start * 24 * 60 * 60 * 1000);
+      const endDate = new Date(today.getTime() + this.timeRange.end * 24 * 60 * 60 * 1000);
+      const timeMatch = exam.examDate >= startDate && exam.examDate <= endDate;
+      
+      return reportStatusMatch && siteMatch && doctorMatch && modalityMatch && timeMatch;
     });
   }
 
@@ -179,6 +207,39 @@ export class DashboardComponent implements OnInit {
     this.selectedDoctor = doctorName;
   }
 
+  selectModality(modality: 'CT' | 'MR' | 'US' | 'CR' | 'all'): void {
+    this.selectedModality = modality;
+  }
+
+  getModalityCount(modality: 'CT' | 'MR' | 'US' | 'CR'): number {
+    return this.exams.filter(exam => exam.modality === modality).length;
+  }
+
+  updateTimeStart(event: any): void {
+    const value = parseInt(event.target.value);
+    if (value <= this.timeRange.end) {
+      this.timeRange.start = value;
+    }
+  }
+
+  updateTimeEnd(event: any): void {
+    const value = parseInt(event.target.value);
+    if (value >= this.timeRange.start) {
+      this.timeRange.end = value;
+    }
+  }
+
+  getDateLabel(daysOffset: number): string {
+    const date = new Date();
+    date.setDate(date.getDate() + daysOffset);
+    return date.toLocaleDateString('fr-FR', { day: '2-digit', month: '2-digit' });
+  }
+
+  getDaysAgoText(daysOffset: number): string {
+    if (daysOffset === 0) return 'today';
+    if (daysOffset === -1) return '1 day ago';
+    return `${Math.abs(daysOffset)} days ago`;
+  }
   toggleExamSelection(exam: Exam): void {
     exam.isSelected = !exam.isSelected;
   }
