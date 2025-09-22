@@ -46,6 +46,8 @@ export class ReportingComponent {
     findings: ''
   };
 
+  selectedTemplate = '';
+
   // Measurements data
   measurements: Measurement[] = [
     {
@@ -79,6 +81,28 @@ export class ReportingComponent {
   selectMeasurement(measurement: Measurement): void {
     this.selectedMeasurement = measurement;
   };
+
+  onTemplateChange(): void {
+    if (this.selectedTemplate === 'CT Chest negative') {
+      this.reportSections = {
+        indication: 'Routine chest CT scan for annual screening',
+        technicalInformation: 'CT scan of the chest without contrast. Slice thickness: 1.25mm. Reconstruction: axial, coronal, and sagittal planes. Inspiration breath-hold technique.',
+        report: 'The chest CT demonstrates normal lung parenchyma bilaterally. No pulmonary nodules, masses, or consolidations are identified. The mediastinal structures appear normal with no lymphadenopathy. Heart size is within normal limits. No pleural effusion or pneumothorax.',
+        conclusion: 'Normal chest CT examination. No evidence of pulmonary pathology. Recommend routine follow-up as clinically indicated.',
+        billing: 'CT Chest without contrast - Code: 71250',
+        findings: 'No abnormal findings detected'
+      };
+    } else if (this.selectedTemplate === 'CT Chest positive') {
+      this.reportSections = {
+        indication: 'Evaluation of persistent cough and chest pain',
+        technicalInformation: 'CT scan of the chest with IV contrast. Slice thickness: 1.25mm. Reconstruction: axial, coronal, and sagittal planes. Post-contrast images obtained.',
+        report: 'The chest CT reveals a 2.3 cm spiculated nodule in the right upper lobe with associated pleural retraction. Multiple smaller nodules are noted in both lungs, the largest measuring 8mm in the left lower lobe. Mediastinal lymphadenopathy is present with enlarged paratracheal and subcarinal nodes.',
+        conclusion: 'Findings highly suspicious for primary lung malignancy with metastatic disease. Recommend urgent oncology consultation and tissue sampling for definitive diagnosis.',
+        billing: 'CT Chest with contrast - Code: 71260',
+        findings: 'Multiple pulmonary nodules with suspicious characteristics'
+      };
+    }
+  }
 
   onSecondOpinion(): void {
     console.log('Second Opinion requested');

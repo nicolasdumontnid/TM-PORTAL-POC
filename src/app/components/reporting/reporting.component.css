@@ -39,6 +39,34 @@
   font-size: 14px;
 }
 
+.template-selector {
+  display: flex;
+  align-items: center;
+}
+
+.template-dropdown {
+  padding: 8px 12px;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  background: white;
+  color: #333;
+  font-family: inherit;
+  font-size: 14px;
+  cursor: pointer;
+  min-width: 200px;
+  transition: border-color 0.2s ease;
+}
+
+.template-dropdown:focus {
+  outline: none;
+  border-color: #14B8A6;
+  box-shadow: 0 0 0 2px rgba(20, 184, 166, 0.1);
+}
+
+.template-dropdown:hover {
+  border-color: #14B8A6;
+}
+
 .patient-info { 
   display: flex; 
   justify-content: space-between; 

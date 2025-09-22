@@ -1,7 +1,13 @@
 <div class="container">
   <div class="header">
     <div class="logo">🏥 Clinique du Parc</div>
-    <div class="subtitle">Medical Reporting System</div>
+    <div class="template-selector">
+      <select [(ngModel)]="selectedTemplate" (change)="onTemplateChange()" class="template-dropdown">
+        <option value="">Select template...</option>
+        <option value="CT Chest negative">CT Chest negative</option>
+        <option value="CT Chest positive">CT Chest positive</option>
+      </select>
+    </div>
   </div>
   
   <div class="patient-info">
