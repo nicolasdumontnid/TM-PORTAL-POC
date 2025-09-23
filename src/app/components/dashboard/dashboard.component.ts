@@ -430,6 +430,12 @@ export class DashboardComponent implements OnInit {
   // Modal
   showAssignModal = false;
   selectedDoctorForAssign: string | null = null;
+  
+  // Tooltip and highlighting states
+  showStartTooltip = false;
+  showEndTooltip = false;
+  highlightStartInput = false;
+  highlightEndInput = false;
 
   ngOnInit(): void {
     this.updateCounts();
@@ -596,6 +602,16 @@ export class DashboardComponent implements OnInit {
     const startPercent = ((this.startSliderValue - this.minSliderValue) / range) * 100;
     const endPercent = ((this.endSliderValue - this.minSliderValue) / range) * 100;
     return endPercent - startPercent;
+  }
+  
+  getSliderTooltipDate(type: 'start' | 'end'): string {
+    const sliderValue = type === 'start' ? this.startSliderValue : this.endSliderValue;
+    const date = new Date(sliderValue * 24 * 60 * 60 * 1000);
+    return date.toLocaleDateString('fr-FR', { 
+      day: '2-digit', 
+      month: '2-digit', 
+      year: 'numeric' 
+    });
   }
   toggleExamSelection(exam: Exam): void {
     exam.isSelected = !exam.isSelected;

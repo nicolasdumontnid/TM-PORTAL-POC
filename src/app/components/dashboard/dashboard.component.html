@@ -122,6 +122,10 @@
               [max]="maxSliderValue"
               [value]="startSliderValue"
               (input)="onStartSliderChange($event)"
+              (mouseenter)="showStartTooltip = true"
+              (mouseleave)="showStartTooltip = false"
+              (focus)="highlightStartInput = true"
+              (blur)="highlightStartInput = false"
             >
             <input 
               type="range" 
@@ -130,6 +134,10 @@
               [max]="maxSliderValue"
               [value]="endSliderValue"
               (input)="onEndSliderChange($event)"
+              (mouseenter)="showEndTooltip = true"
+              (mouseleave)="showEndTooltip = false"
+              (focus)="highlightEndInput = true"
+              (blur)="highlightEndInput = false"
             >
             <div class="slider-track">
               <div 
@@ -137,6 +145,22 @@
                 [style.left.%]="getSliderRangeLeft()"
                 [style.width.%]="getSliderRangeWidth()"
               ></div>
+            </div>
+            
+            <!-- Tooltips -->
+            <div 
+              *ngIf="showStartTooltip"
+              class="slider-tooltip start-tooltip"
+              [style.left.%]="getSliderRangeLeft()"
+            >
+              {{getSliderTooltipDate('start')}}
+            </div>
+            <div 
+              *ngIf="showEndTooltip"
+              class="slider-tooltip end-tooltip"
+              [style.left.%]="getSliderRangeLeft() + getSliderRangeWidth()"
+            >
+              {{getSliderTooltipDate('end')}}
             </div>
           </div>
         </div>
@@ -148,6 +172,7 @@
               type="date" 
               id="startDate"
               class="date-input"
+              [class.highlighted]="highlightStartInput"
               [value]="startDate"
               [max]="endDate"
               (change)="updateStartDate($event)"
@@ -159,6 +184,7 @@
               type="date" 
               id="endDate"
               class="date-input"
+              [class.highlighted]="highlightEndInput"
               [value]="endDate"
               [min]="startDate"
               [max]="todayDate"

@@ -385,6 +385,12 @@
   border-color: var(--primary-color);
 }
 
+.date-input.highlighted {
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 2px rgba(20, 184, 166, 0.2);
+  background-color: rgba(20, 184, 166, 0.05);
+}
+
 /* Date Range Slider Styles */
 .date-slider-container {
   margin-bottom: 20px;
@@ -469,6 +475,32 @@
 
 .slider-end {
   z-index: 1;
+}
+
+/* Slider Tooltips */
+.slider-tooltip {
+  position: absolute;
+  top: -35px;
+  transform: translateX(-50%);
+  background-color: var(--text-primary);
+  color: var(--bg-container);
+  padding: 6px 10px;
+  border-radius: 4px;
+  font-size: 0.8rem;
+  font-weight: 500;
+  white-space: nowrap;
+  z-index: 10;
+  pointer-events: none;
+}
+
+.slider-tooltip::after {
+  content: '';
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  border: 5px solid transparent;
+  border-top-color: var(--text-primary);
 }
 
 /* Modal Styles */
