@@ -615,7 +615,7 @@ export class DashboardComponent implements OnInit {
     });
   }
 
-  setHighPriority(): void {
+  public setHighPriority(): void {
     this.selectedExams.forEach(exam => {
       exam.priority = 'high';
     });
