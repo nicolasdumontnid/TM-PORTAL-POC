@@ -608,7 +608,7 @@ export class DashboardComponent implements OnInit {
     exam.isSelected = !exam.isSelected;
   }
 
-  selectAllExams(): void {
+  public selectAllExams(): void {
     const allSelected = this.filteredExams.every(exam => exam.isSelected);
     this.filteredExams.forEach(exam => {
       exam.isSelected = !allSelected;
