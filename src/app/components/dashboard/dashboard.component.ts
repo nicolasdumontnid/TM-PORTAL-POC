@@ -428,16 +428,16 @@ export class DashboardComponent implements OnInit {
   public endSliderValue: number = 0;
 
   // Modal
-  showAssignModal = false;
-  selectedDoctorForAssign: string | null = null;
+  public showAssignModal = false;
+  public selectedDoctorForAssign: string | null = null;
   
   // Tooltip and highlighting states
-  showStartTooltip = false;
-  showEndTooltip = false;
-  highlightStartDate = false;
-  highlightEndDate = false;
+  public showStartTooltip = false;
+  public showEndTooltip = false;
+  public highlightStartDate = false;
+  public highlightEndDate = false;
   
-  ngOnInit(): void {
+  public ngOnInit(): void {
     this.updateCounts();
     this.initializeDates();
   }
@@ -493,7 +493,7 @@ export class DashboardComponent implements OnInit {
     });
   }
 
-  get selectedExams(): Exam[] {
+  public selectedExams(): Exam[] {
     return this.exams.filter(exam => exam.isSelected);
   }
 
