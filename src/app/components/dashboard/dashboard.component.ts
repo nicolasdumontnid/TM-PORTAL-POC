@@ -142,6 +142,12 @@ export class DashboardComponent implements OnInit {
   startDate: string = '';
   endDate: string = '';
   todayDate: string = '';
+  
+  // Slider values (days since epoch)
+  minSliderValue: number = 0;
+  maxSliderValue: number = 0;
+  startSliderValue: number = 0;
+  endSliderValue: number = 0;
 
   // Modal
   showAssignModal = false;
@@ -154,12 +160,32 @@ export class DashboardComponent implements OnInit {
 
   private initializeDates(): void {
     const today = new Date();
-    const thirtyDaysAgo = new Date();
-    thirtyDaysAgo.setDate(today.getDate() - 30);
+    const threeYearsAgo = new Date();
+    threeYearsAgo.setFullYear(today.getFullYear() - 3);
     
     this.todayDate = this.formatDateForInput(today);
     this.endDate = this.formatDateForInput(today);
-    this.startDate = this.formatDateForInput(thirtyDaysAgo);
+    this.startDate = this.formatDateForInput(threeYearsAgo);
+    
+    // Initialize slider values
+    this.initializeSliderValues();
+  }
+  
+  private initializeSliderValues(): void {
+    const today = new Date();
+    const fiveYearsAgo = new Date();
+    fiveYearsAgo.setFullYear(today.getFullYear() - 5);
+    
+    // Set slider range (5 years ago to today)
+    this.minSliderValue = Math.floor(fiveYearsAgo.getTime() / (1000 * 60 * 60 * 24));
+    this.maxSliderValue = Math.floor(today.getTime() / (1000 * 60 * 60 * 24));
+    
+    // Set current values
+    const startDateObj = new Date(this.startDate);
+    const endDateObj = new Date(this.endDate);
+    
+    this.startSliderValue = Math.floor(startDateObj.getTime() / (1000 * 60 * 60 * 24));
+    this.endSliderValue = Math.floor(endDateObj.getTime() / (1000 * 60 * 60 * 24));
   }
 
   private formatDateForInput(date: Date): string {
@@ -233,6 +259,65 @@ export class DashboardComponent implements OnInit {
 
   updateEndDate(event: any): void {
     this.endDate = event.target.value;
+    this.updateSliderFromDate('end');
+  }
+  
+  onStartSliderChange(event: any): void {
+    const newValue = parseInt(event.target.value);
+    
+    // Ensure start is not after end
+    if (newValue <= this.endSliderValue) {
+      this.startSliderValue = newValue;
+      this.updateDateFromSlider('start');
+    } else {
+      // Reset slider to previous valid value
+      event.target.value = this.startSliderValue;
+    }
+  }
+  
+  onEndSliderChange(event: any): void {
+    const newValue = parseInt(event.target.value);
+    
+    // Ensure end is not before start
+    if (newValue >= this.startSliderValue) {
+      this.endSliderValue = newValue;
+      this.updateDateFromSlider('end');
+    } else {
+      // Reset slider to previous valid value
+      event.target.value = this.endSliderValue;
+    }
+  }
+  
+  private updateDateFromSlider(type: 'start' | 'end'): void {
+    if (type === 'start') {
+      const date = new Date(this.startSliderValue * 24 * 60 * 60 * 1000);
+      this.startDate = this.formatDateForInput(date);
+    } else {
+      const date = new Date(this.endSliderValue * 24 * 60 * 60 * 1000);
+      this.endDate = this.formatDateForInput(date);
+    }
+  }
+  
+  private updateSliderFromDate(type: 'start' | 'end'): void {
+    if (type === 'start') {
+      const date = new Date(this.startDate);
+      this.startSliderValue = Math.floor(date.getTime() / (1000 * 60 * 60 * 24));
+    } else {
+      const date = new Date(this.endDate);
+      this.endSliderValue = Math.floor(date.getTime() / (1000 * 60 * 60 * 24));
+    }
+  }
+  
+  getSliderRangeLeft(): number {
+    const range = this.maxSliderValue - this.minSliderValue;
+    return ((this.startSliderValue - this.minSliderValue) / range) * 100;
+  }
+  
+  getSliderRangeWidth(): number {
+    const range = this.maxSliderValue - this.minSliderValue;
+    const startPercent = ((this.startSliderValue - this.minSliderValue) / range) * 100;
+    const endPercent = ((this.endSliderValue - this.minSliderValue) / range) * 100;
+    return endPercent - startPercent;
   }
   toggleExamSelection(exam: Exam): void {
     exam.isSelected = !exam.isSelected;
