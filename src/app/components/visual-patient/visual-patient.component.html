@@ -298,9 +298,9 @@
               <ng-container *ngIf="filteredExamPoints$ | async as examPoints">
                 <!-- Y-axis labels -->
                 <div class="y-axis">
-                  <div *ngFor="let label of getYAxisLabels(); let i = index"
-                       class="y-axis-label" 
-                       [style.top.%]="(i / anatomicalRegions.length) * 100">
+                  <div *ngFor="let label of getYAxisLabels(); let i = index" 
+                       class="y-axis-label"
+                       [style.top.%]="(i / getYAxisLabels().length) * 100">
                     {{label}}
                   </div>
                 </div>
@@ -308,11 +308,11 @@
                 <!-- Chart area -->
                 <div class="chart-area">
                   <!-- Horizontal lines for anatomical regions -->
-                  <div *ngFor="let region of anatomicalRegions; let i = index" 
+                  <div *ngFor="let label of getYAxisLabels(); let i = index" 
                        class="region-line"
-                       [style.top.%]="(i / anatomicalRegions.length) * 100"
-                       [class.hovered]="hoveredRegion === region"
-                       (mouseenter)="onRegionHover(region)"
+                       [style.top.%]="(i / getYAxisLabels().length) * 100"
+                       [class.hovered]="hoveredRegion === label"
+                       (mouseenter)="onRegionHover(label)"
                        (mouseleave)="onRegionLeave()">
                   </div>
                   

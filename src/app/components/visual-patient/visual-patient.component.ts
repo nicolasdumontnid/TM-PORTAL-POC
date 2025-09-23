@@ -276,21 +276,20 @@ export class VisualPatientComponent implements OnInit {
     
     const currentFilter = this.graphicFilterSubject.value;
     let regionIndex = 0;
+    const yAxisLabels = this.getYAxisLabels();
     
     if (currentFilter.view === 'department') {
       // Find department index
-      this.departments$.subscribe(departments => {
-        const deptIndex = departments.findIndex(dept => dept.name === examPoint.department);
-        regionIndex = deptIndex >= 0 ? deptIndex : 0;
-      });
+      regionIndex = yAxisLabels.findIndex(label => label === examPoint.department);
+      regionIndex = regionIndex >= 0 ? regionIndex : 0;
     } else {
       // Find anatomical region index
-      regionIndex = this.anatomicalRegions.findIndex(region => 
+      regionIndex = yAxisLabels.findIndex(region => 
         examPoint.anatomicalRegion.includes(region));
       regionIndex = regionIndex >= 0 ? regionIndex : 0;
     }
     
-    const y = (regionIndex + 0.5) * (100 / this.anatomicalRegions.length);
+    const y = (regionIndex + 0.5) * (100 / yAxisLabels.length);
     
     return { x, y };
   }
@@ -1025,7 +1024,7 @@ export class VisualPatientComponent implements OnInit {
       let departmentNames: string[] = [];
       this.departments$.subscribe(departments => {
         departmentNames = departments.map(dept => dept.name);
-      });
+      }).unsubscribe();
       return departmentNames.length > 0 ? departmentNames : ['Radiology', 'Neurology', 'Pulmonology', 'Gastroenterology', 'Oncology'];
     } else {
       // Return anatomical regions
