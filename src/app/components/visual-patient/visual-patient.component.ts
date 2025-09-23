@@ -48,6 +48,10 @@ export class VisualPatientComponent implements OnInit {
   hoveredExamPoint: ExamPoint | null = null;
   tooltipPosition = { x: 0, y: 0 };
 
+  // Pre-resolved data for synchronous access
+  resolvedDepartments: Department[] = [];
+  resolvedAnatomyRegions: AnatomyRegion[] = [];
+
   anatomicalRegions = [
     'Head',
     'Shoulder', 
@@ -62,6 +66,7 @@ export class VisualPatientComponent implements OnInit {
     this.loadData();
     this.loadDefaultBlocks();
     this.setupFiltering();
+    this.preloadSynchronousData();
   }
 
   private loadData(): void {
@@ -79,6 +84,18 @@ export class VisualPatientComponent implements OnInit {
   private loadDefaultBlocks(): void {
     this.visualPatientService.getDefaultBlocks().subscribe(blocks => {
       this.visibleBlocksSubject.next(blocks);
+    });
+  }
+
+  private preloadSynchronousData(): void {
+    // Pre-load departments for synchronous access
+    this.departments$.subscribe(departments => {
+      this.resolvedDepartments = departments;
+    });
+
+    // Pre-load anatomy regions for synchronous access
+    this.anatomyRegions$.subscribe(regions => {
+      this.resolvedAnatomyRegions = regions;
     });
   }
 
@@ -279,10 +296,8 @@ export class VisualPatientComponent implements OnInit {
     
     if (currentFilter.view === 'department') {
       // Find department index
-      this.departments$.subscribe(departments => {
-        const deptIndex = departments.findIndex(dept => dept.name === examPoint.department);
-        regionIndex = deptIndex >= 0 ? deptIndex : 0;
-      });
+      const deptIndex = this.resolvedDepartments.findIndex(dept => dept.name === examPoint.department);
+      regionIndex = deptIndex >= 0 ? deptIndex : 0;
     } else {
       // Find anatomical region index
       regionIndex = this.anatomicalRegions.findIndex(region => 
@@ -1022,10 +1037,7 @@ export class VisualPatientComponent implements OnInit {
     
     if (currentFilter.view === 'department') {
       // Return department names
-      let departmentNames: string[] = [];
-      this.departments$.subscribe(departments => {
-        departmentNames = departments.map(dept => dept.name);
-      });
+      const departmentNames = this.resolvedDepartments.map(dept => dept.name);
       return departmentNames.length > 0 ? departmentNames : ['Radiology', 'Neurology', 'Pulmonology', 'Gastroenterology', 'Oncology'];
     } else {
       // Return anatomical regions
