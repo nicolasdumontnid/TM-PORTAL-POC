@@ -115,22 +115,6 @@
         <!-- Date Range Slider -->
         <div class="date-slider-container">
           <div class="slider-wrapper">
-            <!-- Tooltips -->
-            <div 
-              class="slider-tooltip tooltip-start"
-              [class.visible]="showStartTooltip"
-              [style.left.%]="getSliderRangeLeft()"
-            >
-              {{getTooltipDate('start')}}
-            </div>
-            <div 
-              class="slider-tooltip tooltip-end"
-              [class.visible]="showEndTooltip"
-              [style.left.%]="getSliderRangeLeft() + getSliderRangeWidth()"
-            >
-              {{getTooltipDate('end')}}
-            </div>
-            
             <input 
               type="range" 
               class="date-slider slider-start"
@@ -138,8 +122,6 @@
               [max]="maxSliderValue"
               [value]="startSliderValue"
               (input)="onStartSliderChange($event)"
-              (mouseenter)="showStartTooltip = true; highlightStartDate = true"
-              (mouseleave)="showStartTooltip = false; highlightStartDate = false"
             >
             <input 
               type="range" 
@@ -148,8 +130,6 @@
               [max]="maxSliderValue"
               [value]="endSliderValue"
               (input)="onEndSliderChange($event)"
-              (mouseenter)="showEndTooltip = true; highlightEndDate = true"
-              (mouseleave)="showEndTooltip = false; highlightEndDate = false"
             >
             <div class="slider-track">
               <div 
@@ -168,7 +148,6 @@
               type="date" 
               id="startDate"
               class="date-input"
-              [class.highlighted]="highlightStartDate"
               [value]="startDate"
               [max]="endDate"
               (change)="updateStartDate($event)"
@@ -180,7 +159,6 @@
               type="date" 
               id="endDate"
               class="date-input"
-              [class.highlighted]="highlightEndDate"
               [value]="endDate"
               [min]="startDate"
               [max]="todayDate"

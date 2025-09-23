@@ -278,10 +278,11 @@ export class VisualPatientComponent implements OnInit {
     let regionIndex = 0;
     
     if (currentFilter.view === 'department') {
-      // Find department index using default departments
-      const defaultDepartments = ['Radiology', 'Neurology', 'Pulmonology', 'Gastroenterology', 'Oncology'];
-      regionIndex = defaultDepartments.findIndex(dept => examPoint.department === dept);
-      regionIndex = regionIndex >= 0 ? regionIndex : 0;
+      // Find department index
+      this.departments$.subscribe(departments => {
+        const deptIndex = departments.findIndex(dept => dept.name === examPoint.department);
+        regionIndex = deptIndex >= 0 ? deptIndex : 0;
+      });
     } else {
       // Find anatomical region index
       regionIndex = this.anatomicalRegions.findIndex(region => 
@@ -343,7 +344,6 @@ export class VisualPatientComponent implements OnInit {
           <link rel="preconnect" href="https://fonts.googleapis.com">
           <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
           <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
-          <link href="https://unpkg.com/phosphor-icons@1.4.2/src/css/icons.css" rel="stylesheet">
           <style>
             * {
               box-sizing: border-box;
@@ -1021,8 +1021,12 @@ export class VisualPatientComponent implements OnInit {
     const currentFilter = this.graphicFilterSubject.value;
     
     if (currentFilter.view === 'department') {
-      // Return default department names
-      return ['Radiology', 'Neurology', 'Pulmonology', 'Gastroenterology', 'Oncology'];
+      // Return department names
+      let departmentNames: string[] = [];
+      this.departments$.subscribe(departments => {
+        departmentNames = departments.map(dept => dept.name);
+      });
+      return departmentNames.length > 0 ? departmentNames : ['Radiology', 'Neurology', 'Pulmonology', 'Gastroenterology', 'Oncology'];
     } else {
       // Return anatomical regions
       return this.anatomicalRegions;
