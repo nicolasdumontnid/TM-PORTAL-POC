@@ -315,6 +315,18 @@
                          [class.anatomy-view]="(graphicFilter$ | async)?.view === 'anatomy'"
                          [style.--department-count]="(graphicFilter$ | async)?.view === 'department' ? (getYAxisLabels() | async)?.length || 0 : 0">
                     <ng-container *ngIf="filteredExamPoints$ | async as examPoints">
+                        <!-- Region lines for departments/anatomy -->
+                        <div *ngFor="let label of (getYAxisLabels() | async) || []; let i = index; trackBy: trackByIndex" 
+                             class="region-line"
+                             [style.top.px]="(graphicFilter$ | async)?.view === 'department' ? i * 40 : undefined"
+                             [style.height.px]="(graphicFilter$ | async)?.view === 'department' ? 40 : undefined"
+                             [style.top.%]="(graphicFilter$ | async)?.view === 'anatomy' ? (i / ((getYAxisLabels() | async)?.length || 1)) * 100 : undefined"
+                             [style.height.%]="(graphicFilter$ | async)?.view === 'anatomy' ? (100 / ((getYAxisLabels() | async)?.length || 1)) : undefined"
+                             [class.hovered]="hoveredRegion === label"
+                             (mouseenter)="onRegionHover(label)"
+                             (mouseleave)="onRegionLeave()">
+                        </div>
+                        
                         <!-- Horizontal lines for departments -->
                         <div *ngFor="let label of (getYAxisLabels() | async) || []; let i = index; trackBy: trackByIndex" 
                              class="region-line"
