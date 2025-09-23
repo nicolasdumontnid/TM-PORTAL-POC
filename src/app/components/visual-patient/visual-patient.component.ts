@@ -1038,9 +1038,29 @@ export class VisualPatientComponent implements OnInit {
     const currentFilter = this.graphicFilterSubject.value;
     
     if (currentFilter.view === 'department') {
-      // Get unique departments from exam data and sort them
+      // Return static department list to ensure labels are always available
+      return of(this.departmentsList);
+    } else {
+      // Return anatomical regions
+      return of(this.anatomicalRegions);
+    }
+  }
+
+  // Alternative method that uses filtered data but with fallback
+  getYAxisLabelsFromData(): Observable<string[]> {
+    const currentFilter = this.graphicFilterSubject.value;
+    
+    if (currentFilter.view === 'department') {
+      // Get unique departments from exam data with fallback
       return this.filteredExamPoints$.pipe(
-        map(examPoints => [...new Set(examPoints.map(ep => ep.department))].sort())
+        map(examPoints => {
+          if (!examPoints || examPoints.length === 0) {
+            // Fallback to static list if no filtered data
+            return this.departmentsList;
+          }
+          const uniqueDepartments = [...new Set(examPoints.map(ep => ep.department))].sort();
+          return uniqueDepartments.length > 0 ? uniqueDepartments : this.departmentsList;
+        })
       );
     } else {
       // Return anatomical regions
