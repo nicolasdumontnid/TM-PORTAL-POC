@@ -698,6 +698,49 @@ export class DashboardComponent implements OnInit {
     });
   }
 
+  setTimePreset(preset: string): void {
+    const today = new Date();
+    let startDate = new Date();
+    const endDate = new Date(today);
+    
+    switch (preset) {
+      case 'today':
+        startDate = new Date(today);
+        break;
+      case 'last3days':
+        startDate.setDate(today.getDate() - 3);
+        break;
+      case 'lastweek':
+        startDate.setDate(today.getDate() - 7);
+        break;
+      case 'lastmonth':
+        startDate.setMonth(today.getMonth() - 1);
+        break;
+      case 'last3months':
+        startDate.setMonth(today.getMonth() - 3);
+        break;
+      case 'last6months':
+        startDate.setMonth(today.getMonth() - 6);
+        break;
+      case 'last1year':
+        startDate.setFullYear(today.getFullYear() - 1);
+        break;
+      case 'last2years':
+        startDate.setFullYear(today.getFullYear() - 2);
+        break;
+      case 'last3years':
+        startDate.setFullYear(today.getFullYear() - 3);
+        break;
+    }
+    
+    // Update the date inputs
+    this.startDate = this.formatDateForInput(startDate);
+    this.endDate = this.formatDateForInput(endDate);
+    
+    // Update the slider values
+    this.startSliderValue = Math.floor(startDate.getTime() / (1000 * 60 * 60 * 24));
+    this.endSliderValue = Math.floor(endDate.getTime() / (1000 * 60 * 60 * 24));
+  }
 
 }
 
