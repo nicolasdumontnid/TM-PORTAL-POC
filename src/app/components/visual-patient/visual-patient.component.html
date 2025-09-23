@@ -377,7 +377,7 @@
   <div *ngIf="hoveredExamPoint" 
        class="exam-tooltip"
        [style.left.px]="tooltipPosition.x + 10"
-       [style.top.px]="tooltipPosition.y - 10">
+       [style.top.px]="tooltipPosition.y - 10"
        (mouseenter)="onTooltipEnter()"
        (mouseleave)="onTooltipLeave()">
     <div class="tooltip-header">
