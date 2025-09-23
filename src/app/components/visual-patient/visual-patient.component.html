@@ -308,7 +308,7 @@
           <div class="timeline-chart">
             <div class="chart-container-wrapper">
               <div class="chart-scroll-container" #chartScrollContainer>
-                <div class="chart-vertical-scroll" #chartVerticalScroll>
+                <div class="chart-vertical-scroll" #chartVerticalScroll (scroll)="onChartVerticalScroll($event)">
                   <div class="chart-horizontal-scroll">
                     <div class="chart-container"
                          [class.department-view]="(graphicFilter$ | async)?.view === 'department'"
@@ -333,7 +333,6 @@
                            [class.department-view]="(graphicFilter$ | async)?.view === 'department'"
                            [class.anatomy-view]="(graphicFilter$ | async)?.view === 'anatomy'"
                            [style.--department-count]="(graphicFilter$ | async)?.view === 'department' ? (getYAxisLabels() | async)?.length || 0 : 0">
-                           [style.height.%]="(graphicFilter$ | async)?.view === 'anatomy' ? (100 / ((getYAxisLabels() | async)?.length || 1)) : null"
                         <!-- Horizontal lines for anatomical regions -->
                         <div *ngFor="let label of (getYAxisLabels() | async) || []; let i = index" 
                              class="region-line"

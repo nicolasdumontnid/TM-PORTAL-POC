@@ -559,29 +559,12 @@
   right: 0;
   transition: background-color 0.2s ease;
   cursor: pointer;
-}
-
-.chart-area.department-view .region-line {
-  background-color: transparent;
-  border-bottom: 1px solid var(--border-color);
-}
-
-.chart-area.anatomy-view .region-line {
-  background-color: var(--border-color);
   border-bottom: 1px solid var(--border-color);
 }
 
 .region-line.hovered {
-  border-bottom-color: var(--primary-color);
-}
-
-.chart-area.department-view .region-line.hovered {
   background-color: rgba(20, 184, 166, 0.1);
-}
-
-.chart-area.anatomy-view .region-line.hovered {
-  background-color: var(--primary-color);
-  border-bottom-width: 2px;
+  border-bottom-color: var(--primary-color);
 }
 
 .exam-point {
