@@ -63,6 +63,7 @@ export class MainContentComponent implements OnInit, OnDestroy {
   }
   
   onHideDashboard(): void {
+    console.log('Hiding dashboard and navigating to inbox');
     this.showDashboardSubject.next(false);
     // Set navigation to inbox and trigger exam filter update
     this.navigationService.setActiveNavItem('inbox');

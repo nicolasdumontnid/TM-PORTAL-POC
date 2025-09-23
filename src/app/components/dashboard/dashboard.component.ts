@@ -286,6 +286,7 @@ export class DashboardComponent implements OnInit {
   }
 
   onClose() {
+    console.log('Dashboard close button clicked');
     this.close.emit();
   }
 
