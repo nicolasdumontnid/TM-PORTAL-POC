@@ -336,6 +336,7 @@
                              class="region-line"
                              [style.top.px]="(graphicFilter$ | async)?.view === 'department' ? i * 40 : null"
                              [style.top.%]="(graphicFilter$ | async)?.view === 'anatomy' ? (i / ((getYAxisLabels() | async)?.length || 1)) * 100 : null"
+                             [style.height.px]="(graphicFilter$ | async)?.view === 'department' ? 40 : null"
                              [class.hovered]="hoveredRegion === label"
                              (mouseenter)="onRegionHover(label)"
                              (mouseleave)="onRegionLeave()">
