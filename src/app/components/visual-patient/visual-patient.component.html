@@ -260,49 +260,11 @@
           
           <!-- Body Diagram (visible only in anatomy view) -->
           <div class="body-diagram" *ngIf="(graphicFilter$ | async)?.view === 'anatomy'">
-            <svg 
+            <img 
+              src="assets/public/images/skeleton+skin.svg" 
+              alt="Human body diagram"
               class="human-body-svg"
-              viewBox="0 0 200 400"
-              xmlns="http://www.w3.org/2000/svg">
-              
-              <!-- Head -->
-              <circle cx="100" cy="40" r="25" fill="none" stroke="var(--text-primary)" stroke-width="2"/>
-              
-              <!-- Neck -->
-              <line x1="100" y1="65" x2="100" y2="85" stroke="var(--text-primary)" stroke-width="2"/>
-              
-              <!-- Torso -->
-              <rect x="75" y="85" width="50" height="80" fill="none" stroke="var(--text-primary)" stroke-width="2" rx="5"/>
-              
-              <!-- Arms -->
-              <line x1="75" y1="100" x2="50" y2="120" stroke="var(--text-primary)" stroke-width="2"/>
-              <line x1="50" y1="120" x2="45" y2="150" stroke="var(--text-primary)" stroke-width="2"/>
-              <line x1="125" y1="100" x2="150" y2="120" stroke="var(--text-primary)" stroke-width="2"/>
-              <line x1="150" y1="120" x2="155" y2="150" stroke="var(--text-primary)" stroke-width="2"/>
-              
-              <!-- Hands -->
-              <circle cx="45" cy="155" r="5" fill="none" stroke="var(--text-primary)" stroke-width="2"/>
-              <circle cx="155" cy="155" r="5" fill="none" stroke="var(--text-primary)" stroke-width="2"/>
-              
-              <!-- Pelvis -->
-              <rect x="80" y="165" width="40" height="25" fill="none" stroke="var(--text-primary)" stroke-width="2" rx="3"/>
-              
-              <!-- Legs -->
-              <line x1="85" y1="190" x2="80" y2="250" stroke="var(--text-primary)" stroke-width="2"/>
-              <line x1="80" y1="250" x2="75" y2="310" stroke="var(--text-primary)" stroke-width="2"/>
-              <line x1="115" y1="190" x2="120" y2="250" stroke="var(--text-primary)" stroke-width="2"/>
-              <line x1="120" y1="250" x2="125" y2="310" stroke="var(--text-primary)" stroke-width="2"/>
-              
-              <!-- Feet -->
-              <ellipse cx="75" cy="315" rx="8" ry="4" fill="none" stroke="var(--text-primary)" stroke-width="2"/>
-              <ellipse cx="125" cy="315" rx="8" ry="4" fill="none" stroke="var(--text-primary)" stroke-width="2"/>
-              
-              <!-- Anatomical region labels -->
-              <text x="100" y="30" text-anchor="middle" fill="var(--text-secondary)" font-size="10" font-weight="500">Head</text>
-              <text x="100" y="110" text-anchor="middle" fill="var(--text-secondary)" font-size="10" font-weight="500">Shoulder</text>
-              <text x="100" y="140" text-anchor="middle" fill="var(--text-secondary)" font-size="10" font-weight="500">Upper Limb</text>
-              <text x="100" y="180" text-anchor="middle" fill="var(--text-secondary)" font-size="10" font-weight="500">Pelvis</text>
-            </svg>
+            />
           </div>
           
           <div class="timeline-chart">
