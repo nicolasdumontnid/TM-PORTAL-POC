@@ -288,8 +288,8 @@ export class VisualPatientComponent implements OnInit {
     let yPosition = 0;
     
     if (currentFilter.view === 'department') {
-      // Find department index
-      const deptIndex = this.departmentsList.findIndex(dept => dept === examPoint.department);
+      // Find department index in the sorted list
+      const deptIndex = this.departmentsList.indexOf(examPoint.department);
       const validIndex = deptIndex >= 0 ? deptIndex : 0;
       // Position in pixels: center of each 40px department row
       yPosition = (validIndex * 40) + 20; // 20px to center in the 40px row
