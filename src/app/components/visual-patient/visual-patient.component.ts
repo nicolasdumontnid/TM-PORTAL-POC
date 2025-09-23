@@ -1020,12 +1020,14 @@ export class VisualPatientComponent implements OnInit {
     const currentFilter = this.graphicFilterSubject.value;
     
     if (currentFilter.view === 'department') {
-      // Return department names from exam points
-      const uniqueDepartments = new Set<string>();
+      // Return unique department names from exam points
+      let departments: string[] = [];
       this.examPoints$.subscribe(examPoints => {
+        const uniqueDepartments = new Set<string>();
         examPoints.forEach(exam => uniqueDepartments.add(exam.department));
+        departments = Array.from(uniqueDepartments).sort();
       }).unsubscribe();
-      return Array.from(uniqueDepartments).sort();
+      return departments;
     } else {
       // Return anatomical regions
       return this.anatomicalRegions;
