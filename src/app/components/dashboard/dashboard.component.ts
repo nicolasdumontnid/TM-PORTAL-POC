@@ -597,13 +597,14 @@ export class DashboardComponent implements OnInit {
     return ((this.startSliderValue - this.minSliderValue) / range) * 100;
   }
   
-  getSliderRangeWidth(): number {
+  public getSliderRangeWidth(): number {
     const range = this.maxSliderValue - this.minSliderValue;
     const startPercent = ((this.startSliderValue - this.minSliderValue) / range) * 100;
     const endPercent = ((this.endSliderValue - this.minSliderValue) / range) * 100;
     return endPercent - startPercent;
   }
-  toggleExamSelection(exam: Exam): void {
+  
+  public toggleExamSelection(exam: Exam): void {
     exam.isSelected = !exam.isSelected;
   }
 
