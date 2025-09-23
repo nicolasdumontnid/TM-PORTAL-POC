@@ -411,15 +411,15 @@ export class DashboardComponent implements OnInit {
   ];
 
   // Filters
-  selectedReportStatus: 'reported' | 'unreported' = 'unreported';
-  selectedSite: 'principal' | 'policlinique' | 'all' = 'all';
-  selectedDoctor: string | null = null;
-  selectedModality: 'CT' | 'MR' | 'US' | 'CR' | 'all' = 'all';
+  public selectedReportStatus: 'reported' | 'unreported' = 'unreported';
+  public selectedSite: 'principal' | 'policlinique' | 'all' = 'all';
+  public selectedDoctor: string | null = null;
+  public selectedModality: 'CT' | 'MR' | 'US' | 'CR' | 'all' = 'all';
   
   // Date filter
-  startDate: string = '';
-  endDate: string = '';
-  todayDate: string = '';
+  public startDate: string = '';
+  public endDate: string = '';
+  public todayDate: string = '';
   
   // Slider values (days since epoch)
   public minSliderValue: number = 0;
