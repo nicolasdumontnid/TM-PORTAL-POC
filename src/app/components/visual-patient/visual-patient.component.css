@@ -376,8 +376,23 @@
 .department-labels {
   position: relative;
   width: 120px;
-  height: 300px;
   flex-shrink: 0;
+  overflow-y: auto;
+  max-height: 300px;
+}
+
+.department-labels::-webkit-scrollbar {
+  width: 6px;
+}
+
+.department-labels::-webkit-scrollbar-track {
+  background: var(--bg-main);
+  border-radius: 3px;
+}
+
+.department-labels::-webkit-scrollbar-thumb {
+  background: var(--border-color);
+  border-radius: 3px;
 }
 
 .department-label {
@@ -385,13 +400,16 @@
   right: 10px;
   font-size: 0.8rem;
   color: var(--text-secondary);
-  transform: translateY(-50%);
   font-weight: 500;
   background-color: var(--bg-container);
   padding: 2px 4px;
   border-radius: 3px;
   white-space: nowrap;
   text-align: right;
+  height: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
 }
 
 .body-diagram {

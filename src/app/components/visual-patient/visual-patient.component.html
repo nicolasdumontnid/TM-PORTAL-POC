@@ -245,10 +245,12 @@
         
         <div class="calendar-map-body">
           <!-- Department Labels (visible only in department view) -->
-          <div class="department-labels" *ngIf="(graphicFilter$ | async)?.view === 'department'">
+          <div class="department-labels" 
+               *ngIf="(graphicFilter$ | async)?.view === 'department'"
+               [style.--department-count]="departmentsList.length">
             <div *ngFor="let dept of departmentsList; let i = index" 
                  class="department-label"
-                 [style.top.%]="((i + 0.5) / departmentsList.length) * 100">
+                 [style.top.px]="(i + 0.5) * 40 - 10">
               {{dept}}
             </div>
           </div>
@@ -303,61 +305,81 @@
           
           <div class="timeline-chart">
             <div class="chart-scroll-container">
-              <div class="chart-container">
-              <ng-container *ngIf="filteredExamPoints$ | async as examPoints">
-                <!-- Y-axis labels -->
-                <div class="y-axis">
-                  <div *ngFor="let label of getYAxisLabels(); let i = index; trackBy: trackByIndex" 
-                       class="y-axis-label"
-                       [style.top.%]="((i + 0.5) / getYAxisLabels().length) * 100">
-                    {{label}}
-                  </div>
-                </div>
-                
-                <!-- Chart area -->
-                <div class="chart-area">
-                  <!-- Horizontal lines for anatomical regions -->
-                  <div *ngFor="let label of getYAxisLabels(); let i = index" 
-                       class="region-line"
-                       [style.top.%]="(i / getYAxisLabels().length) * 100"
-                       [class.hovered]="hoveredRegion === label"
-                       (mouseenter)="onRegionHover(label)"
-                       (mouseleave)="onRegionLeave()">
-                  </div>
-                  
-                  <!-- TODAY line -->
-                  <div class="today-line"
-                       [style.left.%]="getTodayPosition(examPoints)">
-                    <div class="today-label">TODAY</div>
-                  </div>
-                  
-                  <!-- Exam points -->
-                  <div *ngFor="let examPoint of examPoints" 
-                       class="exam-point"
-                       [class.future-point]="examPoint.isFuture"
-                       [style.left.%]="getExamPointPosition(examPoint, examPoints).x"
-                       [style.top.%]="getExamPointPosition(examPoint, examPoints).y"
-                       (mouseenter)="onExamPointHover(examPoint, $event)"
-                       (mouseleave)="onExamPointLeave()"
-                       (click)="openReporting(examPoint)">
-                    <div class="exam-point-label" 
-                         (mouseenter)="onExamPointHover(examPoint, $event)"
-                         (mouseleave)="onExamPointLeave()">
-                      {{examPoint.examName}}<br>
-                      <small>{{examPoint.date | date:'dd/MM/yy'}}</small>
+              <div class="chart-vertical-scroll">
+                <div class="chart-horizontal-scroll">
+                  <div class="chart-container"
+                       [class.department-view]="(graphicFilter$ | async)?.view === 'department'"
+                       [class.anatomy-view]="(graphicFilter$ | async)?.view === 'anatomy'"
+                       [style.--department-count]="(graphicFilter$ | async)?.view === 'department' ? departmentsList.length : 0">
+                  <ng-container *ngIf="filteredExamPoints$ | async as examPoints">
+                    <!-- Y-axis labels -->
+                    <div class="y-axis"
+                         [class.department-view]="(graphicFilter$ | async)?.view === 'department'"
+                         [class.anatomy-view]="(graphicFilter$ | async)?.view === 'anatomy'"
+                         [style.--department-count]="(graphicFilter$ | async)?.view === 'department' ? departmentsList.length : 0">
+                      <div *ngFor="let label of getYAxisLabels(); let i = index; trackBy: trackByIndex" 
+                           class="y-axis-label"
+                           [style.top.px]="(graphicFilter$ | async)?.view === 'department' ? (i + 0.5) * 40 - 10 : null"
+                           [style.top.%]="(graphicFilter$ | async)?.view === 'anatomy' ? ((i + 0.5) / getYAxisLabels().length) * 100 : null">
+                        {{label}}
+                      </div>
                     </div>
+                    
+                    <!-- Chart area -->
+                    <div class="chart-area"
+                         [class.department-view]="(graphicFilter$ | async)?.view === 'department'"
+                         [class.anatomy-view]="(graphicFilter$ | async)?.view === 'anatomy'"
+                         [style.--department-count]="(graphicFilter$ | async)?.view === 'department' ? departmentsList.length : 0">
+                      <!-- Horizontal lines for anatomical regions -->
+                      <div *ngFor="let label of getYAxisLabels(); let i = index" 
+                           class="region-line"
+                           [style.top.px]="(graphicFilter$ | async)?.view === 'department' ? i * 40 : null"
+                           [style.top.%]="(graphicFilter$ | async)?.view === 'anatomy' ? (i / getYAxisLabels().length) * 100 : null"
+                           [class.hovered]="hoveredRegion === label"
+                           (mouseenter)="onRegionHover(label)"
+                           (mouseleave)="onRegionLeave()">
+                      </div>
+                      
+                      <!-- TODAY line -->
+                      <div class="today-line"
+                           [style.left.%]="getTodayPosition(examPoints)"
+                           [style.height.px]="(graphicFilter$ | async)?.view === 'department' ? departmentsList.length * 40 : null"
+                           [style.height]="(graphicFilter$ | async)?.view === 'anatomy' ? '100%' : null">
+                        <div class="today-label">TODAY</div>
+                      </div>
+                      
+                      <!-- Exam points -->
+                      <div *ngFor="let examPoint of examPoints" 
+                           class="exam-point"
+                           [class.future-point]="examPoint.isFuture"
+                           [style.left.%]="getExamPointPosition(examPoint, examPoints).x"
+                           [style.top.px]="(graphicFilter$ | async)?.view === 'department' ? getExamPointPosition(examPoint, examPoints).y * 40 / 100 * departmentsList.length : null"
+                           [style.top.%]="(graphicFilter$ | async)?.view === 'anatomy' ? getExamPointPosition(examPoint, examPoints).y : null"
+                           (mouseenter)="onExamPointHover(examPoint, $event)"
+                           (mouseleave)="onExamPointLeave()"
+                           (click)="openReporting(examPoint)">
+                        <div class="exam-point-label" 
+                             (mouseenter)="onExamPointHover(examPoint, $event)"
+                             (mouseleave)="onExamPointLeave()">
+                          {{examPoint.examName}}<br>
+                          <small>{{examPoint.date | date:'dd/MM/yy'}}</small>
+                        </div>
+                      </div>
+                    </div>
+                  </ng-container>
                   </div>
                 </div>
-                
-                <!-- X-axis -->
-                <div class="x-axis">
+              </div>
+              
+              <!-- X-axis (fixed at bottom) -->
+              <div class="x-axis">
+                <ng-container *ngIf="filteredExamPoints$ | async as examPoints">
                   <div *ngFor="let timeLabel of getTimelineLabels(examPoints)" 
                        class="x-axis-label"
                        [style.left.%]="timeLabel.position">
                     {{timeLabel.label}}
                   </div>
-                </div>
-              </ng-container>
+                </ng-container>
               </div>
             </div>
           </div>
