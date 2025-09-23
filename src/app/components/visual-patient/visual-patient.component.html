@@ -327,7 +327,7 @@
                              [style.height.px]="(graphicFilter$ | async)?.view === 'department' ? 39 : undefined"
                              [style.top.%]="(graphicFilter$ | async)?.view === 'anatomy' ? (i / ((getYAxisLabels() | async)?.length || 1)) * 100 : undefined"
                              [style.height.%]="(graphicFilter$ | async)?.view === 'anatomy' ? ((100 / ((getYAxisLabels() | async)?.length || 1)) - 0.1) : undefined"
-                             [class.hovered]="hoveredRegion === label"
+                             [class.hovered]="hoveredRegion === label || isRegionFiltered(label)"
                              (mouseenter)="onRegionHover(label)"
                              (mouseleave)="onRegionLeave()">
                         </div>

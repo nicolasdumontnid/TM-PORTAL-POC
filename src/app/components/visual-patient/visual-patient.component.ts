@@ -269,6 +269,16 @@ export class VisualPatientComponent implements OnInit {
     this.hoveredRegion = null;
   }
 
+  isRegionFiltered(label: string): boolean {
+    const currentFilter = this.graphicFilterSubject.value;
+    
+    if (currentFilter.view === 'department') {
+      return currentFilter.department !== 'ALL' && currentFilter.department === label;
+    } else {
+      return currentFilter.anatomy !== 'ALL' && currentFilter.anatomy === label;
+    }
+  }
+
   onExamPointHover(examPoint: ExamPoint, event: MouseEvent): void {
     this.hoveredExamPoint = examPoint;
     this.tooltipPosition = { x: event.clientX, y: event.clientY };
