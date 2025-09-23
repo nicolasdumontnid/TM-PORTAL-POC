@@ -10,7 +10,7 @@
   </app-visual-patient>
   
   <app-dashboard 
-    *ngIf="showDashboard$ | async">
+    *ngIf="showDashboard$ | async"
     (close)="onHideDashboard()">
   </app-dashboard>
 </main>
