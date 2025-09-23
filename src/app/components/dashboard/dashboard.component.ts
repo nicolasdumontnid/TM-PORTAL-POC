@@ -622,7 +622,7 @@ export class DashboardComponent implements OnInit {
     console.log('Set high priority for selected exams');
   }
 
-  openAssignModal(): void {
+  public openAssignModal(): void {
     if (this.selectedExams.length === 0) {
       alert('Please select at least one exam');
       return;
@@ -630,12 +630,12 @@ export class DashboardComponent implements OnInit {
     this.showAssignModal = true;
   }
 
-  closeAssignModal(): void {
+  public closeAssignModal(): void {
     this.showAssignModal = false;
     this.selectedDoctorForAssign = null;
   }
 
-  assignToDoctor(): void {
+  public assignToDoctor(): void {
     if (this.selectedDoctorForAssign) {
       this.selectedExams.forEach(exam => {
         exam.assignedDoctor = this.selectedDoctorForAssign!;
@@ -646,7 +646,7 @@ export class DashboardComponent implements OnInit {
     }
   }
 
-  randomizeAssignment(): void {
+  public randomizeAssignment(): void {
     this.selectedExams.forEach(exam => {
       const randomDoctor = this.doctors[Math.floor(Math.random() * this.doctors.length)];
       exam.assignedDoctor = randomDoctor.name;
@@ -655,7 +655,7 @@ export class DashboardComponent implements OnInit {
     this.updateCounts();
   }
 
-  onClose() {
+  public onClose() {
     console.log('Dashboard close button clicked');
     this.close.emit();
   }
@@ -667,17 +667,17 @@ export class DashboardComponent implements OnInit {
     });
   }
 
-  getDaysOldText(daysOld: number): string {
+  public getDaysOldText(daysOld: number): string {
     if (daysOld === 0) return 'Today';
     if (daysOld === 1) return '1 day ago';
     return `${daysOld} days ago`;
   }
 
-  get selectAllButtonText(): string {
+  public getSelectAllButtonText(): string {
     return this.areAllFilteredExamsSelected ? 'Deselect All' : 'Select All';
   }
 
-  get areAllFilteredExamsSelected(): boolean {
+  public get areAllFilteredExamsSelected(): boolean {
     if (this.filteredExams.length === 0) {
       return false;
     }
