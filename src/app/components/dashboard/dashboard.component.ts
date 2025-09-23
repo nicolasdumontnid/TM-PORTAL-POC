@@ -144,10 +144,10 @@ export class DashboardComponent implements OnInit {
   todayDate: string = '';
   
   // Slider values (days since epoch)
-  minSliderValue: number = 0;
-  maxSliderValue: number = 0;
-  startSliderValue: number = 0;
-  endSliderValue: number = 0;
+  public minSliderValue: number = 0;
+  public maxSliderValue: number = 0;
+  public startSliderValue: number = 0;
+  public endSliderValue: number = 0;
 
   // Modal
   showAssignModal = false;
