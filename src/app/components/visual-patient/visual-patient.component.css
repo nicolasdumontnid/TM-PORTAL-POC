@@ -544,11 +544,13 @@
   height: calc(var(--department-count) * 40px);
   min-height: calc(var(--department-count) * 40px);
   position: relative;
+  z-index: 1;
 }
 
 .chart-area.anatomy-view {
   height: 100%;
   position: relative;
+  z-index: 1;
 }
 
 .region-line {
@@ -577,6 +579,7 @@
   transition: all 0.2s ease;
   border: 2px solid white;
   box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+  z-index: 10;
 }
 
 .exam-point:hover {
@@ -619,10 +622,17 @@
 .today-line {
   position: absolute;
   top: 0;
-  bottom: 0;
   width: 2px;
   background-color: var(--alert-red);
-  z-index: 10;
+  z-index: 15;
+}
+
+.chart-area.department-view .today-line {
+  height: calc(var(--department-count) * 40px);
+}
+
+.chart-area.anatomy-view .today-line {
+  bottom: 0;
 }
 
 .today-label {
