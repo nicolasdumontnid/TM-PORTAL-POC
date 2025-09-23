@@ -557,22 +557,14 @@
   position: absolute;
   left: 0;
   right: 0;
+  border-bottom: 1px solid var(--border-color);
   transition: background-color 0.2s ease;
   cursor: pointer;
 }
 
-.chart-area.department-view .region-line {
-  border-bottom: 1px solid var(--border-color);
-  height: 40px;
-}
-
-.chart-area.anatomy-view .region-line {
-  border-bottom: 1px solid var(--border-color);
-}
-
 .region-line.hovered {
   background-color: rgba(20, 184, 166, 0.1);
-  border-bottom-color: var(--primary-color);
+  border-bottom: 2px solid var(--primary-color);
 }
 
 .exam-point {
