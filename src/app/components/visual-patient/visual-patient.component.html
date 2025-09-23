@@ -320,8 +320,8 @@
                              class="region-line"
                              [style.top.px]="(graphicFilter$ | async)?.view === 'department' ? i * 40 : undefined"
                              [style.height.px]="(graphicFilter$ | async)?.view === 'department' ? 40 : undefined"
-                             [style.top.%]="(graphicFilter$ | async)?.view === 'anatomy' ? (i / ((getYAxisLabels() | async)?.length || 1)) * 100 : undefined"
-                             [style.height.%]="(graphicFilter$ | async)?.view === 'anatomy' ? (100 / ((getYAxisLabels() | async)?.length || 1)) : undefined"
+                             [style.top.%]="(graphicFilter$ | async)?.view === 'anatomy' ? (i / ((getYAxisLabels() | async)?.length || 1)) * 100 : (i / ((getYAxisLabels() | async)?.length || 1)) * 100"
+                             [style.height.%]="(graphicFilter$ | async)?.view === 'anatomy' ? (100 / ((getYAxisLabels() | async)?.length || 1)) : (100 / ((getYAxisLabels() | async)?.length || 1))"
                              [class.hovered]="hoveredRegion === label"
                              (mouseenter)="onRegionHover(label)"
                              (mouseleave)="onRegionLeave()">
@@ -332,8 +332,8 @@
                              class="region-line"
                              [style.top.px]="(graphicFilter$ | async)?.view === 'department' ? i * 40 : undefined"
                              [style.height.px]="(graphicFilter$ | async)?.view === 'department' ? 40 : undefined"
-                             [style.top.%]="(graphicFilter$ | async)?.view === 'anatomy' ? (i / ((getYAxisLabels() | async)?.length || 1)) * 100 : undefined"
-                             [style.height.%]="(graphicFilter$ | async)?.view === 'anatomy' ? (100 / ((getYAxisLabels() | async)?.length || 1)) : undefined"
+                             [style.top.%]="(graphicFilter$ | async)?.view === 'anatomy' ? (i / ((getYAxisLabels() | async)?.length || 1)) * 100 : (i / ((getYAxisLabels() | async)?.length || 1)) * 100"
+                             [style.height.%]="(graphicFilter$ | async)?.view === 'anatomy' ? (100 / ((getYAxisLabels() | async)?.length || 1)) : (100 / ((getYAxisLabels() | async)?.length || 1))"
                              [class.hovered]="hoveredRegion === label"
                              (mouseenter)="onRegionHover(label)"
                              (mouseleave)="onRegionLeave()">
