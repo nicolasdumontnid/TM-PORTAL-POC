@@ -280,8 +280,13 @@ export class VisualPatientComponent implements OnInit {
         return false;
       }
       
-      // Direct match for specific anatomy regions (excluding Others)
-      return currentFilter.anatomy === label;
+      // Match anatomy regions - the filter uses format like "Head - Shoulder"
+      // but the anatomicalRegions array uses single words like "Head", "Shoulder", etc.
+      // We need to check if the label (which is the single word) matches the selected filter
+      const selectedFilter = currentFilter.anatomy;
+      
+      // Check if the label is part of the selected anatomy filter
+      return selectedFilter.includes(label);
     }
   }
 
