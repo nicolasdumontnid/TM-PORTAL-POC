@@ -103,6 +103,19 @@
   margin-bottom: 0;
 }
 
+.filters-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 30px;
+  margin-bottom: 25px;
+}
+
+.filters-column {
+  display: flex;
+  flex-direction: column;
+  gap: 25px;
+}
+
 .filter-group h3 {
   font-size: 1.1rem;
   color: var(--text-primary);
@@ -714,5 +727,10 @@
   
   .btn {
     width: 100%;
+  }
+  
+  .filters-grid {
+    grid-template-columns: 1fr;
+    gap: 20px;
   }
 }

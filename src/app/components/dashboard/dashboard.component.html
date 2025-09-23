@@ -38,112 +38,138 @@
       </div>
     </div>
 
-    <!-- Site Filter -->
-    <div class="filter-group">
-      <h3>Site</h3>
+    <!-- Filters Grid -->
+    <div class="filters-grid">
+      <!-- Left Column -->
+      <div class="filters-column">
+        <!-- Report Status Filter -->
+        <div class="filter-group">
+          <h3>Report Status</h3>
+          <div class="filter-buttons">
+            <button 
+              class="filter-btn"
+              [class.active]="selectedReportStatus === 'reported'"
+              (click)="selectReportStatus('reported')"
+            >
+              Exams Reported ({{getReportedCount()}})
+            </button>
+            <button 
+              class="filter-btn"
+              [class.active]="selectedReportStatus === 'unreported'"
+              (click)="selectReportStatus('unreported')"
+            >
+              Exams Non Reported ({{getUnreportedCount()}})
+            </button>
+          </div>
+        </div>
 
-    <!-- Priority Filter -->
-    <div class="filter-group">
-      <h3>Priority</h3>
-      <div class="filter-buttons">
-        <button 
-          class="filter-btn"
-          [class.active]="selectedPriority === 'all'"
-          (click)="selectPriority('all')"
-        >
-          All Priorities ({{exams.length}})
-        </button>
-        <button 
-          class="filter-btn"
-          [class.active]="selectedPriority === 'high'"
-          (click)="selectPriority('high')"
-        >
-          HIGH ({{getPriorityCount('high')}})
-        </button>
-        <button 
-          class="filter-btn"
-          [class.active]="selectedPriority === 'normal'"
-          (click)="selectPriority('normal')"
-        >
-          Normal ({{getPriorityCount('normal')}})
-        </button>
-        <button 
-          class="filter-btn"
-          [class.active]="selectedPriority === 'minor'"
-          (click)="selectPriority('minor')"
-        >
-          Minor ({{getPriorityCount('minor')}})
-        </button>
+        <!-- Site Filter -->
+        <div class="filter-group">
+          <h3>Site</h3>
+          <div class="filter-buttons">
+            <button 
+              class="filter-btn"
+              [class.active]="selectedSite === 'all'"
+              (click)="selectSite('all')"
+            >
+              All Sites ({{exams.length}})
+            </button>
+            <button 
+              class="filter-btn"
+              [class.active]="selectedSite === 'principal'"
+              (click)="selectSite('principal')"
+            >
+              Site Principal ({{getPrincipalSiteCount()}})
+            </button>
+            <button 
+              class="filter-btn"
+              [class.active]="selectedSite === 'policlinique'"
+              (click)="selectSite('policlinique')"
+            >
+              Site Policlinique ({{getPolicliniqueSiteCount()}})
+            </button>
+          </div>
+        </div>
       </div>
-    </div>
 
-    <!-- Site Filter -->
-    <div class="filter-group">
-      <h3>Site</h3>
-      <div class="filter-buttons">
-        <button 
-          class="filter-btn"
-          [class.active]="selectedSite === 'all'"
-          (click)="selectSite('all')"
-        >
-          All Sites ({{exams.length}})
-        </button>
-        <button 
-          class="filter-btn"
-          [class.active]="selectedSite === 'principal'"
-          (click)="selectSite('principal')"
-        >
-          Site Principal ({{getPrincipalSiteCount()}})
-        </button>
-        <button 
-          class="filter-btn"
-          [class.active]="selectedSite === 'policlinique'"
-          (click)="selectSite('policlinique')"
-        >
-          Site Policlinique ({{getPolicliniqueSiteCount()}})
-        </button>
-      </div>
-    </div>
+      <!-- Right Column -->
+      <div class="filters-column">
+        <!-- Priority Filter -->
+        <div class="filter-group">
+          <h3>Priority</h3>
+          <div class="filter-buttons">
+            <button 
+              class="filter-btn"
+              [class.active]="selectedPriority === 'all'"
+              (click)="selectPriority('all')"
+            >
+              All Priorities ({{exams.length}})
+            </button>
+            <button 
+              class="filter-btn"
+              [class.active]="selectedPriority === 'high'"
+              (click)="selectPriority('high')"
+            >
+              HIGH ({{getPriorityCount('high')}})
+            </button>
+            <button 
+              class="filter-btn"
+              [class.active]="selectedPriority === 'normal'"
+              (click)="selectPriority('normal')"
+            >
+              Normal ({{getPriorityCount('normal')}})
+            </button>
+            <button 
+              class="filter-btn"
+              [class.active]="selectedPriority === 'minor'"
+              (click)="selectPriority('minor')"
+            >
+              Minor ({{getPriorityCount('minor')}})
+            </button>
+          </div>
+        </div>
 
-    <!-- Modality Filter -->
-    <div class="filter-group">
-      <h3>Modality</h3>
-      <div class="filter-buttons">
-        <button 
-          class="filter-btn"
-          [class.active]="selectedModality === 'all'"
-          (click)="selectModality('all')"
-        >
-          All Modalities ({{exams.length}})
-        </button>
-        <button 
-          class="filter-btn"
-          [class.active]="selectedModality === 'CT'"
-          (click)="selectModality('CT')"
-        >
-          CT ({{getModalityCount('CT')}})
-        </button>
-        <button 
-          class="filter-btn"
-          [class.active]="selectedModality === 'MR'"
-          (click)="selectModality('MR')"
-        >
-          MR ({{getModalityCount('MR')}})
-        </button>
-        <button 
-          class="filter-btn"
-          [class.active]="selectedModality === 'US'"
-          (click)="selectModality('US')"
-        >
-          US ({{getModalityCount('US')}})
-        </button>
-        <button 
-          class="filter-btn"
-          [class.active]="selectedModality === 'CR'"
-          (click)="selectModality('CR')"
-        >
-          CR ({{getModalityCount('CR')}})
-        </button>
+        <!-- Modality Filter -->
+        <div class="filter-group">
+          <h3>Modality</h3>
+          <div class="filter-buttons">
+            <button 
+              class="filter-btn"
+              [class.active]="selectedModality === 'all'"
+              (click)="selectModality('all')"
+            >
+              All Modalities ({{exams.length}})
+            </button>
+            <button 
+              class="filter-btn"
+              [class.active]="selectedModality === 'CT'"
+              (click)="selectModality('CT')"
+            >
+              CT ({{getModalityCount('CT')}})
+            </button>
+            <button 
+              class="filter-btn"
+              [class.active]="selectedModality === 'MR'"
+              (click)="selectModality('MR')"
+            >
+              MR ({{getModalityCount('MR')}})
+            </button>
+            <button 
+              class="filter-btn"
+              [class.active]="selectedModality === 'US'"
+              (click)="selectModality('US')"
+            >
+              US ({{getModalityCount('US')}})
+            </button>
+            <button 
+              class="filter-btn"
+              [class.active]="selectedModality === 'CR'"
+              (click)="selectModality('CR')"
+            >
+              CR ({{getModalityCount('CR')}})
+            </button>
+          </div>
+        </div>
       </div>
     </div>
 
