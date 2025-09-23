@@ -559,6 +559,14 @@
   right: 0;
   transition: background-color 0.2s ease;
   cursor: pointer;
+}
+
+.chart-area.department-view .region-line {
+  border-bottom: 1px solid var(--border-color);
+  height: 40px;
+}
+
+.chart-area.anatomy-view .region-line {
   border-bottom: 1px solid var(--border-color);
 }
 
