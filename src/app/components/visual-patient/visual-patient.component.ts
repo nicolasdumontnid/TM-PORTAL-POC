@@ -1050,7 +1050,6 @@ export class VisualPatientComponent implements OnInit {
       }
     });
   }
-      
 
   getTodayPosition(examPoints: ExamPoint[]): number {
     if (!examPoints.length) return 50;
