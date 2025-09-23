@@ -10,7 +10,7 @@ export class UserService {
     id: '1',
     name: 'Dr. Smith John',
     title: 'Radiologist',
-    avatar: 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?ixlib=rb-4.0.3&auto=format&fit=crop&w=100&q=80'
+    avatar: 'assets/public/images/doctor-avatar.jpg'
   };
 
   getById(id: string): Observable<User | null> {

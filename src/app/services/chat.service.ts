@@ -11,7 +11,7 @@ export class ChatService {
     {
       id: '1',
       name: 'CT Scan1',
-      avatar: 'https://placehold.co/100x100/34495E/ECF0F1?text=CT',
+      avatar: 'assets/public/images/ct-scan-avatar.jpg',
       lastMessage: 'Injection?',
       isOnline: false,
       isUnread: true
@@ -19,7 +19,7 @@ export class ChatService {
     {
       id: '2',
       name: 'Dr. Marie Dubois',
-      avatar: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-4.0.3&auto=format&fit=crop&w=100&q=80',
+      avatar: 'assets/public/images/doctor-marie-avatar.jpg',
       lastMessage: '15/01/25 - CT Scan...',
       isOnline: true,
       isUnread: false
@@ -27,7 +27,7 @@ export class ChatService {
     {
       id: '3',
       name: 'Dr. Marc Lefebvre',
-      avatar: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?ixlib=rb-4.0.3&auto=format&fit=crop&w=100&q=80',
+      avatar: 'assets/public/images/doctor-marc-avatar.jpg',
       lastMessage: 'Okay, I\'ll check it out.',
       isOnline: true,
       isUnread: false
