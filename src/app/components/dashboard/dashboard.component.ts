@@ -548,6 +548,10 @@ export class DashboardComponent implements OnInit {
     return this.exams.filter(exam => exam.modality === modality).length;
   }
 
+  getPriorityCount(priority: 'high' | 'normal' | 'minor'): number {
+    return this.exams.filter(exam => exam.priority === priority).length;
+  }
+
   updateStartDate(event: any): void {
     this.startDate = event.target.value;
   }
