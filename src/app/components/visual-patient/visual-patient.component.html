@@ -249,7 +249,8 @@
                *ngIf="(graphicFilter$ | async)?.view === 'department'"
                [style.--department-count]="departmentsList.length"
                #departmentLabelsScroll
-               (scroll)="onDepartmentLabelsScroll($event)">
+               (scroll)="onDepartmentLabelsScroll($event)"
+               [style.height.px]="320">
             <div *ngFor="let dept of departmentsList; let i = index" 
                  class="department-label"
                  [style.top.px]="(i + 0.5) * 40 - 10">
@@ -301,8 +302,10 @@
               <text x="100" y="110" text-anchor="middle" fill="var(--text-secondary)" font-size="10" font-weight="500">Shoulder</text>
               <text x="100" y="140" text-anchor="middle" fill="var(--text-secondary)" font-size="10" font-weight="500">Upper Limb</text>
               <text x="100" y="180" text-anchor="middle" fill="var(--text-secondary)" font-size="10" font-weight="500">Pelvis</text>
-              <text x="100" y="280" text-anchor="middle" fill="var(--text-secondary)" font-size="10" font-weight="500">Lower Limb</text>
-            </svg>
+            <div class="chart-scroll-container">
+              <div class="chart-vertical-scroll" 
+                   #chartVerticalScroll
+                   (scroll)="onChartVerticalScroll($event)">
           </div>
           
           <div class="timeline-chart">
@@ -333,6 +336,7 @@
                            [class.department-view]="(graphicFilter$ | async)?.view === 'department'"
                            [class.anatomy-view]="(graphicFilter$ | async)?.view === 'anatomy'"
                            [style.--department-count]="(graphicFilter$ | async)?.view === 'department' ? (getYAxisLabels() | async)?.length || 0 : 0">
+                           [style.height.%]="(graphicFilter$ | async)?.view === 'anatomy' ? (100 / ((getYAxisLabels() | async)?.length || 1)) : null"
                         <!-- Horizontal lines for anatomical regions -->
                         <div *ngFor="let label of (getYAxisLabels() | async) || []; let i = index" 
                              class="region-line"

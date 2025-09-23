@@ -1067,8 +1067,14 @@ export class VisualPatientComponent implements OnInit {
   onDepartmentLabelsScroll(event: Event): void {
     const target = event.target as HTMLElement;
     if (this.chartVerticalScroll && this.chartVerticalScroll.nativeElement) {
-      // Synchroniser le scroll du graphique avec celui des labels de départements
       this.chartVerticalScroll.nativeElement.scrollTop = target.scrollTop;
+    }
+  }
+
+  onChartVerticalScroll(event: Event): void {
+    const target = event.target as HTMLElement;
+    if (this.departmentLabelsScroll && this.departmentLabelsScroll.nativeElement) {
+      this.departmentLabelsScroll.nativeElement.scrollTop = target.scrollTop;
     }
   }
 }

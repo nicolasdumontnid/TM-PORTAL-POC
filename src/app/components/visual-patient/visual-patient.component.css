@@ -557,26 +557,18 @@
   position: absolute;
   left: 0;
   right: 0;
-  background-color: var(--border-color);
   transition: background-color 0.2s ease;
   cursor: pointer;
-  border-bottom: 1px solid var(--border-color);
 }
 
 .chart-area.department-view .region-line {
-  height: 40px;
   background-color: transparent;
   border-bottom: 1px solid var(--border-color);
-  display: block;
-  visibility: visible;
 }
 
 .chart-area.anatomy-view .region-line {
-  height: 1px;
   background-color: var(--border-color);
-  border-bottom: none;
-  display: block;
-  visibility: visible;
+  border-bottom: 1px solid var(--border-color);
 }
 
 .region-line.hovered {
@@ -585,12 +577,11 @@
 
 .chart-area.department-view .region-line.hovered {
   background-color: rgba(20, 184, 166, 0.1);
-  border-bottom-color: var(--primary-color);
 }
 
 .chart-area.anatomy-view .region-line.hovered {
   background-color: var(--primary-color);
-  height: 2px;
+  border-bottom-width: 2px;
 }
 
 .exam-point {
