@@ -285,7 +285,7 @@ export class VisualPatientComponent implements OnInit {
     const x = ((examPoint.date.getTime() - minDate) / dateRange) * 85 + 10; // 10% margin, 85% width
     
     const currentFilter = this.graphicFilterSubject.value;
-    let yPosition: number | string = 0;
+    let yPosition: number = 0;
     
     if (currentFilter.view === 'department') {
       // Get unique departments from filtered exam points and sort them
@@ -303,10 +303,10 @@ export class VisualPatientComponent implements OnInit {
         examPoint.anatomicalRegion.includes(region));
       const validIndex = regionIndex >= 0 ? regionIndex : 0;
       const totalLabels = this.anatomicalRegions.length;
-      yPosition = `${(validIndex + 0.5) * (100 / totalLabels)}%`;
+      yPosition = (validIndex + 0.5) * (100 / totalLabels);
     }
     
-    return { x, y: yPosition as any };
+    return { x, y: yPosition };
   }
 
   getTimelineLabels(examPoints: ExamPoint[]): { label: string; position: number }[] {
@@ -1059,16 +1059,5 @@ export class VisualPatientComponent implements OnInit {
 
   trackByIndex(index: number, item: any): number {
     return index;
-  }
-
-  getExamPointPositionStyle(examPoint: ExamPoint, examPoints: ExamPoint[]): string {
-    const position = this.getExamPointPosition(examPoint, examPoints);
-    const currentFilter = this.graphicFilterSubject.value;
-    
-    if (currentFilter.view === 'department') {
-      return `${position.y}px`;
-    } else {
-      return `${position.y}`;
-    }
   }
 }
