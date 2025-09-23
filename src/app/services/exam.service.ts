@@ -20,12 +20,12 @@ export class ExamService {
       isPinned: false,
       isExpanded: false,
       thumbnails: [
-        { id: '1-1', filename: 'axial_1.dcm', imageUrl: 'assets/public/images/radio/1-thumbnail.jpeg' },
-        { id: '1-2', filename: 'axial_2.dcm', imageUrl: 'assets/public/images/radio/2-thumbnail.jpeg' },
-        { id: '1-3', filename: 'sagittal_1.dcm', imageUrl: 'assets/public/images/radio/3-thumbnail.jpeg' },
-        { id: '1-4', filename: 'coronal_1.dcm', imageUrl: 'assets/public/images/radio/4-thumbnail.jpeg' },
-        { id: '1-5', filename: 'report.pdf', imageUrl: 'assets/public/images/radio/5thumbnail.jpeg' },
-        { id: '1-6', filename: 'axial_3.dcm', imageUrl: 'assets/public/images/radio/7-thumbnail.jpeg' }
+        { id: '1-1', filename: 'axial_1.dcm', imageUrl: 'https://i.ibb.co/JqjTz3j/scan-thumb-1.png' },
+        { id: '1-2', filename: 'axial_2.dcm', imageUrl: 'https://i.ibb.co/9gZ2YjM/scan-thumb-2.png' },
+        { id: '1-3', filename: 'sagittal_1.dcm', imageUrl: 'https://i.ibb.co/yQdZn5P/scan-thumb-3.png' },
+        { id: '1-4', filename: 'coronal_1.dcm', imageUrl: 'https://i.ibb.co/JqjTz3j/scan-thumb-1.png' },
+        { id: '1-5', filename: 'report.pdf', imageUrl: 'https://i.ibb.co/9gZ2YjM/scan-thumb-2.png' },
+        { id: '1-6', filename: 'axial_3.dcm', imageUrl: 'https://i.ibb.co/yQdZn5P/scan-thumb-3.png' }
       ]
     },
     {
@@ -39,9 +39,9 @@ export class ExamService {
       isPinned: false,
       isExpanded: false,
       thumbnails: [
-        { id: '2-1', filename: 'T1_axial.dcm', imageUrl: 'assets/public/images/radio/8-thumbnail.jpeg' },
-        { id: '2-2', filename: 'T2_axial.dcm', imageUrl: 'assets/public/images/radio/9-thumbnail.jpeg' },
-        { id: '2-3', filename: 'FLAIR_sag.dcm', imageUrl: 'assets/public/images/radio/11thumbnail.jpeg' }
+        { id: '2-1', filename: 'T1_axial.dcm', imageUrl: 'https://i.ibb.co/yQdZn5P/scan-thumb-3.png' },
+        { id: '2-2', filename: 'T2_axial.dcm', imageUrl: 'https://i.ibb.co/9gZ2YjM/scan-thumb-2.png' },
+        { id: '2-3', filename: 'FLAIR_sag.dcm', imageUrl: 'https://i.ibb.co/JqjTz3j/scan-thumb-1.png' }
       ]
     },
     {
@@ -55,8 +55,8 @@ export class ExamService {
       isPinned: false,
       isExpanded: false,
       thumbnails: [
-        { id: '3-1', filename: 'AP_view.dcm', imageUrl: 'assets/public/images/radio/3thumbnail.jpeg' },
-        { id: '3-2', filename: 'Lateral_view.dcm', imageUrl: 'assets/public/images/radio/4thumbnail.jpeg' }
+        { id: '3-1', filename: 'AP_view.dcm', imageUrl: 'https://i.ibb.co/yQdZn5P/scan-thumb-3.png' },
+        { id: '3-2', filename: 'Lateral_view.dcm', imageUrl: 'https://i.ibb.co/9gZ2YjM/scan-thumb-2.png' }
       ]
     },
     // Pending exams
@@ -71,9 +71,9 @@ export class ExamService {
       isPinned: false,
       isExpanded: false,
       thumbnails: [
-        { id: '4-1', filename: 'T1_sagittal.dcm', imageUrl: 'assets/public/images/radio/8thumbnail.jpeg' },
-        { id: '4-2', filename: 'T2_axial.dcm', imageUrl: 'assets/public/images/radio/9thumbnail.jpeg' },
-        { id: '4-3', filename: 'STIR_coronal.dcm', imageUrl: 'assets/public/images/radio/99thumbnail.jpeg' }
+        { id: '4-1', filename: 'T1_sagittal.dcm', imageUrl: 'https://i.ibb.co/JqjTz3j/scan-thumb-1.png' },
+        { id: '4-2', filename: 'T2_axial.dcm', imageUrl: 'https://i.ibb.co/yQdZn5P/scan-thumb-3.png' },
+        { id: '4-3', filename: 'STIR_coronal.dcm', imageUrl: 'https://i.ibb.co/9gZ2YjM/scan-thumb-2.png' }
       ]
     },
     {
@@ -87,8 +87,8 @@ export class ExamService {
       isPinned: true,
       isExpanded: false,
       thumbnails: [
-        { id: '5-1', filename: 'axial_lung.dcm', imageUrl: 'assets/public/images/radio/1-thumbnail.jpeg' },
-        { id: '5-2', filename: 'coronal_chest.dcm', imageUrl: 'assets/public/images/radio/2-thumbnail.jpeg' }
+        { id: '5-1', filename: 'axial_lung.dcm', imageUrl: 'https://i.ibb.co/yQdZn5P/scan-thumb-3.png' },
+        { id: '5-2', filename: 'coronal_chest.dcm', imageUrl: 'https://i.ibb.co/JqjTz3j/scan-thumb-1.png' }
       ]
     },
     {
@@ -102,10 +102,10 @@ export class ExamService {
       isPinned: false,
       isExpanded: false,
       thumbnails: [
-        { id: '6-1', filename: 'CC_right.dcm', imageUrl: 'assets/public/images/radio/3-thumbnail.jpeg' },
-        { id: '6-2', filename: 'CC_left.dcm', imageUrl: 'assets/public/images/radio/4-thumbnail.jpeg' },
-        { id: '6-3', filename: 'MLO_right.dcm', imageUrl: 'assets/public/images/radio/7-thumbnail.jpeg' },
-        { id: '6-4', filename: 'MLO_left.dcm', imageUrl: 'assets/public/images/radio/8-thumbnail.jpeg' }
+        { id: '6-1', filename: 'CC_right.dcm', imageUrl: 'https://i.ibb.co/9gZ2YjM/scan-thumb-2.png' },
+        { id: '6-2', filename: 'CC_left.dcm', imageUrl: 'https://i.ibb.co/yQdZn5P/scan-thumb-3.png' },
+        { id: '6-3', filename: 'MLO_right.dcm', imageUrl: 'https://i.ibb.co/JqjTz3j/scan-thumb-1.png' },
+        { id: '6-4', filename: 'MLO_left.dcm', imageUrl: 'https://i.ibb.co/9gZ2YjM/scan-thumb-2.png' }
       ]
     },
     // Second Opinion exams
@@ -120,9 +120,9 @@ export class ExamService {
       isPinned: true,
       isExpanded: false,
       thumbnails: [
-        { id: '7-1', filename: 'axial_brain.dcm', imageUrl: 'assets/public/images/radio/9-thumbnail.jpeg' },
-        { id: '7-2', filename: 'contrast_axial.dcm', imageUrl: 'assets/public/images/radio/8-thumbnail copy.jpeg' },
-        { id: '7-3', filename: 'sagittal_brain.dcm', imageUrl: 'assets/public/images/radio/11thumbnail.jpeg' }
+        { id: '7-1', filename: 'axial_brain.dcm', imageUrl: 'https://i.ibb.co/JqjTz3j/scan-thumb-1.png' },
+        { id: '7-2', filename: 'contrast_axial.dcm', imageUrl: 'https://i.ibb.co/yQdZn5P/scan-thumb-3.png' },
+        { id: '7-3', filename: 'sagittal_brain.dcm', imageUrl: 'https://i.ibb.co/9gZ2YjM/scan-thumb-2.png' }
       ]
     },
     {
@@ -136,8 +136,8 @@ export class ExamService {
       isPinned: false,
       isExpanded: false,
       thumbnails: [
-        { id: '8-1', filename: 'T2_axial_pelvis.dcm', imageUrl: 'assets/public/images/radio/3thumbnail.jpeg' },
-        { id: '8-2', filename: 'T1_sagittal.dcm', imageUrl: 'assets/public/images/radio/4thumbnail.jpeg' }
+        { id: '8-1', filename: 'T2_axial_pelvis.dcm', imageUrl: 'https://i.ibb.co/yQdZn5P/scan-thumb-3.png' },
+        { id: '8-2', filename: 'T1_sagittal.dcm', imageUrl: 'https://i.ibb.co/JqjTz3j/scan-thumb-1.png' }
       ]
     }
   ];
