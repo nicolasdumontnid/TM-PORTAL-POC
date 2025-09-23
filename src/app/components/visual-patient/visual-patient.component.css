@@ -497,6 +497,7 @@
 
 .chart-container.department-view {
   min-height: calc(var(--department-count) * 40px);
+  height: calc(var(--department-count) * 40px);
 }
 
 .chart-container.anatomy-view {
@@ -540,10 +541,13 @@
 
 .chart-area.department-view {
   height: calc(var(--department-count) * 40px);
+  min-height: calc(var(--department-count) * 40px);
+  position: relative;
 }
 
 .chart-area.anatomy-view {
   height: 100%;
+  position: relative;
 }
 
 .region-line {
