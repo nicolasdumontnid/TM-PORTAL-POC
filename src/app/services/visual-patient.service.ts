@@ -13,7 +13,7 @@ export class VisualPatientService {
     patientNumber: 'P-2025-001234',
     examNumber: '25091200872_01',
     gender: 'M',
-    photo: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-4.0.3&auto=format&fit=crop&w=150&q=80'
+    photo: 'assets/public/images/patient-jean-photo.jpg'
   };
 
   private mockRadiologicalRequest: RadiologicalRequest = {
@@ -209,27 +209,27 @@ export class VisualPatientService {
       date: new Date(),
       displayDate: 'Today',
       images: [
-        { id: '1', url: 'https://images.unsplash.com/photo-1559757148-5c350d0d3c56?ixlib=rb-4.0.3&auto=format&fit=crop&w=200&q=80', filename: 'ct_scan_001.dcm', examDate: new Date(), examType: 'CT Abdomen' },
-        { id: '2', url: 'https://images.unsplash.com/photo-1576091160399-112ba8d25d1f?ixlib=rb-4.0.3&auto=format&fit=crop&w=200&q=80', filename: 'ct_scan_002.dcm', examDate: new Date(), examType: 'CT Abdomen' },
-        { id: '3', url: 'https://images.unsplash.com/photo-1576091160550-2173dba999ef?ixlib=rb-4.0.3&auto=format&fit=crop&w=200&q=80', filename: 'ct_scan_003.dcm', examDate: new Date(), examType: 'CT Abdomen' },
-        { id: '4', url: 'https://images.unsplash.com/photo-1559757175-0eb30cd8c063?ixlib=rb-4.0.3&auto=format&fit=crop&w=200&q=80', filename: 'ct_scan_004.dcm', examDate: new Date(), examType: 'CT Abdomen' }
+        { id: '1', url: 'assets/public/images/radio/1-thumbnail.jpeg', filename: 'ct_scan_001.dcm', examDate: new Date(), examType: 'CT Abdomen' },
+        { id: '2', url: 'assets/public/images/radio/2-thumbnail.jpeg', filename: 'ct_scan_002.dcm', examDate: new Date(), examType: 'CT Abdomen' },
+        { id: '3', url: 'assets/public/images/radio/3-thumbnail.jpeg', filename: 'ct_scan_003.dcm', examDate: new Date(), examType: 'CT Abdomen' },
+        { id: '4', url: 'assets/public/images/radio/4-thumbnail.jpeg', filename: 'ct_scan_004.dcm', examDate: new Date(), examType: 'CT Abdomen' }
       ]
     },
     {
       date: new Date(Date.now() - 6 * 30 * 24 * 60 * 60 * 1000),
       displayDate: '6 months ago',
       images: [
-        { id: '5', url: 'https://images.unsplash.com/photo-1576091160399-112ba8d25d1f?ixlib=rb-4.0.3&auto=format&fit=crop&w=200&q=80', filename: 'ct_scan_005.dcm', examDate: new Date(Date.now() - 6 * 30 * 24 * 60 * 60 * 1000), examType: 'MRI Brain' },
-        { id: '6', url: 'https://images.unsplash.com/photo-1576091160550-2173dba999ef?ixlib=rb-4.0.3&auto=format&fit=crop&w=200&q=80', filename: 'ct_scan_006.dcm', examDate: new Date(Date.now() - 6 * 30 * 24 * 60 * 60 * 1000), examType: 'MRI Brain' },
-        { id: '7', url: 'https://images.unsplash.com/photo-1559757148-5c350d0d3c56?ixlib=rb-4.0.3&auto=format&fit=crop&w=200&q=80', filename: 'ct_scan_007.dcm', examDate: new Date(Date.now() - 6 * 30 * 24 * 60 * 60 * 1000), examType: 'MRI Brain' }
+        { id: '5', url: 'assets/public/images/radio/7-thumbnail.jpeg', filename: 'ct_scan_005.dcm', examDate: new Date(Date.now() - 6 * 30 * 24 * 60 * 60 * 1000), examType: 'MRI Brain' },
+        { id: '6', url: 'assets/public/images/radio/8-thumbnail.jpeg', filename: 'ct_scan_006.dcm', examDate: new Date(Date.now() - 6 * 30 * 24 * 60 * 60 * 1000), examType: 'MRI Brain' },
+        { id: '7', url: 'assets/public/images/radio/9-thumbnail.jpeg', filename: 'ct_scan_007.dcm', examDate: new Date(Date.now() - 6 * 30 * 24 * 60 * 60 * 1000), examType: 'MRI Brain' }
       ]
     },
     {
       date: new Date(Date.now() - 12 * 30 * 24 * 60 * 60 * 1000),
       displayDate: '1 year ago',
       images: [
-        { id: '8', url: 'https://images.unsplash.com/photo-1559757175-0eb30cd8c063?ixlib=rb-4.0.3&auto=format&fit=crop&w=200&q=80', filename: 'ct_scan_008.dcm', examDate: new Date(Date.now() - 12 * 30 * 24 * 60 * 60 * 1000), examType: 'X-Ray Chest' },
-        { id: '9', url: 'https://images.unsplash.com/photo-1576091160399-112ba8d25d1f?ixlib=rb-4.0.3&auto=format&fit=crop&w=200&q=80', filename: 'ct_scan_009.dcm', examDate: new Date(Date.now() - 12 * 30 * 24 * 60 * 60 * 1000), examType: 'X-Ray Chest' }
+        { id: '8', url: 'assets/public/images/radio/11thumbnail.jpeg', filename: 'ct_scan_008.dcm', examDate: new Date(Date.now() - 12 * 30 * 24 * 60 * 60 * 1000), examType: 'X-Ray Chest' },
+        { id: '9', url: 'assets/public/images/radio/3thumbnail.jpeg', filename: 'ct_scan_009.dcm', examDate: new Date(Date.now() - 12 * 30 * 24 * 60 * 60 * 1000), examType: 'X-Ray Chest' }
       ]
     }
   ];
