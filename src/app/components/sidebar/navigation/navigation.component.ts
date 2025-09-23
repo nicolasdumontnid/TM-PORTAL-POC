@@ -28,22 +28,31 @@ export class NavigationComponent implements OnInit {
   }
 
   onNavItemClick(itemId: string): void {
-    this.navigationService.setActiveNavItem(itemId);
-    
-    // Update exam filter based on navigation
-    switch (itemId) {
-      case 'inbox':
-        this.examService.setFilter('inbox');
-        break;
-      case 'pending':
-        this.examService.setFilter('pending');
-        break;
-      case 'second-opinion':
-        this.examService.setFilter('second-opinion');
-        break;
-      case 'completed':
-        this.examService.setFilter('completed');
-        break;
-    }
+    // Get current active item
+    this.activeNavItem$.subscribe(currentActive => {
+      // Only proceed if clicking on a different item
+      if (currentActive !== itemId) {
+        this.navigationService.setActiveNavItem(itemId);
+        
+        // Trigger navigation change event
+        this.navigationService.triggerNavigationChange(itemId);
+        
+        // Update exam filter based on navigation
+        switch (itemId) {
+          case 'inbox':
+            this.examService.setFilter('inbox');
+            break;
+          case 'pending':
+            this.examService.setFilter('pending');
+            break;
+          case 'second-opinion':
+            this.examService.setFilter('second-opinion');
+            break;
+          case 'completed':
+            this.examService.setFilter('completed');
+            break;
+        }
+      }
+    }).unsubscribe(); // Unsubscribe immediately after getting the value
   }
 }
