@@ -289,7 +289,9 @@ export class VisualPatientComponent implements OnInit {
     
     if (currentFilter.view === 'department') {
       // Find department index in the sorted list
-      const deptIndex = this.departmentsList.indexOf(examPoint.department);
+      // Get unique departments from exam data and sort them
+      const uniqueDepartments = [...new Set(examPoints.map(ep => ep.department))].sort();
+      const deptIndex = uniqueDepartments.indexOf(examPoint.department);
       const validIndex = deptIndex >= 0 ? deptIndex : 0;
       // Position in pixels: center of each 40px department row
       yPosition = (validIndex * 40) + 20; // 20px to center in the 40px row
@@ -1031,7 +1033,10 @@ export class VisualPatientComponent implements OnInit {
     const currentFilter = this.graphicFilterSubject.value;
     
     if (currentFilter.view === 'department') {
-      return this.departmentsList;
+      // Get unique departments from exam data and sort them
+      return this.filteredExamPoints$.pipe(
+        map(examPoints => [...new Set(examPoints.map(ep => ep.department))].sort())
+      );
     } else {
       // Return anatomical regions
       return this.anatomicalRegions;

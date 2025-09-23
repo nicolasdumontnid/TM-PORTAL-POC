@@ -311,17 +311,17 @@
                     <div class="chart-container"
                          [class.department-view]="(graphicFilter$ | async)?.view === 'department'"
                          [class.anatomy-view]="(graphicFilter$ | async)?.view === 'anatomy'"
-                         [style.--department-count]="(graphicFilter$ | async)?.view === 'department' ? departmentsList.length : 0">
+                         [style.--department-count]="(graphicFilter$ | async)?.view === 'department' ? (getYAxisLabels() | async)?.length || 0 : 0">
                     <ng-container *ngIf="filteredExamPoints$ | async as examPoints">
                       <!-- Y-axis labels -->
                       <div class="y-axis"
                            [class.department-view]="(graphicFilter$ | async)?.view === 'department'"
                            [class.anatomy-view]="(graphicFilter$ | async)?.view === 'anatomy'"
-                           [style.--department-count]="(graphicFilter$ | async)?.view === 'department' ? departmentsList.length : 0">
-                        <div *ngFor="let label of getYAxisLabels(); let i = index; trackBy: trackByIndex" 
+                           [style.--department-count]="(graphicFilter$ | async)?.view === 'department' ? (getYAxisLabels() | async)?.length || 0 : 0">
+                        <div *ngFor="let label of (getYAxisLabels() | async) || []; let i = index; trackBy: trackByIndex" 
                              class="y-axis-label"
                              [style.top.px]="(graphicFilter$ | async)?.view === 'department' ? (i + 0.5) * 40 - 10 : null"
-                             [style.top.%]="(graphicFilter$ | async)?.view === 'anatomy' ? ((i + 0.5) / getYAxisLabels().length) * 100 : null">
+                             [style.top.%]="(graphicFilter$ | async)?.view === 'anatomy' ? ((i + 0.5) / ((getYAxisLabels() | async)?.length || 1)) * 100 : null">
                           {{label}}
                         </div>
                       </div>
@@ -330,12 +330,12 @@
                       <div class="chart-area"
                            [class.department-view]="(graphicFilter$ | async)?.view === 'department'"
                            [class.anatomy-view]="(graphicFilter$ | async)?.view === 'anatomy'"
-                           [style.--department-count]="(graphicFilter$ | async)?.view === 'department' ? departmentsList.length : 0">
+                           [style.--department-count]="(graphicFilter$ | async)?.view === 'department' ? (getYAxisLabels() | async)?.length || 0 : 0">
                         <!-- Horizontal lines for anatomical regions -->
-                        <div *ngFor="let label of getYAxisLabels(); let i = index" 
+                        <div *ngFor="let label of (getYAxisLabels() | async) || []; let i = index" 
                              class="region-line"
                              [style.top.px]="(graphicFilter$ | async)?.view === 'department' ? i * 40 : null"
-                             [style.top.%]="(graphicFilter$ | async)?.view === 'anatomy' ? (i / getYAxisLabels().length) * 100 : null"
+                             [style.top.%]="(graphicFilter$ | async)?.view === 'anatomy' ? (i / ((getYAxisLabels() | async)?.length || 1)) * 100 : null"
                              [class.hovered]="hoveredRegion === label"
                              (mouseenter)="onRegionHover(label)"
                              (mouseleave)="onRegionLeave()">
@@ -344,7 +344,7 @@
                         <!-- TODAY line -->
                         <div class="today-line"
                              [style.left.%]="getTodayPosition(examPoints)"
-                             [style.height.px]="(graphicFilter$ | async)?.view === 'department' ? departmentsList.length * 40 : null"
+                             [style.height.px]="(graphicFilter$ | async)?.view === 'department' ? ((getYAxisLabels() | async)?.length || 0) * 40 : null"
                              [style.height]="(graphicFilter$ | async)?.view === 'anatomy' ? '100%' : null">
                           <div class="today-label">TODAY</div>
                         </div>
