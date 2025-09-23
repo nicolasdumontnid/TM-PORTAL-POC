@@ -275,7 +275,19 @@ export class VisualPatientComponent implements OnInit {
     if (currentFilter.view === 'department') {
       return currentFilter.department !== 'ALL' && currentFilter.department === label;
     } else {
-      return currentFilter.anatomy !== 'ALL' && currentFilter.anatomy === label;
+      // For anatomy view, check if the label matches the selected anatomy filter
+      if (currentFilter.anatomy === 'ALL') {
+        return false;
+      }
+      
+      // Handle "Others" filter
+      if (currentFilter.anatomy === 'Others') {
+        const knownRegions = ['Head - Shoulder', 'Shoulder - Upper Limb', 'Upper Limb - Pelvis', 'Pelvis - Lower Limb', 'Lower Limb - Foot'];
+        return !knownRegions.includes(label);
+      }
+      
+      // Direct match for specific anatomy regions
+      return currentFilter.anatomy === label;
     }
   }
 
