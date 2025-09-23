@@ -425,6 +425,7 @@
   top: 0;
   height: 100%;
   width: 95px;
+  z-index: 5;
 }
 
 .y-axis-label {
@@ -434,6 +435,11 @@
   color: var(--text-secondary);
   transform: translateY(-50%);
   font-weight: 500;
+  background-color: var(--bg-container);
+  padding: 2px 4px;
+  border-radius: 3px;
+  white-space: nowrap;
+  text-align: right;
 }
 
 .chart-area {

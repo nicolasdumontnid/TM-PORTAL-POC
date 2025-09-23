@@ -298,9 +298,9 @@
               <ng-container *ngIf="filteredExamPoints$ | async as examPoints">
                 <!-- Y-axis labels -->
                 <div class="y-axis">
-                  <div *ngFor="let label of getYAxisLabels(); let i = index" 
+                  <div *ngFor="let label of getYAxisLabels(); let i = index; trackBy: trackByIndex" 
                        class="y-axis-label"
-                       [style.top.%]="(i / getYAxisLabels().length) * 100">
+                       [style.top.%]="((i + 0.5) / getYAxisLabels().length) * 100">
                     {{label}}
                   </div>
                 </div>

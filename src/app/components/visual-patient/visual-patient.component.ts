@@ -1020,12 +1020,12 @@ export class VisualPatientComponent implements OnInit {
     const currentFilter = this.graphicFilterSubject.value;
     
     if (currentFilter.view === 'department') {
-      // Return department names
-      let departmentNames: string[] = [];
-      this.departments$.subscribe(departments => {
-        departmentNames = departments.map(dept => dept.name);
+      // Return department names from exam points
+      const uniqueDepartments = new Set<string>();
+      this.examPoints$.subscribe(examPoints => {
+        examPoints.forEach(exam => uniqueDepartments.add(exam.department));
       }).unsubscribe();
-      return departmentNames.length > 0 ? departmentNames : ['Radiology', 'Neurology', 'Pulmonology', 'Gastroenterology', 'Oncology'];
+      return Array.from(uniqueDepartments).sort();
     } else {
       // Return anatomical regions
       return this.anatomicalRegions;
@@ -1042,5 +1042,9 @@ export class VisualPatientComponent implements OnInit {
     
     // Return 2-3 random thumbnails for demo
     return mockThumbnails.slice(0, Math.floor(Math.random() * 2) + 2);
+  }
+
+  trackByIndex(index: number, item: any): number {
+    return index;
   }
 }
