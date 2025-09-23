@@ -247,7 +247,9 @@
           <!-- Department Labels (visible only in department view) -->
           <div class="department-labels" 
                *ngIf="(graphicFilter$ | async)?.view === 'department'"
-               [style.--department-count]="departmentsList.length">
+               [style.--department-count]="departmentsList.length"
+               #departmentLabelsScroll
+               (scroll)="onDepartmentLabelsScroll($event)">
             <div *ngFor="let dept of departmentsList; let i = index" 
                  class="department-label"
                  [style.top.px]="(i + 0.5) * 40 - 10">
@@ -305,8 +307,8 @@
           
           <div class="timeline-chart">
             <div class="chart-container-wrapper">
-              <div class="chart-scroll-container">
-                <div class="chart-vertical-scroll">
+              <div class="chart-scroll-container" #chartScrollContainer>
+                <div class="chart-vertical-scroll" #chartVerticalScroll>
                   <div class="chart-horizontal-scroll">
                     <div class="chart-container"
                          [class.department-view]="(graphicFilter$ | async)?.view === 'department'"

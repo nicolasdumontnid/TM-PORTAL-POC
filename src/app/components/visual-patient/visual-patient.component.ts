@@ -1,4 +1,5 @@
 import { Component, ChangeDetectionStrategy, OnInit, Output, EventEmitter } from '@angular/core';
+import { Component, ChangeDetectionStrategy, OnInit, Output, EventEmitter, ViewChild, ElementRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Observable, BehaviorSubject, combineLatest, map, of } from 'rxjs';
 import { VisualPatientService } from '../../services/visual-patient.service';
@@ -47,6 +48,9 @@ export class VisualPatientComponent implements OnInit {
   hoveredRegion: string | null = null;
   hoveredExamPoint: ExamPoint | null = null;
   tooltipPosition = { x: 0, y: 0 };
+  
+  @ViewChild('departmentLabelsScroll') departmentLabelsScroll!: ElementRef;
+  @ViewChild('chartVerticalScroll') chartVerticalScroll!: ElementRef;
 
   anatomicalRegions = [
     'Head',
@@ -1059,5 +1063,13 @@ export class VisualPatientComponent implements OnInit {
 
   trackByIndex(index: number, item: any): number {
     return index;
+  }
+
+  onDepartmentLabelsScroll(event: Event): void {
+    const target = event.target as HTMLElement;
+    if (this.chartVerticalScroll && this.chartVerticalScroll.nativeElement) {
+      // Synchroniser le scroll du graphique avec celui des labels de départements
+      this.chartVerticalScroll.nativeElement.scrollTop = target.scrollTop;
+    }
   }
 }
