@@ -7,6 +7,7 @@ import { NavSection, NavItem } from '../models/navigation.model';
 })
 export class NavigationService {
   private activeNavItem = new BehaviorSubject<string>('inbox');
+  private navigationChange = new Subject<string>();
   private mockNavSections: NavSection[] = [
     {
       title: 'Boxes',
@@ -80,5 +81,13 @@ export class NavigationService {
 
   setActiveNavItem(itemId: string): void {
     this.activeNavItem.next(itemId);
+  }
+
+  triggerNavigationChange(itemId: string): void {
+    this.navigationChange.next(itemId);
+  }
+
+  getNavigationChange(): Observable<string> {
+    return this.navigationChange.asObservable();
   }
 }

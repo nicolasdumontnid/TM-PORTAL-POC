@@ -1,6 +1,6 @@
-import { Component, ChangeDetectionStrategy } from '@angular/core';
+import { Component, ChangeDetectionStrategy, OnInit, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { BehaviorSubject, OnInit, OnDestroy, Subscription } from 'rxjs';
+import { BehaviorSubject, Subscription } from 'rxjs';
 import { NavigationService } from '../../services/navigation.service';
 import { ContentHeaderComponent } from './content-header/content-header.component';
 import { ExamListComponent } from './exam-list/exam-list.component';
