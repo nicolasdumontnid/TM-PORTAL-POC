@@ -468,7 +468,7 @@ html[data-theme="dark"] .human-body-svg {
 .chart-scroll-container::-webkit-scrollbar {
   height: 8px;
   width: 8px;
-  height: 400px;
+}
 
 .chart-scroll-container::-webkit-scrollbar-track {
   background: var(--bg-main);
@@ -675,7 +675,7 @@ html[data-theme="dark"] .human-body-svg {
   font-size: 0.8rem;
   color: var(--text-secondary);
   transform: translateX(-50%);
-  max-height: 400px;
+  top: 5px;
 }
 
 .images-container {

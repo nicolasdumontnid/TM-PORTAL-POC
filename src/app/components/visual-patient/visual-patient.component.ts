@@ -304,10 +304,10 @@ export class VisualPatientComponent implements OnInit {
       // Use the complete department list to maintain consistent positioning
       const deptIndex = this.departmentsList.indexOf(examPoint.department);
       if (deptIndex >= 0) {
-        // Position in pixels: center of each 50px department row
-        yPosition = (deptIndex * 50) + 25; // 25px to center in the 50px row
+        // Position in pixels: center of each 40px department row
+        yPosition = (deptIndex * 40) + 20; // 20px to center in the 40px row
       } else {
-        yPosition = 25; // Default to first row if not found
+        yPosition = 20; // Default to first row if not found
       }
     } else {
       // Find anatomical region index
