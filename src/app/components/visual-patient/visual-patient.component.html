@@ -354,8 +354,7 @@
                              class="exam-point"
                              [class.future-point]="examPoint.isFuture"
                              [style.left.%]="getExamPointPosition(examPoint, examPoints).x"
-                             [style.top.px]="(graphicFilter$ | async)?.view === 'department' ? getExamPointPosition(examPoint, examPoints).y : null"
-                             [style.top.%]="(graphicFilter$ | async)?.view === 'anatomy' ? getExamPointPosition(examPoint, examPoints).y : null"
+                             [style.top]="getExamPointPositionStyle(examPoint, examPoints)"
                              (mouseenter)="onExamPointHover(examPoint, $event)"
                              (mouseleave)="onExamPointLeave()"
                              (click)="openReporting(examPoint)">

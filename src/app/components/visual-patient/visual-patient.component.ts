@@ -285,26 +285,28 @@ export class VisualPatientComponent implements OnInit {
     const x = ((examPoint.date.getTime() - minDate) / dateRange) * 85 + 10; // 10% margin, 85% width
     
     const currentFilter = this.graphicFilterSubject.value;
-    let yPosition = 0;
+    let yPosition: number | string = 0;
     
     if (currentFilter.view === 'department') {
-      // Find department index in the sorted list
-      // Get unique departments from exam data and sort them
+      // Get unique departments from filtered exam points and sort them
       const uniqueDepartments = [...new Set(examPoints.map(ep => ep.department))].sort();
       const deptIndex = uniqueDepartments.indexOf(examPoint.department);
-      const validIndex = deptIndex >= 0 ? deptIndex : 0;
-      // Position in pixels: center of each 40px department row
-      yPosition = (validIndex * 40) + 20; // 20px to center in the 40px row
+      if (deptIndex >= 0) {
+        // Position in pixels: center of each 40px department row
+        yPosition = (deptIndex * 40) + 20; // 20px to center in the 40px row
+      } else {
+        yPosition = 20; // Default to first row if not found
+      }
     } else {
       // Find anatomical region index
       const regionIndex = this.anatomicalRegions.findIndex(region => 
         examPoint.anatomicalRegion.includes(region));
       const validIndex = regionIndex >= 0 ? regionIndex : 0;
       const totalLabels = this.anatomicalRegions.length;
-      yPosition = (validIndex + 0.5) * (100 / totalLabels);
+      yPosition = `${(validIndex + 0.5) * (100 / totalLabels)}%`;
     }
     
-    return { x, y: yPosition };
+    return { x, y: yPosition as any };
   }
 
   getTimelineLabels(examPoints: ExamPoint[]): { label: string; position: number }[] {
@@ -1057,5 +1059,16 @@ export class VisualPatientComponent implements OnInit {
 
   trackByIndex(index: number, item: any): number {
     return index;
+  }
+
+  getExamPointPositionStyle(examPoint: ExamPoint, examPoints: ExamPoint[]): string {
+    const position = this.getExamPointPosition(examPoint, examPoints);
+    const currentFilter = this.graphicFilterSubject.value;
+    
+    if (currentFilter.view === 'department') {
+      return `${position.y}px`;
+    } else {
+      return `${position.y}`;
+    }
   }
 }
