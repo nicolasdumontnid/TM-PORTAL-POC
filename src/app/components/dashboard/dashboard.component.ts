@@ -20,7 +20,7 @@ interface Exam {
   site: 'principal' | 'policlinique';
   assignedDoctor?: string;
   isSelected: boolean;
-  priority: 'normal' | 'high';
+  priority: 'normal' | 'high' | 'minor';
   modality: 'CT' | 'MR' | 'US' | 'CR';
   examDate: Date;
 }
@@ -73,7 +73,7 @@ export class DashboardComponent implements OnInit {
       site: 'principal',
       assignedDoctor: 'Damien Suchy',
       isSelected: false,
-      priority: 'normal',
+      priority: 'high',
       modality: 'CT',
       examDate: new Date('2025-01-15')
     },
@@ -101,7 +101,7 @@ export class DashboardComponent implements OnInit {
       site: 'principal',
       assignedDoctor: 'Nicolas Dumont',
       isSelected: false,
-      priority: 'normal',
+      priority: 'minor',
       modality: 'CR',
       examDate: new Date('2025-01-10')
     },
@@ -115,7 +115,7 @@ export class DashboardComponent implements OnInit {
       site: 'policlinique',
       assignedDoctor: 'Déborah Bernard',
       isSelected: false,
-      priority: 'normal',
+      priority: 'minor',
       modality: 'MR',
       examDate: new Date('2025-01-08')
     },
@@ -129,7 +129,7 @@ export class DashboardComponent implements OnInit {
       site: 'principal',
       assignedDoctor: 'Damien Suchy',
       isSelected: false,
-      priority: 'normal',
+      priority: 'minor',
       modality: 'CT',
       examDate: new Date('2025-01-05')
     },
@@ -158,7 +158,7 @@ export class DashboardComponent implements OnInit {
       site: 'policlinique',
       assignedDoctor: 'Daniel Lopez',
       isSelected: false,
-      priority: 'normal',
+      priority: 'minor',
       modality: 'US',
       examDate: new Date('2024-11-10')
     },
@@ -172,7 +172,7 @@ export class DashboardComponent implements OnInit {
       site: 'principal',
       assignedDoctor: 'Daniel Lopez',
       isSelected: false,
-      priority: 'normal',
+      priority: 'minor',
       modality: 'MR',
       examDate: new Date('2024-09-05')
     },
@@ -422,6 +422,7 @@ export class DashboardComponent implements OnInit {
 
   // Filters
   selectedReportStatus: 'reported' | 'unreported' = 'unreported';
+  selectedPriority: 'high' | 'normal' | 'minor' | 'all' = 'all';
   selectedSite: 'principal' | 'policlinique' | 'all' = 'all';
   selectedDoctor: string | null = null;
   selectedModality: 'CT' | 'MR' | 'US' | 'CR' | 'all' = 'all';
