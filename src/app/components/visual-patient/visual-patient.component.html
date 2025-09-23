@@ -378,6 +378,8 @@
        class="exam-tooltip"
        [style.left.px]="tooltipPosition.x + 10"
        [style.top.px]="tooltipPosition.y - 10">
+       (mouseenter)="onTooltipEnter()"
+       (mouseleave)="onTooltipLeave()">
     <div class="tooltip-header">
       <h4>{{hoveredExamPoint.examName}}</h4>
       <p class="tooltip-date">{{hoveredExamPoint.date | date:'dd/MM/yyyy'}}</p>

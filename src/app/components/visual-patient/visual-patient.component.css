@@ -763,7 +763,8 @@ html[data-theme="dark"] .human-body-svg {
   z-index: 1000;
   max-width: 350px;
   min-width: 280px;
-  pointer-events: none;
+  pointer-events: auto;
+  cursor: default;
 }
 
 .tooltip-header {

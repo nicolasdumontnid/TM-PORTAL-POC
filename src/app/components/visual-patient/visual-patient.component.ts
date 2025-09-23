@@ -47,6 +47,7 @@ export class VisualPatientComponent implements OnInit {
   hoveredRegion: string | null = null;
   hoveredExamPoint: ExamPoint | null = null;
   tooltipPosition = { x: 0, y: 0 };
+  isTooltipHovered = false;
   
   @ViewChild('departmentLabelsScroll') departmentLabelsScroll!: ElementRef;
   @ViewChild('chartVerticalScroll') chartVerticalScroll!: ElementRef;
@@ -296,6 +297,20 @@ export class VisualPatientComponent implements OnInit {
   }
 
   onExamPointLeave(): void {
+    // Only hide tooltip if not hovering over the tooltip itself
+    setTimeout(() => {
+      if (!this.isTooltipHovered) {
+        this.hoveredExamPoint = null;
+      }
+    }, 100);
+  }
+
+  onTooltipEnter(): void {
+    this.isTooltipHovered = true;
+  }
+
+  onTooltipLeave(): void {
+    this.isTooltipHovered = false;
     this.hoveredExamPoint = null;
   }
 
