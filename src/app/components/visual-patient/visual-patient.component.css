@@ -502,8 +502,8 @@ html[data-theme="dark"] .human-body-svg {
 }
 
 .chart-container.department-view {
-  min-height: 400px;
-  height: 400px;
+  min-height: 320px;
+  height: 320px;
 }
 
 .chart-container.anatomy-view {
@@ -519,7 +519,7 @@ html[data-theme="dark"] .human-body-svg {
 }
 
 .y-axis.department-view {
-  height: 400px;
+  height: 320px;
 }
 
 .y-axis.anatomy-view {
