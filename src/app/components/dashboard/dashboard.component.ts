@@ -436,7 +436,7 @@ export class DashboardComponent implements OnInit {
   showEndTooltip = false;
   highlightStartDate = false;
   highlightEndDate = false;
-
+  
   ngOnInit(): void {
     this.updateCounts();
     this.initializeDates();
