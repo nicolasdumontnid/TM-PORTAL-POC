@@ -493,27 +493,27 @@ export class DashboardComponent implements OnInit {
     });
   }
 
-  public selectedExams(): Exam[] {
+  public getSelectedExams(): Exam[] {
     return this.exams.filter(exam => exam.isSelected);
   }
 
-  getReportedCount(): number {
+  public getReportedCount(): number {
     return this.exams.filter(exam => exam.isReported).length;
   }
 
-  getUnreportedCount(): number {
+  public getUnreportedCount(): number {
     return this.exams.filter(exam => !exam.isReported).length;
   }
 
-  getPrincipalSiteCount(): number {
+  public getPrincipalSiteCount(): number {
     return this.exams.filter(exam => exam.site === 'principal').length;
   }
 
-  getPolicliniqueSiteCount(): number {
+  public getPolicliniqueSiteCount(): number {
     return this.exams.filter(exam => exam.site === 'policlinique').length;
   }
 
-  getDoctorExamCount(doctorName: string): number {
+  public getDoctorExamCount(doctorName: string): number {
     return this.exams.filter(exam => exam.assignedDoctor === doctorName).length;
   }
 
