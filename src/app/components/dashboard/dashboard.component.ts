@@ -430,6 +430,12 @@ export class DashboardComponent implements OnInit {
   // Modal
   showAssignModal = false;
   selectedDoctorForAssign: string | null = null;
+  
+  // Tooltip and highlighting states
+  showStartTooltip = false;
+  showEndTooltip = false;
+  highlightStartDate = false;
+  highlightEndDate = false;
 
   ngOnInit(): void {
     this.updateCounts();
@@ -683,5 +689,16 @@ export class DashboardComponent implements OnInit {
     return true;
   }
 
+  getTooltipDate(type: 'start' | 'end'): string {
+    const date = type === 'start' ? new Date(this.startDate) : new Date(this.endDate);
+    return date.toLocaleDateString('fr-FR', {
+      day: '2-digit',
+      month: '2-digit',
+      year: 'numeric'
+    });
+  }
+
 
 }
+
+export { DashboardComponent }
