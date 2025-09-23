@@ -244,9 +244,18 @@
         </div>
         
         <div class="calendar-map-body">
-          <div class="body-diagram">
+          <!-- Department Labels (visible only in department view) -->
+          <div class="department-labels" *ngIf="(graphicFilter$ | async)?.view === 'department'">
+            <div *ngFor="let dept of departmentsList; let i = index" 
+                 class="department-label"
+                 [style.top.%]="((i + 0.5) / departmentsList.length) * 100">
+              {{dept}}
+            </div>
+          </div>
+          
+          <!-- Body Diagram (visible only in anatomy view) -->
+          <div class="body-diagram" *ngIf="(graphicFilter$ | async)?.view === 'anatomy'">
             <svg 
-              *ngIf="(graphicFilter$ | async)?.view === 'anatomy'"
               class="human-body-svg"
               viewBox="0 0 200 400"
               xmlns="http://www.w3.org/2000/svg">

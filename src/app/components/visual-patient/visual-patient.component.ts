@@ -56,6 +56,16 @@ export class VisualPatientComponent implements OnInit {
     'Lower Limb'
   ];
 
+  departmentsList = [
+    'Cardiology',
+    'Emergency',
+    'Gastroenterology',
+    'Neurology',
+    'Oncology',
+    'Orthopedics',
+    'Pulmonology',
+    'Radiology'
+  ];
   constructor(private visualPatientService: VisualPatientService) {}
 
   ngOnInit(): void {
@@ -276,20 +286,20 @@ export class VisualPatientComponent implements OnInit {
     
     const currentFilter = this.graphicFilterSubject.value;
     let regionIndex = 0;
-    const yAxisLabels = this.getYAxisLabels();
     
     if (currentFilter.view === 'department') {
       // Find department index
-      regionIndex = yAxisLabels.findIndex(label => label === examPoint.department);
+      regionIndex = this.departmentsList.findIndex(dept => dept === examPoint.department);
       regionIndex = regionIndex >= 0 ? regionIndex : 0;
     } else {
       // Find anatomical region index
-      regionIndex = yAxisLabels.findIndex(region => 
+      regionIndex = this.anatomicalRegions.findIndex(region => 
         examPoint.anatomicalRegion.includes(region));
       regionIndex = regionIndex >= 0 ? regionIndex : 0;
     }
     
-    const y = (regionIndex + 0.5) * (100 / yAxisLabels.length);
+    const totalLabels = currentFilter.view === 'department' ? this.departmentsList.length : this.anatomicalRegions.length;
+    const y = (regionIndex + 0.5) * (100 / totalLabels);
     
     return { x, y };
   }
@@ -1020,14 +1030,7 @@ export class VisualPatientComponent implements OnInit {
     const currentFilter = this.graphicFilterSubject.value;
     
     if (currentFilter.view === 'department') {
-      // Return unique department names from exam points
-      let departments: string[] = [];
-      this.examPoints$.subscribe(examPoints => {
-        const uniqueDepartments = new Set<string>();
-        examPoints.forEach(exam => uniqueDepartments.add(exam.department));
-        departments = Array.from(uniqueDepartments).sort();
-      }).unsubscribe();
-      return departments;
+      return this.departmentsList;
     } else {
       // Return anatomical regions
       return this.anatomicalRegions;

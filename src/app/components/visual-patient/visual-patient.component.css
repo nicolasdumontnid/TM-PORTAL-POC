@@ -373,6 +373,27 @@
   margin-top: 20px;
 }
 
+.department-labels {
+  position: relative;
+  width: 120px;
+  height: 300px;
+  flex-shrink: 0;
+}
+
+.department-label {
+  position: absolute;
+  right: 10px;
+  font-size: 0.8rem;
+  color: var(--text-secondary);
+  transform: translateY(-50%);
+  font-weight: 500;
+  background-color: var(--bg-container);
+  padding: 2px 4px;
+  border-radius: 3px;
+  white-space: nowrap;
+  text-align: right;
+}
+
 .body-diagram {
   flex-shrink: 0;
   width: 120px;
