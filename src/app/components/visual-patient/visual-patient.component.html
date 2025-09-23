@@ -353,7 +353,7 @@
                            class="exam-point"
                            [class.future-point]="examPoint.isFuture"
                            [style.left.%]="getExamPointPosition(examPoint, examPoints).x"
-                           [style.top.px]="(graphicFilter$ | async)?.view === 'department' ? getExamPointPosition(examPoint, examPoints).y * 40 / 100 * departmentsList.length : null"
+                           [style.top.px]="(graphicFilter$ | async)?.view === 'department' ? getExamPointPosition(examPoint, examPoints).y : null"
                            [style.top.%]="(graphicFilter$ | async)?.view === 'anatomy' ? getExamPointPosition(examPoint, examPoints).y : null"
                            (mouseenter)="onExamPointHover(examPoint, $event)"
                            (mouseleave)="onExamPointLeave()"

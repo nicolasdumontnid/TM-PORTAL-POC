@@ -285,23 +285,24 @@ export class VisualPatientComponent implements OnInit {
     const x = ((examPoint.date.getTime() - minDate) / dateRange) * 85 + 10; // 10% margin, 85% width
     
     const currentFilter = this.graphicFilterSubject.value;
-    let regionIndex = 0;
+    let yPosition = 0;
     
     if (currentFilter.view === 'department') {
       // Find department index
-      regionIndex = this.departmentsList.findIndex(dept => dept === examPoint.department);
-      regionIndex = regionIndex >= 0 ? regionIndex : 0;
+      const deptIndex = this.departmentsList.findIndex(dept => dept === examPoint.department);
+      const validIndex = deptIndex >= 0 ? deptIndex : 0;
+      // Position in pixels: center of each 40px department row
+      yPosition = (validIndex * 40) + 20; // 20px to center in the 40px row
     } else {
       // Find anatomical region index
-      regionIndex = this.anatomicalRegions.findIndex(region => 
+      const regionIndex = this.anatomicalRegions.findIndex(region => 
         examPoint.anatomicalRegion.includes(region));
-      regionIndex = regionIndex >= 0 ? regionIndex : 0;
+      const validIndex = regionIndex >= 0 ? regionIndex : 0;
+      const totalLabels = this.anatomicalRegions.length;
+      yPosition = (validIndex + 0.5) * (100 / totalLabels);
     }
     
-    const totalLabels = currentFilter.view === 'department' ? this.departmentsList.length : this.anatomicalRegions.length;
-    const y = (regionIndex + 0.5) * (100 / totalLabels);
-    
-    return { x, y };
+    return { x, y: yPosition };
   }
 
   getTimelineLabels(examPoints: ExamPoint[]): { label: string; position: number }[] {
