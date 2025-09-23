@@ -423,6 +423,7 @@ export class DashboardComponent implements OnInit {
   // Filters
   selectedReportStatus: 'reported' | 'unreported' = 'unreported';
   selectedPriority: 'high' | 'normal' | 'minor' | 'all' = 'all';
+  selectedPriority: 'high' | 'normal' | 'minor' | 'all' = 'all';
   selectedSite: 'principal' | 'policlinique' | 'all' = 'all';
   selectedDoctor: string | null = null;
   selectedModality: 'CT' | 'MR' | 'US' | 'CR' | 'all' = 'all';
@@ -490,6 +491,7 @@ export class DashboardComponent implements OnInit {
   get filteredExams(): Exam[] {
     return this.exams.filter(exam => {
       const reportStatusMatch = this.selectedReportStatus === 'reported' ? exam.isReported : !exam.isReported;
+      const priorityMatch = this.selectedPriority === 'all' || exam.priority === this.selectedPriority;
       const siteMatch = this.selectedSite === 'all' || exam.site === this.selectedSite;
       const doctorMatch = !this.selectedDoctor || exam.assignedDoctor === this.selectedDoctor;
       const modalityMatch = this.selectedModality === 'all' || exam.modality === this.selectedModality;
@@ -500,7 +502,7 @@ export class DashboardComponent implements OnInit {
       endDateObj.setHours(23, 59, 59, 999); // Include the entire end date
       const timeMatch = exam.examDate >= startDateObj && exam.examDate <= endDateObj;
       
-      return reportStatusMatch && siteMatch && doctorMatch && modalityMatch && timeMatch;
+      return reportStatusMatch && priorityMatch && siteMatch && doctorMatch && modalityMatch && timeMatch;
     });
   }
 
@@ -530,6 +532,10 @@ export class DashboardComponent implements OnInit {
 
   selectReportStatus(status: 'reported' | 'unreported'): void {
     this.selectedReportStatus = status;
+  }
+
+  selectPriority(priority: 'high' | 'normal' | 'minor' | 'all'): void {
+    this.selectedPriority = priority;
   }
 
   selectSite(site: 'principal' | 'policlinique' | 'all'): void {
