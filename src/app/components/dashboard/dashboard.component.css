@@ -391,6 +391,114 @@
   background-color: var(--primary-light);
 }
 
+/* Time Range Header and Presets */
+.time-range-header {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  margin-bottom: 15px;
+}
+
+.time-range-header h3 {
+  margin: 0;
+}
+
+.time-presets {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.preset-btn {
+  padding: 6px 12px;
+  border: none;
+  border-radius: 16px;
+  cursor: pointer;
+  font-family: 'Poppins', sans-serif;
+  font-size: 0.8rem;
+  font-weight: 500;
+  transition: all 0.2s ease;
+  color: white;
+}
+
+.preset-btn:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+}
+
+/* Different colors for each preset */
+.preset-today {
+  background: #e74c3c;
+}
+
+.preset-today:hover {
+  background: #c0392b;
+}
+
+.preset-days {
+  background: #f39c12;
+}
+
+.preset-days:hover {
+  background: #e67e22;
+}
+
+.preset-week {
+  background: #f1c40f;
+}
+
+.preset-week:hover {
+  background: #d4ac0d;
+}
+
+.preset-month {
+  background: #2ecc71;
+}
+
+.preset-month:hover {
+  background: #27ae60;
+}
+
+.preset-months3 {
+  background: #1abc9c;
+}
+
+.preset-months3:hover {
+  background: #16a085;
+}
+
+.preset-months6 {
+  background: #3498db;
+}
+
+.preset-months6:hover {
+  background: #2980b9;
+}
+
+.preset-year1 {
+  background: #9b59b6;
+}
+
+.preset-year1:hover {
+  background: #8e44ad;
+}
+
+.preset-year2 {
+  background: #e91e63;
+}
+
+.preset-year2:hover {
+  background: #c2185b;
+}
+
+.preset-year3 {
+  background: #607d8b;
+}
+
+.preset-year3:hover {
+  background: #546e7a;
+}
+
 /* Date Range Slider Styles */
 .date-slider-container {
   margin-bottom: 20px;

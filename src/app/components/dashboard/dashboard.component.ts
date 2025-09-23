@@ -411,15 +411,15 @@ export class DashboardComponent implements OnInit {
   ];
 
   // Filters
-  public selectedReportStatus: 'reported' | 'unreported' = 'unreported';
-  public selectedSite: 'principal' | 'policlinique' | 'all' = 'all';
-  public selectedDoctor: string | null = null;
-  public selectedModality: 'CT' | 'MR' | 'US' | 'CR' | 'all' = 'all';
+  selectedReportStatus: 'reported' | 'unreported' = 'unreported';
+  selectedSite: 'principal' | 'policlinique' | 'all' = 'all';
+  selectedDoctor: string | null = null;
+  selectedModality: 'CT' | 'MR' | 'US' | 'CR' | 'all' = 'all';
   
   // Date filter
-  public startDate: string = '';
-  public endDate: string = '';
-  public todayDate: string = '';
+  startDate: string = '';
+  endDate: string = '';
+  todayDate: string = '';
   
   // Slider values (days since epoch)
   public minSliderValue: number = 0;
@@ -428,16 +428,16 @@ export class DashboardComponent implements OnInit {
   public endSliderValue: number = 0;
 
   // Modal
-  public showAssignModal = false;
-  public selectedDoctorForAssign: string | null = null;
+  showAssignModal = false;
+  selectedDoctorForAssign: string | null = null;
   
   // Tooltip and highlighting states
-  public showStartTooltip = false;
-  public showEndTooltip = false;
-  public highlightStartDate = false;
-  public highlightEndDate = false;
+  showStartTooltip = false;
+  showEndTooltip = false;
+  highlightStartDate = false;
+  highlightEndDate = false;
   
-  public ngOnInit(): void {
+  ngOnInit(): void {
     this.updateCounts();
     this.initializeDates();
   }
@@ -493,60 +493,60 @@ export class DashboardComponent implements OnInit {
     });
   }
 
-  public getSelectedExams(): Exam[] {
+  get selectedExams(): Exam[] {
     return this.exams.filter(exam => exam.isSelected);
   }
 
-  public getReportedCount(): number {
+  getReportedCount(): number {
     return this.exams.filter(exam => exam.isReported).length;
   }
 
-  public getUnreportedCount(): number {
+  getUnreportedCount(): number {
     return this.exams.filter(exam => !exam.isReported).length;
   }
 
-  public getPrincipalSiteCount(): number {
+  getPrincipalSiteCount(): number {
     return this.exams.filter(exam => exam.site === 'principal').length;
   }
 
-  public getPolicliniqueSiteCount(): number {
+  getPolicliniqueSiteCount(): number {
     return this.exams.filter(exam => exam.site === 'policlinique').length;
   }
 
-  public getDoctorExamCount(doctorName: string): number {
+  getDoctorExamCount(doctorName: string): number {
     return this.exams.filter(exam => exam.assignedDoctor === doctorName).length;
   }
 
-  public selectReportStatus(status: 'reported' | 'unreported'): void {
+  selectReportStatus(status: 'reported' | 'unreported'): void {
     this.selectedReportStatus = status;
   }
 
-  public selectSite(site: 'principal' | 'policlinique' | 'all'): void {
+  selectSite(site: 'principal' | 'policlinique' | 'all'): void {
     this.selectedSite = site;
   }
 
-  public selectDoctor(doctorName: string | null): void {
+  selectDoctor(doctorName: string | null): void {
     this.selectedDoctor = doctorName;
   }
 
-  public selectModality(modality: 'CT' | 'MR' | 'US' | 'CR' | 'all'): void {
+  selectModality(modality: 'CT' | 'MR' | 'US' | 'CR' | 'all'): void {
     this.selectedModality = modality;
   }
 
-  public getModalityCount(modality: 'CT' | 'MR' | 'US' | 'CR'): number {
+  getModalityCount(modality: 'CT' | 'MR' | 'US' | 'CR'): number {
     return this.exams.filter(exam => exam.modality === modality).length;
   }
 
-  public updateStartDate(event: any): void {
+  updateStartDate(event: any): void {
     this.startDate = event.target.value;
   }
 
-  public updateEndDate(event: any): void {
+  updateEndDate(event: any): void {
     this.endDate = event.target.value;
     this.updateSliderFromDate('end');
   }
   
-  public onStartSliderChange(event: any): void {
+  onStartSliderChange(event: any): void {
     const newValue = parseInt(event.target.value);
     
     // Ensure start is not after end
@@ -559,7 +559,7 @@ export class DashboardComponent implements OnInit {
     }
   }
   
-  public onEndSliderChange(event: any): void {
+  onEndSliderChange(event: any): void {
     const newValue = parseInt(event.target.value);
     
     // Ensure end is not before start
@@ -592,37 +592,36 @@ export class DashboardComponent implements OnInit {
     }
   }
   
-  public getSliderRangeLeft(): number {
+  getSliderRangeLeft(): number {
     const range = this.maxSliderValue - this.minSliderValue;
     return ((this.startSliderValue - this.minSliderValue) / range) * 100;
   }
   
-  public getSliderRangeWidth(): number {
+  getSliderRangeWidth(): number {
     const range = this.maxSliderValue - this.minSliderValue;
     const startPercent = ((this.startSliderValue - this.minSliderValue) / range) * 100;
     const endPercent = ((this.endSliderValue - this.minSliderValue) / range) * 100;
     return endPercent - startPercent;
   }
-  
-  public toggleExamSelection(exam: Exam): void {
+  toggleExamSelection(exam: Exam): void {
     exam.isSelected = !exam.isSelected;
   }
 
-  public selectAllExams(): void {
+  selectAllExams(): void {
     const allSelected = this.filteredExams.every(exam => exam.isSelected);
     this.filteredExams.forEach(exam => {
       exam.isSelected = !allSelected;
     });
   }
 
-  public setHighPriority(): void {
+  setHighPriority(): void {
     this.selectedExams.forEach(exam => {
       exam.priority = 'high';
     });
     console.log('Set high priority for selected exams');
   }
 
-  public openAssignModal(): void {
+  openAssignModal(): void {
     if (this.selectedExams.length === 0) {
       alert('Please select at least one exam');
       return;
@@ -630,12 +629,12 @@ export class DashboardComponent implements OnInit {
     this.showAssignModal = true;
   }
 
-  public closeAssignModal(): void {
+  closeAssignModal(): void {
     this.showAssignModal = false;
     this.selectedDoctorForAssign = null;
   }
 
-  public assignToDoctor(): void {
+  assignToDoctor(): void {
     if (this.selectedDoctorForAssign) {
       this.selectedExams.forEach(exam => {
         exam.assignedDoctor = this.selectedDoctorForAssign!;
@@ -646,7 +645,7 @@ export class DashboardComponent implements OnInit {
     }
   }
 
-  public randomizeAssignment(): void {
+  randomizeAssignment(): void {
     this.selectedExams.forEach(exam => {
       const randomDoctor = this.doctors[Math.floor(Math.random() * this.doctors.length)];
       exam.assignedDoctor = randomDoctor.name;
@@ -655,7 +654,7 @@ export class DashboardComponent implements OnInit {
     this.updateCounts();
   }
 
-  public onClose() {
+  onClose() {
     console.log('Dashboard close button clicked');
     this.close.emit();
   }
@@ -667,17 +666,17 @@ export class DashboardComponent implements OnInit {
     });
   }
 
-  public getDaysOldText(daysOld: number): string {
+  getDaysOldText(daysOld: number): string {
     if (daysOld === 0) return 'Today';
     if (daysOld === 1) return '1 day ago';
     return `${daysOld} days ago`;
   }
 
-  public getSelectAllButtonText(): string {
+  get selectAllButtonText(): string {
     return this.areAllFilteredExamsSelected ? 'Deselect All' : 'Select All';
   }
 
-  public get areAllFilteredExamsSelected(): boolean {
+  get areAllFilteredExamsSelected(): boolean {
     if (this.filteredExams.length === 0) {
       return false;
     }
@@ -697,6 +696,50 @@ export class DashboardComponent implements OnInit {
       month: '2-digit',
       year: 'numeric'
     });
+  }
+
+  setTimePreset(preset: string): void {
+    const today = new Date();
+    let startDate = new Date();
+    const endDate = new Date(today);
+    
+    switch (preset) {
+      case 'today':
+        startDate = new Date(today);
+        break;
+      case 'last3days':
+        startDate.setDate(today.getDate() - 3);
+        break;
+      case 'lastweek':
+        startDate.setDate(today.getDate() - 7);
+        break;
+      case 'lastmonth':
+        startDate.setMonth(today.getMonth() - 1);
+        break;
+      case 'last3months':
+        startDate.setMonth(today.getMonth() - 3);
+        break;
+      case 'last6months':
+        startDate.setMonth(today.getMonth() - 6);
+        break;
+      case 'last1year':
+        startDate.setFullYear(today.getFullYear() - 1);
+        break;
+      case 'last2years':
+        startDate.setFullYear(today.getFullYear() - 2);
+        break;
+      case 'last3years':
+        startDate.setFullYear(today.getFullYear() - 3);
+        break;
+    }
+    
+    // Update the date inputs
+    this.startDate = this.formatDateForInput(startDate);
+    this.endDate = this.formatDateForInput(endDate);
+    
+    // Update the slider values
+    this.startSliderValue = Math.floor(startDate.getTime() / (1000 * 60 * 60 * 24));
+    this.endSliderValue = Math.floor(endDate.getTime() / (1000 * 60 * 60 * 24));
   }
 
 }
