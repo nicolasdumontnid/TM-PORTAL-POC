@@ -2,6 +2,7 @@ import { Component, ChangeDetectionStrategy, OnInit, OnDestroy } from '@angular/
 import { CommonModule } from '@angular/common';
 import { BehaviorSubject, Subscription } from 'rxjs';
 import { NavigationService } from '../../services/navigation.service';
+import { ExamService } from '../../services/exam.service';
 import { ContentHeaderComponent } from './content-header/content-header.component';
 import { ExamListComponent } from './exam-list/exam-list.component';
 import { VisualPatientComponent } from '../visual-patient/visual-patient.component';
@@ -24,7 +25,10 @@ export class MainContentComponent implements OnInit, OnDestroy {
 
   private navigationSubscription?: Subscription;
 
-  constructor(private navigationService: NavigationService) {}
+  constructor(
+    private navigationService: NavigationService,
+    private examService: ExamService
+  ) {}
 
   ngOnInit(): void {
     // Listen to navigation changes
