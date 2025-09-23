@@ -389,6 +389,7 @@ export class VisualPatientComponent implements OnInit {
   openReportingWindow(): void {
     this.configService.getReportingWindowConfig().subscribe(windowConfig => {
       const windowFeatures = `width=${windowConfig.width},height=${windowConfig.height},left=${windowConfig.left},top=${windowConfig.top},scrollbars=yes,resizable=yes`;
+      console.log("*** windowFeatures", windowFeatures)
       const reportingWindow = window.open('about:blank', '_blank', windowFeatures);
       
       if (reportingWindow) {
