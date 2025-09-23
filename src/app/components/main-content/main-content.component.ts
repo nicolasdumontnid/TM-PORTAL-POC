@@ -60,8 +60,9 @@ export class MainContentComponent implements OnInit, OnDestroy {
   
   onHideDashboard(): void {
     this.showDashboardSubject.next(false);
-    // Reset to inbox when closing dashboard
+    // Set navigation to inbox and trigger exam filter update
     this.navigationService.setActiveNavItem('inbox');
+    this.examService.setFilter('inbox');
     this.navigationService.triggerNavigationChange('inbox');
   }
 }
