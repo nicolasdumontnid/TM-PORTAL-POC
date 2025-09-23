@@ -423,7 +423,6 @@ export class DashboardComponent implements OnInit {
   // Filters
   selectedReportStatus: 'reported' | 'unreported' = 'unreported';
   selectedPriority: 'high' | 'normal' | 'minor' | 'all' = 'all';
-  selectedPriority: 'high' | 'normal' | 'minor' | 'all' = 'all';
   selectedSite: 'principal' | 'policlinique' | 'all' = 'all';
   selectedDoctor: string | null = null;
   selectedModality: 'CT' | 'MR' | 'US' | 'CR' | 'all' = 'all';
