@@ -48,10 +48,6 @@ export class VisualPatientComponent implements OnInit {
   hoveredExamPoint: ExamPoint | null = null;
   tooltipPosition = { x: 0, y: 0 };
 
-  // Pre-resolved data for synchronous access
-  resolvedDepartments: Department[] = [];
-  resolvedAnatomyRegions: AnatomyRegion[] = [];
-
   anatomicalRegions = [
     'Head',
     'Shoulder', 
@@ -66,7 +62,6 @@ export class VisualPatientComponent implements OnInit {
     this.loadData();
     this.loadDefaultBlocks();
     this.setupFiltering();
-    this.preloadSynchronousData();
   }
 
   private loadData(): void {
@@ -84,18 +79,6 @@ export class VisualPatientComponent implements OnInit {
   private loadDefaultBlocks(): void {
     this.visualPatientService.getDefaultBlocks().subscribe(blocks => {
       this.visibleBlocksSubject.next(blocks);
-    });
-  }
-
-  private preloadSynchronousData(): void {
-    // Pre-load departments for synchronous access
-    this.departments$.subscribe(departments => {
-      this.resolvedDepartments = departments;
-    });
-
-    // Pre-load anatomy regions for synchronous access
-    this.anatomyRegions$.subscribe(regions => {
-      this.resolvedAnatomyRegions = regions;
     });
   }
 
@@ -295,9 +278,10 @@ export class VisualPatientComponent implements OnInit {
     let regionIndex = 0;
     
     if (currentFilter.view === 'department') {
-      // Find department index
-      const deptIndex = this.resolvedDepartments.findIndex(dept => dept.name === examPoint.department);
-      regionIndex = deptIndex >= 0 ? deptIndex : 0;
+      // Find department index using default departments
+      const defaultDepartments = ['Radiology', 'Neurology', 'Pulmonology', 'Gastroenterology', 'Oncology'];
+      regionIndex = defaultDepartments.findIndex(dept => examPoint.department === dept);
+      regionIndex = regionIndex >= 0 ? regionIndex : 0;
     } else {
       // Find anatomical region index
       regionIndex = this.anatomicalRegions.findIndex(region => 
@@ -1037,9 +1021,8 @@ export class VisualPatientComponent implements OnInit {
     const currentFilter = this.graphicFilterSubject.value;
     
     if (currentFilter.view === 'department') {
-      // Return department names
-      const departmentNames = this.resolvedDepartments.map(dept => dept.name);
-      return departmentNames.length > 0 ? departmentNames : ['Radiology', 'Neurology', 'Pulmonology', 'Gastroenterology', 'Oncology'];
+      // Return default department names
+      return ['Radiology', 'Neurology', 'Pulmonology', 'Gastroenterology', 'Oncology'];
     } else {
       // Return anatomical regions
       return this.anatomicalRegions;
