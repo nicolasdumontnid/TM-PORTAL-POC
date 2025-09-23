@@ -1114,9 +1114,9 @@ export class VisualPatientComponent implements OnInit {
   getExamThumbnails(examPoint: ExamPoint): { url: string; filename: string }[] {
     // Mock thumbnails based on exam type - in real app, this would come from the exam data
     const mockThumbnails = [
-      { url: 'https://i.ibb.co/JqjTz3j/scan-thumb-1.png', filename: 'axial_1.dcm' },
-      { url: 'https://i.ibb.co/9gZ2YjM/scan-thumb-2.png', filename: 'axial_2.dcm' },
-      { url: 'https://i.ibb.co/yQdZn5P/scan-thumb-3.png', filename: 'sagittal_1.dcm' }
+      { url: 'assets/public/images/radio/1-thumbnail.jpeg', filename: 'axial_1.dcm' },
+      { url: 'assets/public/images/radio/2-thumbnail.jpeg', filename: 'axial_2.dcm' },
+      { url: 'assets/public/images/radio/3-thumbnail.jpeg', filename: 'sagittal_1.dcm' }
     ];
     
     // Return 2-3 random thumbnails for demo
