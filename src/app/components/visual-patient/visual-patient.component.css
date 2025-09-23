@@ -378,7 +378,7 @@
   width: 120px;
   flex-shrink: 0;
   overflow-y: auto;
-  max-height: 300px;
+  max-height: 270px;
 }
 
 .department-labels::-webkit-scrollbar {
