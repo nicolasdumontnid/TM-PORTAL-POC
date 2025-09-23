@@ -2,6 +2,7 @@ import { Component, ChangeDetectionStrategy, OnInit, Output, EventEmitter, ViewC
 import { CommonModule } from '@angular/common';
 import { Observable, BehaviorSubject, combineLatest, map, of } from 'rxjs';
 import { VisualPatientService } from '../../services/visual-patient.service';
+import { ConfigService, WindowConfig } from '../../services/config.service';
 import { PatientInfo, RadiologicalRequest, AISummary, RadioReport, PatientRecord, ExamPoint, ImagesByDate, VisualPatientBlock, GraphicFilter, Department, AnatomyRegion } from '../../models/visual-patient.model';
 
 @Component({
@@ -70,7 +71,10 @@ export class VisualPatientComponent implements OnInit {
     'Pulmonology',
     'Radiology'
   ];
-  constructor(private visualPatientService: VisualPatientService) {}
+  constructor(
+    private visualPatientService: VisualPatientService,
+    private configService: ConfigService
+  ) {}
 
   ngOnInit(): void {
     this.loadData();
@@ -383,10 +387,13 @@ export class VisualPatientComponent implements OnInit {
   }
 
   openReportingWindow(): void {
-    const reportingWindow = window.open('about:blank', '_blank', 'width=1200,height=800,scrollbars=yes,resizable=yes');
-    if (reportingWindow) {
-      // Create a complete HTML document with Angular component
-      const htmlContent = `
+    this.configService.getReportingWindowConfig().subscribe(windowConfig => {
+      const windowFeatures = `width=${windowConfig.width},height=${windowConfig.height},left=${windowConfig.left},top=${windowConfig.top},scrollbars=yes,resizable=yes`;
+      const reportingWindow = window.open('about:blank', '_blank', windowFeatures);
+      
+      if (reportingWindow) {
+        // Create a complete HTML document with Angular component
+        const htmlContent = `
         <!DOCTYPE html>
         <html lang="en">
         <head>
@@ -1040,7 +1047,8 @@ export class VisualPatientComponent implements OnInit {
       reportingWindow.document.write(htmlContent);
       reportingWindow.document.close();
       reportingWindow.focus();
-    }
+      }
+    });
   }
       
 
