@@ -377,8 +377,8 @@
   position: relative;
   width: 120px;
   flex-shrink: 0;
-  overflow-y: visible;
-  height: 270px;
+  overflow-y: auto;
+  max-height: 270px;
 }
 
 .department-labels::-webkit-scrollbar {
@@ -398,7 +398,7 @@
 .department-label {
   position: absolute;
   right: 10px;
-  font-size: 0.7rem;
+  font-size: 0.8rem;
   color: var(--text-secondary);
   font-weight: 500;
   background-color: var(--bg-container);
@@ -451,6 +451,7 @@
   overflow-y: auto;
   overflow-x: hidden;
   position: relative;
+  max-height: 270px;
 }
 
 .chart-horizontal-scroll {
