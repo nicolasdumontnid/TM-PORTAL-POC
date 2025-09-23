@@ -517,36 +517,36 @@ export class DashboardComponent implements OnInit {
     return this.exams.filter(exam => exam.assignedDoctor === doctorName).length;
   }
 
-  selectReportStatus(status: 'reported' | 'unreported'): void {
+  public selectReportStatus(status: 'reported' | 'unreported'): void {
     this.selectedReportStatus = status;
   }
 
-  selectSite(site: 'principal' | 'policlinique' | 'all'): void {
+  public selectSite(site: 'principal' | 'policlinique' | 'all'): void {
     this.selectedSite = site;
   }
 
-  selectDoctor(doctorName: string | null): void {
+  public selectDoctor(doctorName: string | null): void {
     this.selectedDoctor = doctorName;
   }
 
-  selectModality(modality: 'CT' | 'MR' | 'US' | 'CR' | 'all'): void {
+  public selectModality(modality: 'CT' | 'MR' | 'US' | 'CR' | 'all'): void {
     this.selectedModality = modality;
   }
 
-  getModalityCount(modality: 'CT' | 'MR' | 'US' | 'CR'): number {
+  public getModalityCount(modality: 'CT' | 'MR' | 'US' | 'CR'): number {
     return this.exams.filter(exam => exam.modality === modality).length;
   }
 
-  updateStartDate(event: any): void {
+  public updateStartDate(event: any): void {
     this.startDate = event.target.value;
   }
 
-  updateEndDate(event: any): void {
+  public updateEndDate(event: any): void {
     this.endDate = event.target.value;
     this.updateSliderFromDate('end');
   }
   
-  onStartSliderChange(event: any): void {
+  public onStartSliderChange(event: any): void {
     const newValue = parseInt(event.target.value);
     
     // Ensure start is not after end
@@ -559,7 +559,7 @@ export class DashboardComponent implements OnInit {
     }
   }
   
-  onEndSliderChange(event: any): void {
+  public onEndSliderChange(event: any): void {
     const newValue = parseInt(event.target.value);
     
     // Ensure end is not before start
@@ -592,7 +592,7 @@ export class DashboardComponent implements OnInit {
     }
   }
   
-  getSliderRangeLeft(): number {
+  public getSliderRangeLeft(): number {
     const range = this.maxSliderValue - this.minSliderValue;
     return ((this.startSliderValue - this.minSliderValue) / range) * 100;
   }
