@@ -291,9 +291,8 @@ export class VisualPatientComponent implements OnInit {
     let yPosition: number = 0;
     
     if (currentFilter.view === 'department') {
-      // Get unique departments from filtered exam points and sort them
-      const uniqueDepartments = [...new Set(examPoints.map(ep => ep.department))].sort();
-      const deptIndex = uniqueDepartments.indexOf(examPoint.department);
+      // Use the complete department list to maintain consistent positioning
+      const deptIndex = this.departmentsList.indexOf(examPoint.department);
       if (deptIndex >= 0) {
         // Position in pixels: center of each 40px department row
         yPosition = (deptIndex * 40) + 20; // 20px to center in the 40px row
