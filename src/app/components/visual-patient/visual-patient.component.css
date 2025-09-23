@@ -456,7 +456,7 @@ html[data-theme="dark"] .human-body-svg {
   overflow-y: auto;
   overflow-x: hidden;
   position: relative;
-  max-height: 270px;
+  max-height: 400px;
 }
 
 .chart-horizontal-scroll {
@@ -468,7 +468,7 @@ html[data-theme="dark"] .human-body-svg {
 .chart-scroll-container::-webkit-scrollbar {
   height: 8px;
   width: 8px;
-}
+  height: 400px;
 
 .chart-scroll-container::-webkit-scrollbar-track {
   background: var(--bg-main);
@@ -502,12 +502,12 @@ html[data-theme="dark"] .human-body-svg {
 }
 
 .chart-container.department-view {
-  min-height: 320px;
-  height: 320px;
+  min-height: 400px;
+  height: 400px;
 }
 
 .chart-container.anatomy-view {
-  height: 300px;
+  height: 250px;
 }
 
 .y-axis {
@@ -519,7 +519,7 @@ html[data-theme="dark"] .human-body-svg {
 }
 
 .y-axis.department-view {
-  height: 320px;
+  height: 400px;
 }
 
 .y-axis.anatomy-view {
@@ -675,7 +675,7 @@ html[data-theme="dark"] .human-body-svg {
   font-size: 0.8rem;
   color: var(--text-secondary);
   transform: translateX(-50%);
-  font-weight: 500;
+  max-height: 400px;
 }
 
 .images-container {
