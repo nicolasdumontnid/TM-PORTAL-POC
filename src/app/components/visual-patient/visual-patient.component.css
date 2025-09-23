@@ -620,7 +620,15 @@ html[data-theme="dark"] .human-body-svg {
   white-space: nowrap;
   box-shadow: 0 2px 8px rgba(0,0,0,0.15);
   z-index: 10;
-  pointer-events: none;
+  pointer-events: auto;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.exam-point-label:hover {
+  background-color: var(--primary-light);
+  border-color: var(--primary-color);
+  transform: translateX(-50%) scale(1.05);
 }
 
 .exam-point-label small {
