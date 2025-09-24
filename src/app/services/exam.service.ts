@@ -412,7 +412,7 @@ export class ExamService {
   setSortOrder(sortOrder: string): void {
     console.log('ExamService: Setting sort order to', sortOrder);
     this.currentSortSubject.next(sortOrder);
-    this._updateAndEmitExams();
+    this.applySortAndEmit();
   }
 
   getCurrentSort(): Observable<string> {
@@ -440,7 +440,42 @@ export class ExamService {
   }
 
   getCurrentFilter(): Observable<string> {
-    return this.currentFilter.asObservable();
+    return this.currentCategoryFilterSubject.asObservable();
+  }
+
+  private matchesSearchQuery(exam: Exam, query: string): boolean {
+    const searchTerm = query.toLowerCase();
+    
+    // Search in patient name (split by space for first/last name)
+    const patientNameParts = exam.patientName.toLowerCase().split(' ');
+    const patientNameMatch = patientNameParts.some(part => part.includes(searchTerm)) || 
+                            exam.patientName.toLowerCase().includes(searchTerm);
+    
+    // Search in assigned doctor (if exists)
+    const assignedDoctor = exam.assignedDoctor?.toLowerCase() || '';
+    const doctorNameParts = assignedDoctor.split(' ');
+    const doctorNameMatch = doctorNameParts.some(part => part.includes(searchTerm)) || 
+                           assignedDoctor.includes(searchTerm);
+    
+    // Search in exam ID
+    const examIdMatch = exam.examId.toLowerCase().includes(searchTerm);
+    
+    // Search in date (multiple formats)
+    const dateStr = exam.date.toLocaleDateString('fr-FR');
+    const isoDateStr = exam.date.toISOString().split('T')[0];
+    const dateMatch = dateStr.includes(searchTerm) || isoDateStr.includes(searchTerm);
+    
+    // Search in indication
+    const indicationMatch = exam.indication.toLowerCase().includes(searchTerm);
+    
+    // Search in AI status
+    const statusMatch = exam.aiStatus.toLowerCase().includes(searchTerm);
+    
+    // Search in exam type
+    const examTypeMatch = exam.examType.toLowerCase().includes(searchTerm);
+    
+    return patientNameMatch || doctorNameMatch || examIdMatch || 
+           dateMatch || indicationMatch || statusMatch || examTypeMatch;
   }
 
   getById(id: string): Observable<Exam | null> {
@@ -535,19 +570,10 @@ export class ExamService {
 
   collapseAll(): Observable<boolean> {
     console.log('ExamService: Collapsing all exams');
-    this.mockExams.forEach(exam => {
+    this.allMockExams.forEach(exam => {
       exam.isExpanded = false;
     });
-    
-    // Also update in allMockExams to maintain consistency
-    this.allMockExams.forEach(exam => {
-      if (this.mockExams.find(mockExam => mockExam.id === exam.id)) {
-        exam.isExpanded = false;
-      }
-    });
-    
-    this.examsSubject.next([...this.mockExams]);
-    this.applySortAndEmit();
+    this._updateAndEmitExams();
     console.log('ExamService: All exams collapsed, applied sort and emitted new state');
     return of(true).pipe(delay(50));
   }
