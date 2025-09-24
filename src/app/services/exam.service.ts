@@ -8,6 +8,7 @@ import { Exam, ExamThumbnail, SearchCriteria, ExamSearchResult } from '../models
 export class ExamService {
   private examsSubject = new BehaviorSubject<Exam[]>([]);
   private currentSortSubject = new BehaviorSubject<string>('date-desc');
+  private searchQuerySubject = new BehaviorSubject<string>('');
   private allMockExams: Exam[] = [
     // Inbox exams (17 examens)
     {
@@ -377,6 +378,7 @@ export class ExamService {
   
   private currentFilter = new BehaviorSubject<string>('inbox');
   private mockExams: Exam[] = [];
+  private filteredExams: Exam[] = [];
 
   constructor() {
     this.updateExamsForFilter('inbox');
@@ -400,7 +402,7 @@ export class ExamService {
         this.mockExams = this.allMockExams.filter(exam => exam.category === 'inbox');
     }
     this.currentFilter.next(filter);
-    this.applySortAndEmit();
+    this.applyFiltersAndSort();
   }
 
   setFilter(filter: string): void {
