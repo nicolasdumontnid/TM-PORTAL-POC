@@ -15,6 +15,7 @@ import { ExamService } from '../../../services/exam.service';
 })
 export class ContentHeaderComponent implements OnInit, OnDestroy {
   searchQuery = '';
+  isSearchFocused = false;
   private isExpandedAllSubject = new BehaviorSubject<boolean>(false);
   isExpandedAll$ = this.isExpandedAllSubject.asObservable();
   showSortDropdown = new BehaviorSubject<boolean>(false);
@@ -111,5 +112,13 @@ export class ContentHeaderComponent implements OnInit, OnDestroy {
   onSearch(): void {
     this.examService.setSearchQuery(this.searchQuery);
     console.log('Searching for:', this.searchQuery);
+  }
+
+  onSearchFocus(): void {
+    this.isSearchFocused = true;
+  }
+
+  onSearchBlur(): void {
+    this.isSearchFocused = false;
   }
 }

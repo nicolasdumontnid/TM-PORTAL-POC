@@ -89,8 +89,14 @@ html[data-theme="dark"] .header-btn:hover {
 
 .search-container {
   position: relative;
-  width: 100%;
+  width: 300px;
   max-width: 300px;
+  transition: all 0.3s ease;
+}
+
+.search-container.focused {
+  width: 450px;
+  max-width: 450px;
 }
 
 .search-container i {
@@ -99,6 +105,7 @@ html[data-theme="dark"] .header-btn:hover {
   top: 50%;
   transform: translateY(-50%);
   color: var(--text-secondary);
+  transition: all 0.3s ease;
 }
 
 .search-container input {
@@ -112,6 +119,7 @@ html[data-theme="dark"] .header-btn:hover {
   font-size: 0.9rem;
   outline: none;
   transition: border-color 0.2s ease, box-shadow 0.2s ease;
+  width: 100%;
 }
 
 .search-container input:focus {

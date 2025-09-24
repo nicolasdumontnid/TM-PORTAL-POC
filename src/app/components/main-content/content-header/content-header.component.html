@@ -25,7 +25,7 @@
       </div>
     </div>
   </div>
-  <div class="search-container">
+  <div class="search-container" [class.focused]="isSearchFocused">
     <i class="ph ph-magnifying-glass"></i>
     <input 
       type="search" 
@@ -33,6 +33,8 @@
       [(ngModel)]="searchQuery"
       (input)="onSearch()"
       (keyup.enter)="onSearch()"
+      (focus)="onSearchFocus()"
+      (blur)="onSearchBlur()"
     >
   </div>
 </div>
