@@ -397,14 +397,13 @@ export class VisualPatientComponent implements OnInit {
         // Register the window for theme synchronization
         this.themeService.registerReportingWindow(reportingWindow);
         // Handle window close to unregister
-        let checkClosed = () => {
+        const checkClosedHandler = () => {
           if (reportingWindow.closed) {
             this.themeService.unregisterReportingWindow(reportingWindow);
           } else {
-            setTimeout(checkClosed, 1000);
+            setTimeout(checkClosedHandler, 1000);
           }
         };
-        setTimeout(checkClosed, 1000);
         
         // Create a complete HTML document with Angular component
         const htmlContent = `
