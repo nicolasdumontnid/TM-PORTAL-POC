@@ -1,4 +1,4 @@
-import { Component, ChangeDetectionStrategy, OnInit, Input, Output, EventEmitter, ViewChild, ElementRef } from '@angular/core';
+import { Component, ChangeDetectionStrategy, OnInit, OnDestroy, Input, Output, EventEmitter, ViewChild, ElementRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Observable, BehaviorSubject, combineLatest, map, of } from 'rxjs';
 import { VisualPatientService } from '../../services/visual-patient.service';
@@ -14,7 +14,7 @@ import { PatientInfo, RadiologicalRequest, AISummary, RadioReport, PatientRecord
   styleUrl: './visual-patient.component.css',
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class VisualPatientComponent implements OnInit {
+export class VisualPatientComponent implements OnInit, OnDestroy {
   @Input() selectedExamId?: string;
   @Output() close = new EventEmitter<void>();
 
@@ -81,12 +81,37 @@ export class VisualPatientComponent implements OnInit {
     private visualPatientService: VisualPatientService,
     private configService: ConfigService,
     private themeService: ThemeService
-  ) {}
+  ) {
+    // Listen for beforeunload event to close child windows
+    window.addEventListener('beforeunload', () => {
+      this.closeAllChildWindows();
+    });
+  }
 
   ngOnInit(): void {
     this.loadData();
     this.loadDefaultBlocks();
     this.setupFiltering();
+  }
+
+  ngOnDestroy(): void {
+    // Close all child windows when component is destroyed
+    this.closeAllChildWindows();
+  }
+
+  private closeAllChildWindows(): void {
+    // Close reporting window
+    if (this.currentReportingWindow && !this.currentReportingWindow.closed) {
+      this.currentReportingWindow.close();
+      this.themeService.unregisterReportingWindow(this.currentReportingWindow);
+      this.currentReportingWindow = null;
+    }
+    
+    // Close viewer window
+    if (this.currentViewerWindow && !this.currentViewerWindow.closed) {
+      this.currentViewerWindow.close();
+      this.currentViewerWindow = null;
+    }
   }
 
   private loadData(): void {
@@ -1245,6 +1270,8 @@ export class VisualPatientComponent implements OnInit {
 
 
   onClose(): void {
+    // Close all child windows before closing the component
+    this.closeAllChildWindows();
     this.close.emit();
   }
 
