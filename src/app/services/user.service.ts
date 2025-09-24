@@ -14,6 +14,7 @@ export class UserService {
     const mockUser: User = {
       id: '1',
       name: 'Dr. Marie Dubois',
+      title: 'Radiologist',
       email: 'marie.dubois@clinique-parc.fr',
       role: 'Radiologist',
       department: 'Radiology',
