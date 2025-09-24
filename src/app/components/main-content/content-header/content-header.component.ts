@@ -1,7 +1,7 @@
 import { Component, ChangeDetectionStrategy, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { BehaviorSubject, Observable, map, switchMap, startWith } from 'rxjs';
+import { BehaviorSubject, Observable, map, switchMap, startWith, ChangeDetectorRef } from 'rxjs';
 import { NavigationService } from '../../../services/navigation.service';
 import { ExamService } from '../../../services/exam.service';
 
@@ -23,7 +23,8 @@ export class ContentHeaderComponent implements OnInit {
 
   constructor(
     private navigationService: NavigationService,
-    private examService: ExamService
+    private examService: ExamService,
+    private cdr: ChangeDetectorRef
   ) {}
 
   ngOnInit(): void {
@@ -46,6 +47,7 @@ export class ContentHeaderComponent implements OnInit {
     this.examService.getAll().subscribe(exams => {
       const allExpanded = exams.length > 0 && exams.every(exam => exam.isExpanded);
       this.isExpandedAllSubject.next(allExpanded);
+      this.cdr.markForCheck();
     });
   }
 
@@ -59,9 +61,13 @@ export class ContentHeaderComponent implements OnInit {
 
   toggleExpandAll(): void {
     if (this.isExpandedAllSubject.value) {
-      this.examService.collapseAll().subscribe();
+      this.examService.collapseAll().subscribe(() => {
+        this.cdr.markForCheck();
+      });
     } else {
-      this.examService.expandAll().subscribe();
+      this.examService.expandAll().subscribe(() => {
+        this.cdr.markForCheck();
+      });
     }
   }
   

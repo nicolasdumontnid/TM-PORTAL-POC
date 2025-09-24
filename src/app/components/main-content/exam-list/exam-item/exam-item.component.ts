@@ -1,4 +1,4 @@
-import { Component, ChangeDetectionStrategy, Input } from '@angular/core';
+import { Component, ChangeDetectionStrategy, Input, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Exam } from '../../../../models/exam.model';
 import { ExamService } from '../../../../services/exam.service';
@@ -14,14 +14,21 @@ import { ExamService } from '../../../../services/exam.service';
 export class ExamItemComponent {
   @Input() exam!: Exam;
 
-  constructor(private examService: ExamService) {}
+  constructor(
+    private examService: ExamService,
+    private cdr: ChangeDetectorRef
+  ) {}
 
   toggleExpansion(): void {
-    this.examService.update(this.exam.id, { isExpanded: !this.exam.isExpanded }).subscribe();
+    this.examService.update(this.exam.id, { isExpanded: !this.exam.isExpanded }).subscribe(() => {
+      this.cdr.markForCheck();
+    });
   }
 
   togglePin(): void {
-    this.examService.update(this.exam.id, { isPinned: !this.exam.isPinned }).subscribe();
+    this.examService.update(this.exam.id, { isPinned: !this.exam.isPinned }).subscribe(() => {
+      this.cdr.markForCheck();
+    });
   }
 
   getAiButtonClass(): string {
