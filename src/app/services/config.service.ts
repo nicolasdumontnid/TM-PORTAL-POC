@@ -32,6 +32,19 @@ export class ConfigService {
 
     return this.fetchConfig().pipe(
       map(config => {
+        // Check localStorage for saved window position
+        const savedLeft = localStorage.getItem('reporting.window.left');
+        const savedTop = localStorage.getItem('reporting.window.top');
+        const savedWidth = localStorage.getItem('reporting.window.width');
+        const savedHeight = localStorage.getItem('reporting.window.height');
+        
+        // Use localStorage values if they exist, otherwise use config values
+        return {
+          left: savedLeft ? parseInt(savedLeft, 10) : config.reporting.window.left,
+          top: savedTop ? parseInt(savedTop, 10) : config.reporting.window.top,
+          width: savedWidth ? parseInt(savedWidth, 10) : config.reporting.window.width,
+          height: savedHeight ? parseInt(savedHeight, 10) : config.reporting.window.height
+        };
         this.config = config;
         return config;
       }),
@@ -49,11 +62,27 @@ export class ConfigService {
           }
         };
         this.config = defaultConfig;
-        return of(defaultConfig);
       })
     );
   }
 
+  saveReportingWindowPosition(windowRef: Window): void {
+    if (windowRef && !windowRef.closed) {
+      // Get current window position and size
+      const left = windowRef.screenX || windowRef.screenLeft || 0;
+      const top = windowRef.screenY || windowRef.screenTop || 0;
+      const width = windowRef.outerWidth || 1200;
+      const height = windowRef.outerHeight || 800;
+      
+      // Save to localStorage
+      localStorage.setItem('reporting.window.left', left.toString());
+      localStorage.setItem('reporting.window.top', top.toString());
+      localStorage.setItem('reporting.window.width', width.toString());
+      localStorage.setItem('reporting.window.height', height.toString());
+      
+      console.log('Window position saved:', { left, top, width, height });
+    }
+  }
   private fetchConfig(): Observable<AppConfig> {
     return new Observable<AppConfig>(observer => {
       fetch('/assets/config/properties.config')

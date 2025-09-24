@@ -418,6 +418,7 @@ export class VisualPatientComponent implements OnInit {
           <link rel="preconnect" href="https://fonts.googleapis.com">
           <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
           <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+          <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
           <style>
             :root {
               /* Light Theme (Default) */
@@ -472,6 +473,38 @@ export class VisualPatientComponent implements OnInit {
               margin-bottom: 30px; 
               padding-bottom: 20px;
               border-bottom: 2px solid var(--primary-color);
+            }
+            
+            .header-left {
+              display: flex;
+              align-items: center;
+              gap: 15px;
+            }
+            
+            .save-position-btn {
+              background: var(--primary-color);
+              border: none;
+              color: white;
+              width: 40px;
+              height: 40px;
+              border-radius: 50%;
+              cursor: pointer;
+              font-size: 16px;
+              display: flex;
+              align-items: center;
+              justify-content: center;
+              transition: all 0.2s ease;
+              box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            }
+            
+            .save-position-btn:hover {
+              background: #0f9488;
+              transform: scale(1.05);
+              box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+            }
+            
+            .save-position-btn:active {
+              transform: scale(0.95);
             }
             
             .logo { 
@@ -836,13 +869,28 @@ export class VisualPatientComponent implements OnInit {
               .findings-matrix {
                 gap: 10px;
               }
+              
+              .header-left {
+                gap: 10px;
+              }
+              
+              .save-position-btn {
+                width: 35px;
+                height: 35px;
+                font-size: 14px;
+              }
             }
           </style>
         </head>
         <body>
           <div class="container">
             <div class="header">
-              <div class="logo">🏥 Clinique du Parc</div>
+              <div class="header-left">
+                <button class="save-position-btn" onclick="saveWindowPosition()" title="Save window position">
+                  <i class="fas fa-crosshairs"></i>
+                </button>
+                <div class="logo">🏥 Clinique du Parc</div>
+              </div>
               <div class="template-selector">
                 <select id="templateSelect" class="template-dropdown" onchange="onTemplateChange()">
                   <option value="">Select template...</option>
@@ -1046,6 +1094,33 @@ export class VisualPatientComponent implements OnInit {
           </div>
           
           <script>
+            function saveWindowPosition() {
+              // Get current window position and size
+              const left = window.screenX || window.screenLeft || 0;
+              const top = window.screenY || window.screenTop || 0;
+              const width = window.outerWidth || 1200;
+              const height = window.outerHeight || 800;
+              
+              // Communicate with parent window to save position
+              if (window.opener && !window.opener.closed) {
+                window.opener.postMessage({
+                  type: 'saveWindowPosition',
+                  position: { left, top, width, height }
+                }, '*');
+              }
+              
+              // Visual feedback
+              const btn = document.querySelector('.save-position-btn');
+              const originalIcon = btn.innerHTML;
+              btn.innerHTML = '<i class="fas fa-check"></i>';
+              btn.style.background = '#2ECC71';
+              
+              setTimeout(() => {
+                btn.innerHTML = originalIcon;
+                btn.style.background = '';
+              }, 1000);
+            }
+            
             function onTemplateChange() {
               const select = document.getElementById('templateSelect');
               const selectedTemplate = select.value;
@@ -1089,6 +1164,26 @@ export class VisualPatientComponent implements OnInit {
       reportingWindow.document.write(htmlContent);
       reportingWindow.document.close();
       reportingWindow.focus();
+      
+      // Listen for messages from the child window
+      const messageHandler = (event: MessageEvent) => {
+        if (event.data.type === 'saveWindowPosition') {
+          this.configService.saveReportingWindowPosition(reportingWindow);
+        }
+      };
+      
+      window.addEventListener('message', messageHandler);
+      
+      // Clean up event listener when window closes
+      const originalCheckClosed = checkClosed;
+      checkClosed = () => {
+        if (reportingWindow.closed) {
+          window.removeEventListener('message', messageHandler);
+          this.themeService.unregisterReportingWindow(reportingWindow);
+        } else {
+          setTimeout(checkClosed, 1000);
+        }
+      };
       }
     });
   }
