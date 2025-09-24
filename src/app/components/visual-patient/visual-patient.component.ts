@@ -17,6 +17,9 @@ import { PatientInfo, RadiologicalRequest, AISummary, RadioReport, PatientRecord
 export class VisualPatientComponent implements OnInit {
   @Output() close = new EventEmitter<void>();
 
+  // Référence vers la fenêtre reporting ouverte
+  private currentReportingWindow: Window | null = null;
+
   patientInfo$!: Observable<PatientInfo>;
   radiologicalRequest$!: Observable<RadiologicalRequest>;
   aiSummary$!: Observable<AISummary>;
@@ -389,17 +392,31 @@ export class VisualPatientComponent implements OnInit {
   }
 
   openReportingWindow(): void {
+    // Fermer la fenêtre existante si elle est ouverte
+    if (this.currentReportingWindow && !this.currentReportingWindow.closed) {
+      this.currentReportingWindow.close();
+      this.themeService.unregisterReportingWindow(this.currentReportingWindow);
+      this.currentReportingWindow = null;
+    }
+
     this.configService.getReportingWindowConfig().subscribe(windowConfig => {
       const windowFeatures = `width=${windowConfig.width},height=${windowConfig.height},left=${windowConfig.left},top=${windowConfig.top},scrollbars=yes,resizable=yes`;
       const reportingWindow = window.open('about:blank', '_blank', windowFeatures);
       
       if (reportingWindow) {
+        // Stocker la référence de la nouvelle fenêtre
+        this.currentReportingWindow = reportingWindow;
+        
         // Register the window for theme synchronization
         this.themeService.registerReportingWindow(reportingWindow);
         // Handle window close to unregister
         let checkClosedHandler = () => {
           if (reportingWindow.closed) {
             this.themeService.unregisterReportingWindow(reportingWindow);
+            // Nettoyer la référence quand la fenêtre est fermée
+            if (this.currentReportingWindow === reportingWindow) {
+              this.currentReportingWindow = null;
+            }
           } else {
             setTimeout(checkClosedHandler, 1000);
           }
