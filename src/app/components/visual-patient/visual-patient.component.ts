@@ -1173,15 +1173,16 @@ export class VisualPatientComponent implements OnInit {
       window.addEventListener('message', messageHandler);
       
       // Clean up event listener when window closes
-      const originalCheckClosed = checkClosed;
-      checkClosed = () => {
+      const checkClosedHandler = () => {
         if (reportingWindow.closed) {
           window.removeEventListener('message', messageHandler);
           this.themeService.unregisterReportingWindow(reportingWindow);
         } else {
-          setTimeout(checkClosed, 1000);
+          setTimeout(checkClosedHandler, 1000);
         }
       };
+      
+      checkClosedHandler();
       }
     });
   }
