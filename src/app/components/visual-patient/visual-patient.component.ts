@@ -1300,38 +1300,22 @@ export class VisualPatientComponent implements OnInit {
   }
 
   public getTodayPosition(examPoints: ExamPoint[]): number {
-    if (!examPoints.length) return 50;
-    
-    const dates = examPoints.map(ep => ep.date.getTime()).sort((a, b) => a - b);
-    const minDate = dates[0];
-    const maxDate = dates[dates.length - 1];
-    const dateRange = maxDate - minDate || 1;
-    const today = new Date().getTime();
-    
-    const x = ((examPoint.date.getTime() - minDate) / dateRange) * 85 + 10; // 10% margin, 85% width
-    
-    const currentFilter = this.graphicFilterSubject.value;
-    let yPosition: number = 0;
-    
-    if (currentFilter.view === 'department') {
-      // Use the complete department list to maintain consistent positioning
-      const deptIndex = this.departmentsList.indexOf(examPoint.department);
-      if (deptIndex >= 0) {
-        // Position in pixels: center of each 40px department row
-        yPosition = (deptIndex * 40) + 20; // 20px to center in the 40px row
-      } else {
-        yPosition = 20; // Default to first row if not found
-      }
-    } else {
-      // Find anatomical region index
-      const regionIndex = this.anatomicalRegions.findIndex(region => 
-        examPoint.anatomicalRegion.includes(region));
-      const validIndex = regionIndex >= 0 ? regionIndex : 0;
-      const totalLabels = this.anatomicalRegions.length;
-      yPosition = (validIndex + 0.5) * (100 / totalLabels);
+    if (!examPoints || examPoints.length === 0) {
+      return 0;
     }
-    
-    return { x, y: yPosition };
+
+    const today = new Date();
+    const dates = examPoints.map(point => point.date);
+    const minDate = Math.min(...dates.map(date => date.getTime()));
+    const maxDate = Math.max(...dates.map(date => date.getTime()));
+    const dateRange = maxDate - minDate;
+
+    if (dateRange === 0) {
+      return 0;
+    }
+
+    const todayPosition = ((today.getTime() - minDate) / dateRange) * 100;
+    return Math.max(0, Math.min(100, todayPosition));
   }
 
   trackByIndex(index: number, item: any): number {
