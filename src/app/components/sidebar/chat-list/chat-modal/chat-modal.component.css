@@ -43,10 +43,9 @@
   height: 50px;
   border-radius: 50%;
   object-fit: cover;
-  object-position: 0 0;
 }
 
-/* Utiliser la même logique de positionnement que dans chat-list */
+/* Positionnement par défaut pour patients.jpg */
 .contact-info .avatar[src*="patients.jpg"] {
   object-position: 0 0;
 }

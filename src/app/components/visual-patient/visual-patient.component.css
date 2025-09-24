@@ -176,6 +176,10 @@
   border-radius: 50%;
   object-fit: cover;
   border: 3px solid var(--border-color);
+}
+
+/* Positionnement pour patients.jpg - utilise la 2ème colonne */
+.patient-photo[src*="patients.jpg"] {
   object-position: -113px 0;
 }
 
