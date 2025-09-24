@@ -1,6 +1,6 @@
 import { Component, ChangeDetectionStrategy, OnInit, Output, EventEmitter } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { Observable } from 'rxjs';
+import { Observable, tap } from 'rxjs';
 import { ExamService } from '../../../services/exam.service';
 import { Exam } from '../../../models/exam.model';
 import { ExamItemComponent } from './exam-item/exam-item.component';
@@ -11,7 +11,7 @@ import { ExamItemComponent } from './exam-item/exam-item.component';
   imports: [CommonModule, ExamItemComponent],
   templateUrl: './exam-list.component.html',
   styleUrl: './exam-list.component.css',
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.Default
 })
 export class ExamListComponent implements OnInit {
   @Output() examDoubleClick = new EventEmitter<string>();
@@ -20,7 +20,9 @@ export class ExamListComponent implements OnInit {
   constructor(private examService: ExamService) {}
 
   ngOnInit(): void {
-    this.exams$ = this.examService.getAll();
+    this.exams$ = this.examService.getAll().pipe(
+      tap(() => console.log('Exams updated'))
+    );
   }
 
   trackByExamId(index: number, exam: Exam): string {
