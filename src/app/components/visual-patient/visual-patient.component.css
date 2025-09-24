@@ -192,6 +192,7 @@
   font-weight: 600;
   color: var(--text-secondary);
   min-width: 120px;
+  margin-right: 10px;
 }
 
 .detail-row .value {
