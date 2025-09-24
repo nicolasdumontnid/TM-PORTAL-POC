@@ -176,6 +176,7 @@
   border-radius: 50%;
   object-fit: cover;
   border: 3px solid var(--border-color);
+  object-position: -113px 0;
 }
 
 .patient-details {

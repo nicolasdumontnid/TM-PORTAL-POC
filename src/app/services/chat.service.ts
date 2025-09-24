@@ -11,7 +11,7 @@ export class ChatService {
     {
       id: '1',
       name: 'CT Scan1',
-      avatar: 'assets/public/images/patient.jpg',
+      avatar: 'assets/public/images/patients.jpg',
       lastMessage: 'Injection?',
       isOnline: false,
       isUnread: true

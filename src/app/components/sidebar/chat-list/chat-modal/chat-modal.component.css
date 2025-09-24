@@ -43,6 +43,12 @@
   height: 50px;
   border-radius: 50%;
   object-fit: cover;
+  object-position: 0 0;
+}
+
+/* Utiliser la même logique de positionnement que dans chat-list */
+.contact-info .avatar[src*="patients.jpg"] {
+  object-position: 0 0;
 }
 
 .contact-details h3 {

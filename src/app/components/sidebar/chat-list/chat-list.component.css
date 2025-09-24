@@ -46,6 +46,55 @@
   height: 40px;
   border-radius: 50%;
   object-fit: cover;
+  object-position: 0 0;
+}
+
+.chat-contact:nth-child(1) .avatar {
+  object-position: 0 0;
+}
+
+.chat-contact:nth-child(2) .avatar {
+  object-position: -113px 0;
+}
+
+.chat-contact:nth-child(3) .avatar {
+  object-position: -226px 0;
+}
+
+.chat-contact:nth-child(4) .avatar {
+  object-position: -339px 0;
+}
+
+.chat-contact:nth-child(5) .avatar {
+  object-position: -452px 0;
+}
+
+.chat-contact:nth-child(6) .avatar {
+  object-position: -565px 0;
+}
+
+.chat-contact:nth-child(7) .avatar {
+  object-position: 0 -120px;
+}
+
+.chat-contact:nth-child(8) .avatar {
+  object-position: -113px -120px;
+}
+
+.chat-contact:nth-child(9) .avatar {
+  object-position: -226px -120px;
+}
+
+.chat-contact:nth-child(10) .avatar {
+  object-position: -339px -120px;
+}
+
+.chat-contact:nth-child(11) .avatar {
+  object-position: -452px -120px;
+}
+
+.chat-contact:nth-child(12) .avatar {
+  object-position: -565px -120px;
 }
 
 .chat-contact .status-dot {
