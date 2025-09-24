@@ -1,7 +1,7 @@
 import { Component, ChangeDetectionStrategy, OnInit, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { BehaviorSubject, Observable, map } from 'rxjs';
+import { BehaviorSubject, Observable, map, Subscription } from 'rxjs';
 import { NavigationService } from '../../../services/navigation.service';
 import { ExamService } from '../../../services/exam.service';
 
@@ -20,6 +20,7 @@ export class ContentHeaderComponent implements OnInit {
   showSortDropdown = new BehaviorSubject<boolean>(false);
   currentSort$!: Observable<string>;
   pageTitle$!: Observable<string>;
+  private navigationSubscription?: Subscription;
 
   constructor(
     private navigationService: NavigationService,
@@ -47,6 +48,18 @@ export class ContentHeaderComponent implements OnInit {
       const allExpanded = exams.length > 0 && exams.every(exam => exam.isExpanded);
       this.isExpandedAllSubject.next(allExpanded);
     });
+
+    // Listen to navigation changes to reset search
+    this.navigationSubscription = this.navigationService.getNavigationChange().subscribe(() => {
+      this.searchQuery = '';
+      this.examService.setSearchQuery('');
+    });
+  }
+
+  ngOnDestroy(): void {
+    if (this.navigationSubscription) {
+      this.navigationSubscription.unsubscribe();
+    }
   }
 
   expandAllText = this.isExpandedAll$.pipe(
