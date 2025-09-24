@@ -22,13 +22,18 @@ export class ContentHeaderComponent implements OnInit, OnDestroy {
   currentSort$!: Observable<string>;
   currentSortLabel$!: Observable<string>;
   pageTitle$!: Observable<string>;
-  hasExams$!: Observable<boolean>;
+  hasExams$: Observable<boolean>;
   private navigationSubscription?: Subscription;
 
   constructor(
     private navigationService: NavigationService,
     private examService: ExamService
-  ) {}
+  ) {
+    // Initialize hasExams$ in constructor to ensure it's available for template
+    this.hasExams$ = this.examService.getAll().pipe(
+      map(exams => exams.length > 0)
+    );
+  }
 
   ngOnInit(): void {
     this.pageTitle$ = this.navigationService.getActiveNavItem().pipe(
@@ -44,11 +49,6 @@ export class ContentHeaderComponent implements OnInit, OnDestroy {
           default: return 'Inbox';
         }
       })
-    );
-
-    // Observable pour savoir s'il y a des examens
-    this.hasExams$ = this.examService.getAll().pipe(
-      map(exams => exams.length > 0)
     );
 
     // Initialize sort observables
