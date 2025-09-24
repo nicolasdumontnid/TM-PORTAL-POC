@@ -9,6 +9,7 @@ export class ExamService {
   private examsSubject = new BehaviorSubject<Exam[]>([]);
   private currentSortSubject = new BehaviorSubject<string>('date-desc');
   private searchQuerySubject = new BehaviorSubject<string>('');
+  private searchQuerySubject = new BehaviorSubject<string>('');
   private allMockExams: Exam[] = [
     // Inbox exams (17 examens)
     {
@@ -377,12 +378,10 @@ export class ExamService {
     }
   ];
   
-  private currentFilter = new BehaviorSubject<string>('inbox');
-  private mockExams: Exam[] = [];
-  private filteredExams: Exam[] = [];
+  private currentCategoryFilterSubject = new BehaviorSubject<string>('inbox');
 
   constructor() {
-    this.updateExamsForFilter('inbox');
+    this._updateAndEmitExams();
   }
 
   private updateExamsForFilter(filter: string): void {
@@ -413,7 +412,7 @@ export class ExamService {
   setSortOrder(sortOrder: string): void {
     console.log('ExamService: Setting sort order to', sortOrder);
     this.currentSortSubject.next(sortOrder);
-    this.applySortAndEmit();
+    this._updateAndEmitExams();
   }
 
   getCurrentSort(): Observable<string> {
