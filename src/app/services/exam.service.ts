@@ -382,6 +382,80 @@ export class ExamService {
     this._applyFiltersAndSortAndEmit();
   }
 
+  setSearchQuery(query: string): void {
+    this.searchQuerySubject.next(query);
+    this._applyFiltersAndSortAndEmit();
+  }
+
+  getSearchQuery(): Observable<string> {
+    return this.searchQuerySubject.asObservable();
+  }
+
+  private _applyFiltersAndSortAndEmit(): void {
+    const currentCategory = this.currentCategoryFilterSubject.value;
+    const searchQuery = this.searchQuerySubject.value;
+    const sortOrder = this.currentSortSubject.value;
+
+    // Filter by category
+    let filteredExams = this.allMockExams.filter(exam => {
+      switch (currentCategory) {
+        case 'inbox': return exam.category === 'inbox';
+        case 'pending': return exam.category === 'pending';
+        case 'second-opinion': return exam.category === 'second-opinion';
+        case 'completed': return exam.category === 'completed';
+        default: return exam.category === 'inbox';
+      }
+    });
+
+    // Apply search filter
+    if (searchQuery.trim()) {
+      filteredExams = filteredExams.filter(exam => 
+        this.matchesSearchQuery(exam, searchQuery)
+      );
+    }
+
+    // Apply sorting
+    const sortedExams = this.sortExams([...filteredExams], sortOrder);
+
+    // Emit results
+    this.examsSubject.next(sortedExams);
+  }
+
+  private matchesSearchQuery(exam: Exam, query: string): boolean {
+    const searchTerm = query.toLowerCase();
+    
+    // Search in patient name (split by space for first/last name)
+    const patientNameParts = exam.patientName.toLowerCase().split(' ');
+    const patientNameMatch = patientNameParts.some(part => part.includes(searchTerm)) || 
+                            exam.patientName.toLowerCase().includes(searchTerm);
+    
+    // Search in assigned doctor (if exists)
+    const assignedDoctor = exam.assignedDoctor?.toLowerCase() || '';
+    const doctorNameParts = assignedDoctor.split(' ');
+    const doctorNameMatch = doctorNameParts.some(part => part.includes(searchTerm)) || 
+                           assignedDoctor.includes(searchTerm);
+    
+    // Search in exam ID
+    const examIdMatch = exam.examId.toLowerCase().includes(searchTerm);
+    
+    // Search in date (multiple formats)
+    const dateStr = exam.date.toLocaleDateString('fr-FR');
+    const isoDateStr = exam.date.toISOString().split('T')[0];
+    const dateMatch = dateStr.includes(searchTerm) || isoDateStr.includes(searchTerm);
+    
+    // Search in indication
+    const indicationMatch = exam.indication.toLowerCase().includes(searchTerm);
+    
+    // Search in AI status
+    const statusMatch = exam.aiStatus.toLowerCase().includes(searchTerm);
+    
+    // Search in exam type
+    const examTypeMatch = exam.examType.toLowerCase().includes(searchTerm);
+    
+    return patientNameMatch || doctorNameMatch || examIdMatch || 
+           dateMatch || indicationMatch || statusMatch || examTypeMatch;
+  }
+
   private updateExamsForFilter(filter: string): void {
     switch (filter) {
       case 'inbox':
@@ -571,7 +645,7 @@ export class ExamService {
     this.allMockExams.forEach(exam => {
       exam.isExpanded = false;
     });
-    this._updateAndEmitExams();
+    this._applyFiltersAndSortAndEmit();
     console.log('ExamService: All exams collapsed, applied sort and emitted new state');
     return of(true).pipe(delay(50));
   }
