@@ -1308,7 +1308,30 @@ export class VisualPatientComponent implements OnInit {
     const dateRange = maxDate - minDate || 1;
     const today = new Date().getTime();
     
-    return ((today - minDate) / dateRange) * 85 + 10; // 10% margin, 85% width
+    const x = ((examPoint.date.getTime() - minDate) / dateRange) * 85 + 10; // 10% margin, 85% width
+    
+    const currentFilter = this.graphicFilterSubject.value;
+    let yPosition: number = 0;
+    
+    if (currentFilter.view === 'department') {
+      // Use the complete department list to maintain consistent positioning
+      const deptIndex = this.departmentsList.indexOf(examPoint.department);
+      if (deptIndex >= 0) {
+        // Position in pixels: center of each 40px department row
+        yPosition = (deptIndex * 40) + 20; // 20px to center in the 40px row
+      } else {
+        yPosition = 20; // Default to first row if not found
+      }
+    } else {
+      // Find anatomical region index
+      const regionIndex = this.anatomicalRegions.findIndex(region => 
+        examPoint.anatomicalRegion.includes(region));
+      const validIndex = regionIndex >= 0 ? regionIndex : 0;
+      const totalLabels = this.anatomicalRegions.length;
+      yPosition = (validIndex + 0.5) * (100 / totalLabels);
+    }
+    
+    return { x, y: yPosition };
   }
 
   trackByIndex(index: number, item: any): number {
