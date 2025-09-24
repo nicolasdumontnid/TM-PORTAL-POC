@@ -1249,7 +1249,7 @@ export class VisualPatientComponent implements OnInit {
     this.close.emit();
   }
 
-  openReporting(examPoint?: ExamPoint, image?: any): void {
+  public openReporting(examPoint?: ExamPoint, image?: any): void {
     console.log('Opening reporting for:', examPoint, image);
     this.openReportingWindow();
   }
@@ -1292,7 +1292,7 @@ export class VisualPatientComponent implements OnInit {
     }
   }
 
-  getExamThumbnails(examPoint: ExamPoint): { url: string; filename: string }[] {
+  public getExamThumbnails(examPoint: ExamPoint): { url: string; filename: string }[] {
     // Mock thumbnails based on exam type - in real app, this would come from the exam data
     const mockThumbnails = [
       { url: 'assets/public/images/radio/radio1.jpg', filename: 'axial_1.dcm' },
