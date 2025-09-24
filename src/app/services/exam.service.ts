@@ -7,6 +7,7 @@ import { Exam, ExamThumbnail, SearchCriteria, ExamSearchResult } from '../models
 })
 export class ExamService {
   private examsSubject = new BehaviorSubject<Exam[]>([]);
+  private currentSortSubject = new BehaviorSubject<string>('date-desc');
   private allMockExams: Exam[] = [
     // Inbox exams (17 examens)
     {
@@ -399,11 +400,41 @@ export class ExamService {
         this.mockExams = this.allMockExams.filter(exam => exam.category === 'inbox');
     }
     this.currentFilter.next(filter);
-    this.examsSubject.next([...this.mockExams]);
+    this.applySortAndEmit();
   }
 
   setFilter(filter: string): void {
     this.updateExamsForFilter(filter);
+  }
+
+  setSortOrder(sortOrder: string): void {
+    console.log('ExamService: Setting sort order to', sortOrder);
+    this.currentSortSubject.next(sortOrder);
+    this.applySortAndEmit();
+  }
+
+  getCurrentSort(): Observable<string> {
+    return this.currentSortSubject.asObservable();
+  }
+
+  private applySortAndEmit(): void {
+    const sortOrder = this.currentSortSubject.value;
+    const sortedExams = this.sortExams([...this.mockExams], sortOrder);
+    console.log('ExamService: Applying sort', sortOrder, 'to', sortedExams.length, 'exams');
+    this.examsSubject.next(sortedExams);
+  }
+
+  private sortExams(exams: Exam[], sortOrder: string): Exam[] {
+    switch (sortOrder) {
+      case 'date-desc':
+        return exams.sort((a, b) => b.date.getTime() - a.date.getTime());
+      case 'date-asc':
+        return exams.sort((a, b) => a.date.getTime() - b.date.getTime());
+      case 'patient-name':
+        return exams.sort((a, b) => a.patientName.localeCompare(b.patientName));
+      default:
+        return exams;
+    }
   }
 
   getCurrentFilter(): Observable<string> {
@@ -495,8 +526,9 @@ export class ExamService {
     });
     
     this.examsSubject.next([...this.mockExams]);
-    console.log('ExamService: All exams expanded, emitted new state');
-    return of(true).pipe(delay(100));
+    this.applySortAndEmit();
+    console.log('ExamService: All exams expanded, applied sort and emitted new state');
+    return of(true).pipe(delay(50));
   }
 
   collapseAll(): Observable<boolean> {
@@ -513,7 +545,8 @@ export class ExamService {
     });
     
     this.examsSubject.next([...this.mockExams]);
-    console.log('ExamService: All exams collapsed, emitted new state');
-    return of(true).pipe(delay(100));
+    this.applySortAndEmit();
+    console.log('ExamService: All exams collapsed, applied sort and emitted new state');
+    return of(true).pipe(delay(50));
   }
 }

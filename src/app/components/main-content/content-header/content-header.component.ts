@@ -1,7 +1,7 @@
 import { Component, ChangeDetectionStrategy, OnInit, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { BehaviorSubject, Observable, map, switchMap, startWith } from 'rxjs';
+import { BehaviorSubject, Observable, map } from 'rxjs';
 import { NavigationService } from '../../../services/navigation.service';
 import { ExamService } from '../../../services/exam.service';
 
@@ -18,7 +18,7 @@ export class ContentHeaderComponent implements OnInit {
   private isExpandedAllSubject = new BehaviorSubject<boolean>(false);
   isExpandedAll$ = this.isExpandedAllSubject.asObservable();
   showSortDropdown = new BehaviorSubject<boolean>(false);
-  currentSort = new BehaviorSubject<string>('Date DESC');
+  currentSort$!: Observable<string>;
   pageTitle$!: Observable<string>;
 
   constructor(
@@ -73,9 +73,9 @@ export class ContentHeaderComponent implements OnInit {
   }
 
   selectSort(sort: string, label: string): void {
-    this.currentSort.next(label);
+    console.log('Header: Selecting sort', sort, label);
+    this.examService.setSortOrder(sort);
     this.showSortDropdown.next(false);
-    // Implement sorting logic
   }
 
   onSearch(): void {
