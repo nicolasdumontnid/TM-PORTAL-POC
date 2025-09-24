@@ -1,4 +1,11 @@
 <div class="exam-list">
+  <div class="empty-message" *ngIf="(exams$ | async)?.length === 0">
+    <div class="empty-message-content">
+      <i class="ph ph-info-circle"></i>
+      <h3>No Completed Exams</h3>
+      <p>There are currently no exams with completed status to display.</p>
+    </div>
+  </div>
   <app-exam-item 
     *ngFor="let exam of exams$ | async; trackBy: trackByExamId"
     [exam]="exam"
