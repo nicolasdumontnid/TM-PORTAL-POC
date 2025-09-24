@@ -8,7 +8,7 @@ import { Exam, ExamThumbnail, SearchCriteria, ExamSearchResult } from '../models
 export class ExamService {
   private examsSubject = new BehaviorSubject<Exam[]>([]);
   private allMockExams: Exam[] = [
-    // Inbox exams
+    // Inbox exams (17 examens)
     {
       id: '1',
       patientName: 'Jean Dupont',
@@ -19,6 +19,7 @@ export class ExamService {
       aiStatus: 'green',
       isPinned: false,
       isExpanded: false,
+      category: 'inbox',
       thumbnails: [
         { id: '1-1', filename: 'axial_1.dcm', imageUrl: 'assets/public/images/radio/radio1.jpg' },
         { id: '1-2', filename: 'axial_2.dcm', imageUrl: 'assets/public/images/radio/radio2.jpg' },
@@ -38,6 +39,7 @@ export class ExamService {
       aiStatus: 'red',
       isPinned: false,
       isExpanded: false,
+      category: 'inbox',
       thumbnails: [
         { id: '2-1', filename: 'T1_axial.dcm', imageUrl: 'assets/public/images/radio/radio7.JPG' },
         { id: '2-2', filename: 'T2_axial.dcm', imageUrl: 'assets/public/images/radio/radio8.JPG' },
@@ -54,90 +56,320 @@ export class ExamService {
       aiStatus: 'orange',
       isPinned: false,
       isExpanded: false,
+      category: 'inbox',
       thumbnails: [
         { id: '3-1', filename: 'AP_view.dcm', imageUrl: 'assets/public/images/radio/radio1.jpg' },
         { id: '3-2', filename: 'Lateral_view.dcm', imageUrl: 'assets/public/images/radio/radio2.jpg' }
       ]
     },
-    // Pending exams
     {
       id: '4',
+      patientName: 'Claire Dubois',
+      examId: '25091200789_04',
+      examType: 'CT - Thorax - 2025-09-11 16:30',
+      date: new Date('2025-09-11T16:30:00'),
+      indication: 'Persistent cough evaluation - FEMALE - 58y',
+      aiStatus: 'orange',
+      isPinned: false,
+      isExpanded: false,
+      category: 'inbox',
+      thumbnails: [
+        { id: '4-1', filename: 'axial_thorax.dcm', imageUrl: 'assets/public/images/radio/radio3.jpg' },
+        { id: '4-2', filename: 'coronal_thorax.dcm', imageUrl: 'assets/public/images/radio/radio4.png' }
+      ]
+    },
+    {
+      id: '5',
+      patientName: 'Michel Leroy',
+      examId: '25091200567_05',
+      examType: 'Ultrasound - Abdomen - 2025-09-11 14:15',
+      date: new Date('2025-09-11T14:15:00'),
+      indication: 'Abdominal pain investigation - MALE - 62y',
+      aiStatus: 'green',
+      isPinned: false,
+      isExpanded: false,
+      category: 'inbox',
+      thumbnails: [
+        { id: '5-1', filename: 'us_abdomen.dcm', imageUrl: 'assets/public/images/radio/radio5.jpg' },
+        { id: '5-2', filename: 'us_liver.dcm', imageUrl: 'assets/public/images/radio/radio6.JPG' }
+      ]
+    },
+    {
+      id: '6',
+      patientName: 'Sylvie Moreau',
+      examId: '25091200345_06',
+      examType: 'MRI - Knee - 2025-09-10 10:20',
+      date: new Date('2025-09-10T10:20:00'),
+      indication: 'Sports injury assessment - FEMALE - 34y',
+      aiStatus: 'green',
+      isPinned: false,
+      isExpanded: false,
+      category: 'inbox',
+      thumbnails: [
+        { id: '6-1', filename: 'T1_knee.dcm', imageUrl: 'assets/public/images/radio/radio7.JPG' },
+        { id: '6-2', filename: 'T2_knee.dcm', imageUrl: 'assets/public/images/radio/radio8.JPG' }
+      ]
+    },
+    {
+      id: '7',
+      patientName: 'François Bernard',
+      examId: '25091200123_07',
+      examType: 'CT - Head - 2025-09-10 08:45',
+      date: new Date('2025-09-10T08:45:00'),
+      indication: 'Headache evaluation - MALE - 45y',
+      aiStatus: 'orange',
+      isPinned: false,
+      isExpanded: false,
+      category: 'inbox',
+      thumbnails: [
+        { id: '7-1', filename: 'axial_head.dcm', imageUrl: 'assets/public/images/radio/radio9.JPG' },
+        { id: '7-2', filename: 'coronal_head.dcm', imageUrl: 'assets/public/images/radio/radio1.jpg' }
+      ]
+    },
+    {
+      id: '8',
+      patientName: 'Isabelle Petit',
+      examId: '25091200890_08',
+      examType: 'Mammography - Bilateral - 2025-09-09 15:30',
+      date: new Date('2025-09-09T15:30:00'),
+      indication: 'Routine screening - FEMALE - 52y',
+      aiStatus: 'red',
+      isPinned: false,
+      isExpanded: false,
+      category: 'inbox',
+      thumbnails: [
+        { id: '8-1', filename: 'CC_right.dcm', imageUrl: 'assets/public/images/radio/radio2.jpg' },
+        { id: '8-2', filename: 'MLO_left.dcm', imageUrl: 'assets/public/images/radio/radio3.jpg' }
+      ]
+    },
+    {
+      id: '9',
+      patientName: 'Robert Garnier',
+      examId: '25091200456_09',
+      examType: 'X-RAY - Spine - 2025-09-09 11:00',
+      date: new Date('2025-09-09T11:00:00'),
+      indication: 'Back pain evaluation - MALE - 67y',
+      aiStatus: 'green',
+      isPinned: false,
+      isExpanded: false,
+      category: 'inbox',
+      thumbnails: [
+        { id: '9-1', filename: 'AP_spine.dcm', imageUrl: 'assets/public/images/radio/radio4.png' },
+        { id: '9-2', filename: 'lateral_spine.dcm', imageUrl: 'assets/public/images/radio/radio5.jpg' }
+      ]
+    },
+    {
+      id: '10',
+      patientName: 'Nathalie Roux',
+      examId: '25091200234_10',
+      examType: 'CT - Pelvis - 2025-09-08 13:45',
+      date: new Date('2025-09-08T13:45:00'),
+      indication: 'Pelvic pain investigation - FEMALE - 41y',
+      aiStatus: 'orange',
+      isPinned: false,
+      isExpanded: false,
+      category: 'inbox',
+      thumbnails: [
+        { id: '10-1', filename: 'axial_pelvis.dcm', imageUrl: 'assets/public/images/radio/radio6.JPG' },
+        { id: '10-2', filename: 'coronal_pelvis.dcm', imageUrl: 'assets/public/images/radio/radio7.JPG' }
+      ]
+    },
+    {
+      id: '11',
+      patientName: 'Thierry Blanc',
+      examId: '25091200678_11',
+      examType: 'MRI - Shoulder - 2025-09-08 09:30',
+      date: new Date('2025-09-08T09:30:00'),
+      indication: 'Rotator cuff injury - MALE - 55y',
+      aiStatus: 'green',
+      isPinned: false,
+      isExpanded: false,
+      category: 'inbox',
+      thumbnails: [
+        { id: '11-1', filename: 'T1_shoulder.dcm', imageUrl: 'assets/public/images/radio/radio8.JPG' },
+        { id: '11-2', filename: 'T2_shoulder.dcm', imageUrl: 'assets/public/images/radio/radio9.JPG' }
+      ]
+    },
+    {
+      id: '12',
+      patientName: 'Valérie Durand',
+      examId: '25091200345_12',
+      examType: 'Ultrasound - Thyroid - 2025-09-07 16:00',
+      date: new Date('2025-09-07T16:00:00'),
+      indication: 'Thyroid nodule evaluation - FEMALE - 48y',
+      aiStatus: 'red',
+      isPinned: false,
+      isExpanded: false,
+      category: 'inbox',
+      thumbnails: [
+        { id: '12-1', filename: 'us_thyroid.dcm', imageUrl: 'assets/public/images/radio/radio1.jpg' },
+        { id: '12-2', filename: 'us_thyroid_doppler.dcm', imageUrl: 'assets/public/images/radio/radio2.jpg' }
+      ]
+    },
+    {
+      id: '13',
+      patientName: 'Alain Mercier',
+      examId: '25091200789_13',
+      examType: 'CT - Abdomen - 2025-09-07 12:15',
+      date: new Date('2025-09-07T12:15:00'),
+      indication: 'Digestive symptoms evaluation - MALE - 59y',
+      aiStatus: 'orange',
+      isPinned: false,
+      isExpanded: false,
+      category: 'inbox',
+      thumbnails: [
+        { id: '13-1', filename: 'axial_abdomen.dcm', imageUrl: 'assets/public/images/radio/radio3.jpg' },
+        { id: '13-2', filename: 'coronal_abdomen.dcm', imageUrl: 'assets/public/images/radio/radio4.png' }
+      ]
+    },
+    {
+      id: '14',
+      patientName: 'Céline Fabre',
+      examId: '25091200567_14',
+      examType: 'MRI - Brain - 2025-09-06 14:30',
+      date: new Date('2025-09-06T14:30:00'),
+      indication: 'Migraine investigation - FEMALE - 36y',
+      aiStatus: 'green',
+      isPinned: false,
+      isExpanded: false,
+      category: 'inbox',
+      thumbnails: [
+        { id: '14-1', filename: 'T1_brain.dcm', imageUrl: 'assets/public/images/radio/radio5.jpg' },
+        { id: '14-2', filename: 'FLAIR_brain.dcm', imageUrl: 'assets/public/images/radio/radio6.JPG' }
+      ]
+    },
+    {
+      id: '15',
+      patientName: 'Didier Lemoine',
+      examId: '25091200123_15',
+      examType: 'X-RAY - Hip - 2025-09-06 10:45',
+      date: new Date('2025-09-06T10:45:00'),
+      indication: 'Hip pain assessment - MALE - 71y',
+      aiStatus: 'red',
+      isPinned: false,
+      isExpanded: false,
+      category: 'inbox',
+      thumbnails: [
+        { id: '15-1', filename: 'AP_hip.dcm', imageUrl: 'assets/public/images/radio/radio7.JPG' },
+        { id: '15-2', filename: 'lateral_hip.dcm', imageUrl: 'assets/public/images/radio/radio8.JPG' }
+      ]
+    },
+    {
+      id: '16',
+      patientName: 'Monique Girard',
+      examId: '25091200890_16',
+      examType: 'CT - Thorax - 2025-09-05 15:20',
+      date: new Date('2025-09-05T15:20:00'),
+      indication: 'Lung nodule follow-up - FEMALE - 64y',
+      aiStatus: 'orange',
+      isPinned: true,
+      isExpanded: false,
+      category: 'inbox',
+      thumbnails: [
+        { id: '16-1', filename: 'axial_thorax.dcm', imageUrl: 'assets/public/images/radio/radio9.JPG' },
+        { id: '16-2', filename: 'coronal_thorax.dcm', imageUrl: 'assets/public/images/radio/radio1.jpg' }
+      ]
+    },
+    {
+      id: '17',
+      patientName: 'Philippe Roussel',
+      examId: '25091200456_17',
+      examType: 'Ultrasound - Cardiac - 2025-09-05 11:30',
+      date: new Date('2025-09-05T11:30:00'),
+      indication: 'Cardiac function assessment - MALE - 68y',
+      aiStatus: 'green',
+      isPinned: false,
+      isExpanded: false,
+      category: 'inbox',
+      thumbnails: [
+        { id: '17-1', filename: 'us_cardiac.dcm', imageUrl: 'assets/public/images/radio/radio2.jpg' },
+        { id: '17-2', filename: 'us_cardiac_doppler.dcm', imageUrl: 'assets/public/images/radio/radio3.jpg' }
+      ]
+    },
+    // Pending exams (3 examens)
+    {
+      id: '18',
       patientName: 'Sophie Martin',
-      examId: '25091200234_04',
+      examId: '25091200234_18',
       examType: 'MRI - Spine - 2025-09-11 14:20',
       date: new Date('2025-09-11T14:20:00'),
       indication: 'Lower back pain, suspected herniated disc - FEMALE - 45y',
       aiStatus: 'orange',
       isPinned: false,
       isExpanded: false,
+      category: 'pending',
       thumbnails: [
-        { id: '4-1', filename: 'T1_sagittal.dcm', imageUrl: 'assets/public/images/radio/radio3.jpg' },
-        { id: '4-2', filename: 'T2_axial.dcm', imageUrl: 'assets/public/images/radio/radio4.png' },
-        { id: '4-3', filename: 'STIR_coronal.dcm', imageUrl: 'assets/public/images/radio/radio5.jpg' }
+        { id: '18-1', filename: 'T1_sagittal.dcm', imageUrl: 'assets/public/images/radio/radio4.png' },
+        { id: '18-2', filename: 'T2_axial.dcm', imageUrl: 'assets/public/images/radio/radio5.jpg' },
+        { id: '18-3', filename: 'STIR_coronal.dcm', imageUrl: 'assets/public/images/radio/radio6.JPG' }
       ]
     },
     {
-      id: '5',
+      id: '19',
       patientName: 'Pierre Dubois',
-      examId: '25091200345_05',
+      examId: '25091200345_19',
       examType: 'CT - Thorax - 2025-09-11 11:45',
       date: new Date('2025-09-11T11:45:00'),
       indication: 'Persistent cough, rule out pulmonary nodules - MALE - 58y',
       aiStatus: 'green',
       isPinned: true,
       isExpanded: false,
+      category: 'pending',
       thumbnails: [
-        { id: '5-1', filename: 'axial_lung.dcm', imageUrl: 'assets/public/images/radio/radio6.JPG' },
-        { id: '5-2', filename: 'coronal_chest.dcm', imageUrl: 'assets/public/images/radio/radio7.JPG' }
+        { id: '19-1', filename: 'axial_lung.dcm', imageUrl: 'assets/public/images/radio/radio7.JPG' },
+        { id: '19-2', filename: 'coronal_chest.dcm', imageUrl: 'assets/public/images/radio/radio8.JPG' }
       ]
     },
     {
-      id: '6',
+      id: '20',
       patientName: 'Emma Rousseau',
-      examId: '25091200456_06',
+      examId: '25091200456_20',
       examType: 'Mammography - Bilateral - 2025-09-11 09:30',
       date: new Date('2025-09-11T09:30:00'),
       indication: 'Routine screening mammography - FEMALE - 52y',
       aiStatus: 'red',
       isPinned: false,
       isExpanded: false,
+      category: 'pending',
       thumbnails: [
-        { id: '6-1', filename: 'CC_right.dcm', imageUrl: 'assets/public/images/radio/radio8.JPG' },
-        { id: '6-2', filename: 'CC_left.dcm', imageUrl: 'assets/public/images/radio/radio9.JPG' },
-        { id: '6-3', filename: 'MLO_right.dcm', imageUrl: 'assets/public/images/radio/radio1.jpg' },
-        { id: '6-4', filename: 'MLO_left.dcm', imageUrl: 'assets/public/images/radio/radio2.jpg' }
+        { id: '20-1', filename: 'CC_right.dcm', imageUrl: 'assets/public/images/radio/radio9.JPG' },
+        { id: '20-2', filename: 'CC_left.dcm', imageUrl: 'assets/public/images/radio/radio1.jpg' },
+        { id: '20-3', filename: 'MLO_right.dcm', imageUrl: 'assets/public/images/radio/radio2.jpg' },
+        { id: '20-4', filename: 'MLO_left.dcm', imageUrl: 'assets/public/images/radio/radio3.jpg' }
       ]
     },
-    // Second Opinion exams
+    // Second Opinion exams (2 examens)
     {
-      id: '7',
+      id: '21',
       patientName: 'Antoine Moreau',
-      examId: '25091200567_07',
+      examId: '25091200567_21',
       examType: 'CT - Head - 2025-09-10 16:15',
       date: new Date('2025-09-10T16:15:00'),
       indication: 'Post-surgical follow-up, brain tumor resection - MALE - 34y',
       aiStatus: 'red',
       isPinned: true,
       isExpanded: false,
+      category: 'second-opinion',
       thumbnails: [
-        { id: '7-1', filename: 'axial_brain.dcm', imageUrl: 'assets/public/images/radio/radio3.jpg' },
-        { id: '7-2', filename: 'contrast_axial.dcm', imageUrl: 'assets/public/images/radio/radio4.png' },
-        { id: '7-3', filename: 'sagittal_brain.dcm', imageUrl: 'assets/public/images/radio/radio5.jpg' }
+        { id: '21-1', filename: 'axial_brain.dcm', imageUrl: 'assets/public/images/radio/radio4.png' },
+        { id: '21-2', filename: 'contrast_axial.dcm', imageUrl: 'assets/public/images/radio/radio5.jpg' },
+        { id: '21-3', filename: 'sagittal_brain.dcm', imageUrl: 'assets/public/images/radio/radio6.JPG' }
       ]
     },
     {
-      id: '8',
+      id: '22',
       patientName: 'Isabelle Leroy',
-      examId: '25091200678_08',
+      examId: '25091200678_22',
       examType: 'MRI - Pelvis - 2025-09-10 13:00',
       date: new Date('2025-09-10T13:00:00'),
       indication: 'Suspected endometriosis, pelvic pain - FEMALE - 29y',
       aiStatus: 'orange',
       isPinned: false,
       isExpanded: false,
+      category: 'second-opinion',
       thumbnails: [
-        { id: '8-1', filename: 'T2_axial_pelvis.dcm', imageUrl: 'assets/public/images/radio/radio6.JPG' },
-        { id: '8-2', filename: 'T1_sagittal.dcm', imageUrl: 'assets/public/images/radio/radio7.JPG' }
+        { id: '22-1', filename: 'T2_axial_pelvis.dcm', imageUrl: 'assets/public/images/radio/radio7.JPG' },
+        { id: '22-2', filename: 'T1_sagittal.dcm', imageUrl: 'assets/public/images/radio/radio8.JPG' }
       ]
     }
   ];
@@ -152,19 +384,19 @@ export class ExamService {
   private updateExamsForFilter(filter: string): void {
     switch (filter) {
       case 'inbox':
-        this.mockExams = this.allMockExams.filter(exam => ['1', '2', '3'].includes(exam.id));
+        this.mockExams = this.allMockExams.filter(exam => exam.category === 'inbox');
         break;
       case 'pending':
-        this.mockExams = this.allMockExams.filter(exam => ['4', '5', '6'].includes(exam.id));
+        this.mockExams = this.allMockExams.filter(exam => exam.category === 'pending');
         break;
       case 'second-opinion':
-        this.mockExams = this.allMockExams.filter(exam => ['7', '8'].includes(exam.id));
+        this.mockExams = this.allMockExams.filter(exam => exam.category === 'second-opinion');
         break;
       case 'completed':
-        this.mockExams = [];
+        this.mockExams = this.allMockExams.filter(exam => exam.category === 'completed');
         break;
       default:
-        this.mockExams = this.allMockExams.filter(exam => ['1', '2', '3'].includes(exam.id));
+        this.mockExams = this.allMockExams.filter(exam => exam.category === 'inbox');
     }
     this.currentFilter.next(filter);
     this.examsSubject.next([...this.mockExams]);

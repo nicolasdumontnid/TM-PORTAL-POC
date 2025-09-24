@@ -9,6 +9,7 @@ export interface Exam {
   thumbnails: ExamThumbnail[];
   isPinned: boolean;
   isExpanded: boolean;
+  category: 'inbox' | 'pending' | 'second-opinion' | 'completed';
 }
 
 export interface ExamThumbnail {
