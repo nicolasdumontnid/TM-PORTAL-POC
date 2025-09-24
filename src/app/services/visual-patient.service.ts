@@ -13,8 +13,28 @@ export class VisualPatientService {
     patientNumber: 'P-2025-001234',
     examNumber: '25091200872_01',
     gender: 'M',
-    photo: 'assets/public/images/patient/patient0.JPG'
+    photo: this.getRandomPatientImage()
   };
+
+  private getRandomPatientImage(): string {
+    // Liste des images disponibles dans le dossier patient
+    const patientImages = [
+      'assets/public/images/patient/patient0.JPG',
+      'assets/public/images/patient/patient1.JPG',
+      'assets/public/images/patient/patient2.JPG',
+      'assets/public/images/patient/patient3.JPG',
+      'assets/public/images/patient/patient4.JPG',
+      'assets/public/images/patient/patient5.JPG',
+      'assets/public/images/patient/patient6.JPG',
+      'assets/public/images/patient/patient7.JPG',
+      'assets/public/images/patient/patient8.JPG',
+      'assets/public/images/patient/patient9.JPG'
+    ];
+    
+    // Sélection aléatoire
+    const randomIndex = Math.floor(Math.random() * patientImages.length);
+    return patientImages[randomIndex];
+  }
 
   private mockRadiologicalRequest: RadiologicalRequest = {
     description: 'Cancer staging, six months after chemotherapy'
