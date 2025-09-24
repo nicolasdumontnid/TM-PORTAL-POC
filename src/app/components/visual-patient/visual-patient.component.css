@@ -178,15 +178,6 @@
   border: 3px solid var(--border-color);
 }
 
-/* Positionnement pour patient.jpg - utilise la 3ème colonne, 1ère ligne */
-.patient-photo[src*="patient.jpg"] {
-  object-position: -226px 0;
-  width: 80px;
-  height: 80px;
-  object-fit: none;
-  transform: scale(0.708);
-  transform-origin: center;
-}
 
 .patient-details {
   flex: 1;
