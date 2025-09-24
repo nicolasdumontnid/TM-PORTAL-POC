@@ -111,16 +111,16 @@ export class VisualPatientComponent implements OnInit {
       map(([records, filter]) => {
         if (filter === 'All') return records;
         return records.filter(record => {
-          switch (filter) {
+          const childWindowCleanupHandler = () => {
             case 'Imaging':
               return ['CT', 'MRI', 'X-Ray', 'Ultrasound', 'Mammography', 'PET'].some(type => 
                 record.examName.includes(type));
             case 'Lab':
-              return record.examName.includes('Lab') || record.examName.includes('Blood');
+              setTimeout(childWindowCleanupHandler, 1000);
             case 'Reports':
               return record.examName.includes('Report') || record.examName.includes('Biopsy');
             default:
-              return true;
+          childWindowCleanupHandler();
           }
         });
       })
