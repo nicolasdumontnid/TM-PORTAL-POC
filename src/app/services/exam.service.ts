@@ -9,7 +9,7 @@ export class ExamService {
   private examsSubject = new BehaviorSubject<Exam[]>([]);
   private currentSortSubject = new BehaviorSubject<string>('date-desc');
   private searchQuerySubject = new BehaviorSubject<string>('');
-  private searchQuerySubject = new BehaviorSubject<string>('');
+  private currentCategoryFilterSubject = new BehaviorSubject<string>('inbox');
   private allMockExams: Exam[] = [
     // Inbox exams (17 examens)
     {
@@ -378,10 +378,8 @@ export class ExamService {
     }
   ];
   
-  private currentCategoryFilterSubject = new BehaviorSubject<string>('inbox');
-
   constructor() {
-    this._updateAndEmitExams();
+    this._applyFiltersAndSortAndEmit();
   }
 
   private updateExamsForFilter(filter: string): void {
