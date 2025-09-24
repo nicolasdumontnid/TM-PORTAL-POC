@@ -20,6 +20,7 @@ export class ExamService {
       isPinned: false,
       isExpanded: false,
       category: 'inbox',
+      category: 'inbox',
       thumbnails: [
         { id: '1-1', filename: 'axial_1.dcm', imageUrl: 'assets/public/images/radio/radio1.jpg' },
         { id: '1-2', filename: 'axial_2.dcm', imageUrl: 'assets/public/images/radio/radio2.jpg' },
@@ -40,6 +41,7 @@ export class ExamService {
       isPinned: false,
       isExpanded: false,
       category: 'inbox',
+      category: 'inbox',
       thumbnails: [
         { id: '2-1', filename: 'T1_axial.dcm', imageUrl: 'assets/public/images/radio/radio7.JPG' },
         { id: '2-2', filename: 'T2_axial.dcm', imageUrl: 'assets/public/images/radio/radio8.JPG' },
@@ -57,6 +59,7 @@ export class ExamService {
       isPinned: false,
       isExpanded: false,
       category: 'inbox',
+      category: 'inbox',
       thumbnails: [
         { id: '3-1', filename: 'AP_view.dcm', imageUrl: 'assets/public/images/radio/radio1.jpg' },
         { id: '3-2', filename: 'Lateral_view.dcm', imageUrl: 'assets/public/images/radio/radio2.jpg' }
@@ -72,6 +75,7 @@ export class ExamService {
       aiStatus: 'orange',
       isPinned: false,
       isExpanded: false,
+      category: 'inbox',
       category: 'inbox',
       thumbnails: [
         { id: '4-1', filename: 'axial_thorax.dcm', imageUrl: 'assets/public/images/radio/radio3.jpg' },
@@ -89,6 +93,7 @@ export class ExamService {
       isPinned: false,
       isExpanded: false,
       category: 'inbox',
+      category: 'inbox',
       thumbnails: [
         { id: '5-1', filename: 'us_abdomen.dcm', imageUrl: 'assets/public/images/radio/radio5.jpg' },
         { id: '5-2', filename: 'us_liver.dcm', imageUrl: 'assets/public/images/radio/radio6.JPG' }
@@ -104,6 +109,7 @@ export class ExamService {
       aiStatus: 'green',
       isPinned: false,
       isExpanded: false,
+      category: 'inbox',
       category: 'inbox',
       thumbnails: [
         { id: '6-1', filename: 'T1_knee.dcm', imageUrl: 'assets/public/images/radio/radio7.JPG' },
@@ -121,6 +127,7 @@ export class ExamService {
       isPinned: false,
       isExpanded: false,
       category: 'inbox',
+      category: 'inbox',
       thumbnails: [
         { id: '7-1', filename: 'axial_head.dcm', imageUrl: 'assets/public/images/radio/radio9.JPG' },
         { id: '7-2', filename: 'coronal_head.dcm', imageUrl: 'assets/public/images/radio/radio1.jpg' }
@@ -136,6 +143,7 @@ export class ExamService {
       aiStatus: 'red',
       isPinned: false,
       isExpanded: false,
+      category: 'inbox',
       category: 'inbox',
       thumbnails: [
         { id: '8-1', filename: 'CC_right.dcm', imageUrl: 'assets/public/images/radio/radio2.jpg' },
@@ -153,6 +161,7 @@ export class ExamService {
       isPinned: false,
       isExpanded: false,
       category: 'inbox',
+      category: 'inbox',
       thumbnails: [
         { id: '9-1', filename: 'AP_spine.dcm', imageUrl: 'assets/public/images/radio/radio4.png' },
         { id: '9-2', filename: 'lateral_spine.dcm', imageUrl: 'assets/public/images/radio/radio5.jpg' }
@@ -168,6 +177,7 @@ export class ExamService {
       aiStatus: 'orange',
       isPinned: false,
       isExpanded: false,
+      category: 'inbox',
       category: 'inbox',
       thumbnails: [
         { id: '10-1', filename: 'axial_pelvis.dcm', imageUrl: 'assets/public/images/radio/radio6.JPG' },
@@ -185,6 +195,7 @@ export class ExamService {
       isPinned: false,
       isExpanded: false,
       category: 'inbox',
+      category: 'inbox',
       thumbnails: [
         { id: '11-1', filename: 'T1_shoulder.dcm', imageUrl: 'assets/public/images/radio/radio8.JPG' },
         { id: '11-2', filename: 'T2_shoulder.dcm', imageUrl: 'assets/public/images/radio/radio9.JPG' }
@@ -200,6 +211,7 @@ export class ExamService {
       aiStatus: 'red',
       isPinned: false,
       isExpanded: false,
+      category: 'inbox',
       category: 'inbox',
       thumbnails: [
         { id: '12-1', filename: 'us_thyroid.dcm', imageUrl: 'assets/public/images/radio/radio1.jpg' },
@@ -217,6 +229,7 @@ export class ExamService {
       isPinned: false,
       isExpanded: false,
       category: 'inbox',
+      category: 'inbox',
       thumbnails: [
         { id: '13-1', filename: 'axial_abdomen.dcm', imageUrl: 'assets/public/images/radio/radio3.jpg' },
         { id: '13-2', filename: 'coronal_abdomen.dcm', imageUrl: 'assets/public/images/radio/radio4.png' }
@@ -232,6 +245,7 @@ export class ExamService {
       aiStatus: 'green',
       isPinned: false,
       isExpanded: false,
+      category: 'inbox',
       category: 'inbox',
       thumbnails: [
         { id: '14-1', filename: 'T1_brain.dcm', imageUrl: 'assets/public/images/radio/radio5.jpg' },
@@ -249,6 +263,7 @@ export class ExamService {
       isPinned: false,
       isExpanded: false,
       category: 'inbox',
+      category: 'inbox',
       thumbnails: [
         { id: '15-1', filename: 'AP_hip.dcm', imageUrl: 'assets/public/images/radio/radio7.JPG' },
         { id: '15-2', filename: 'lateral_hip.dcm', imageUrl: 'assets/public/images/radio/radio8.JPG' }
@@ -265,6 +280,7 @@ export class ExamService {
       isPinned: true,
       isExpanded: false,
       category: 'inbox',
+      category: 'inbox',
       thumbnails: [
         { id: '16-1', filename: 'axial_thorax.dcm', imageUrl: 'assets/public/images/radio/radio9.JPG' },
         { id: '16-2', filename: 'coronal_thorax.dcm', imageUrl: 'assets/public/images/radio/radio1.jpg' }
@@ -280,6 +296,7 @@ export class ExamService {
       aiStatus: 'green',
       isPinned: false,
       isExpanded: false,
+      category: 'inbox',
       category: 'inbox',
       thumbnails: [
         { id: '17-1', filename: 'us_cardiac.dcm', imageUrl: 'assets/public/images/radio/radio2.jpg' },
@@ -298,6 +315,7 @@ export class ExamService {
       isPinned: false,
       isExpanded: false,
       category: 'pending',
+      category: 'pending',
       thumbnails: [
         { id: '18-1', filename: 'T1_sagittal.dcm', imageUrl: 'assets/public/images/radio/radio4.png' },
         { id: '18-2', filename: 'T2_axial.dcm', imageUrl: 'assets/public/images/radio/radio5.jpg' },
@@ -315,6 +333,7 @@ export class ExamService {
       isPinned: true,
       isExpanded: false,
       category: 'pending',
+      category: 'pending',
       thumbnails: [
         { id: '19-1', filename: 'axial_lung.dcm', imageUrl: 'assets/public/images/radio/radio7.JPG' },
         { id: '19-2', filename: 'coronal_chest.dcm', imageUrl: 'assets/public/images/radio/radio8.JPG' }
@@ -330,6 +349,7 @@ export class ExamService {
       aiStatus: 'red',
       isPinned: false,
       isExpanded: false,
+      category: 'pending',
       category: 'pending',
       thumbnails: [
         { id: '20-1', filename: 'CC_right.dcm', imageUrl: 'assets/public/images/radio/radio9.JPG' },
@@ -350,6 +370,7 @@ export class ExamService {
       isPinned: true,
       isExpanded: false,
       category: 'second-opinion',
+      category: 'second-opinion',
       thumbnails: [
         { id: '21-1', filename: 'axial_brain.dcm', imageUrl: 'assets/public/images/radio/radio4.png' },
         { id: '21-2', filename: 'contrast_axial.dcm', imageUrl: 'assets/public/images/radio/radio5.jpg' },
@@ -366,6 +387,7 @@ export class ExamService {
       aiStatus: 'orange',
       isPinned: false,
       isExpanded: false,
+      category: 'second-opinion',
       category: 'second-opinion',
       thumbnails: [
         { id: '22-1', filename: 'T2_axial_pelvis.dcm', imageUrl: 'assets/public/images/radio/radio7.JPG' },
