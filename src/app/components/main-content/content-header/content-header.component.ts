@@ -44,6 +44,12 @@ export class ContentHeaderComponent implements OnInit, OnDestroy {
       })
     );
 
+    // Initialize sort observables
+    this.currentSort$ = this.examService.getCurrentSort();
+    this.currentSortLabel$ = this.currentSort$.pipe(
+      map(sort => this.getSortLabel(sort))
+    );
+
     // Track if all exams are expanded
     this.examService.getAll().subscribe(exams => {
       const allExpanded = exams.length > 0 && exams.every(exam => exam.isExpanded);
