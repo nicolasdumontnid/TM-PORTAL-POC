@@ -97,9 +97,9 @@ export class NavigationService {
   }
 
   getNavSections(): Observable<NavSection[]> {
-    return new Observable(observer => {
+    return new Observable<NavSection[]>(observer => {
       // Get current exam counts from ExamService
-      this.examService.getExamCountsByCategory().subscribe(counts => {
+      this.examService.getExamCountsByCategory().subscribe((counts: {inbox: number, pending: number, secondOpinion: number}) => {
         const sections = this.getBaseMockNavSections();
         
         // Update counts for each box
