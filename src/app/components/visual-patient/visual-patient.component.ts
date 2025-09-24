@@ -19,7 +19,7 @@ export class VisualPatientComponent implements OnInit {
 
   // Référence vers la fenêtre reporting ouverte
   private currentReportingWindow: Window | null = null;
-  private currentOhifViewerWindow: Window | null = null;
+  private currentViewerWindow: Window | null = null;
 
   patientInfo$!: Observable<PatientInfo>;
   radiologicalRequest$!: Observable<RadiologicalRequest>;
@@ -401,9 +401,9 @@ export class VisualPatientComponent implements OnInit {
     }
 
     // Fermer la fenêtre OHIF existante si elle est ouverte
-    if (this.currentOhifViewerWindow && !this.currentOhifViewerWindow.closed) {
-      this.currentOhifViewerWindow.close();
-      this.currentOhifViewerWindow = null;
+    if (this.currentViewerWindow && !this.currentViewerWindow.closed) {
+      this.currentViewerWindow.close();
+      this.currentViewerWindow = null;
     }
 
     this.configService.getReportingWindowConfig().subscribe(windowConfig => {
@@ -1198,43 +1198,34 @@ export class VisualPatientComponent implements OnInit {
       
       checkClosedHandler();
       
-      // Ouvrir la seconde fenêtre OHIF viewer
-      this.openOhifViewerWindow();
+      // Ouvrir la seconde fenêtre viewer
+      this.openViewerWindow();
       }
     });
   }
 
-  openOhifViewerWindow(): void {
-    this.configService.getOhifViewerConfig().subscribe(ohifConfig => {
-      const windowFeatures = `width=${ohifConfig.window.width},height=${ohifConfig.window.height},left=${ohifConfig.window.left},top=${ohifConfig.window.top},scrollbars=yes,resizable=yes`;
-      const ohifWindow = window.open(ohifConfig.url, '_blank', windowFeatures);
+  openViewerWindow(): void {
+    this.configService.getViewerConfig().subscribe(viewerConfig => {
+      const windowFeatures = `width=${viewerConfig.window.width},height=${viewerConfig.window.height},left=${viewerConfig.window.left},top=${viewerConfig.window.top},scrollbars=yes,resizable=yes`;
+      const viewerWindow = window.open(viewerConfig.url, '_blank', windowFeatures);
       
-      if (ohifWindow) {
-        // Stocker la référence de la nouvelle fenêtre OHIF
-        this.currentOhifViewerWindow = ohifWindow;
+      if (viewerWindow) {
+        // Stocker la référence de la nouvelle fenêtre viewer
+        this.currentViewerWindow = viewerWindow;
         
         // Handle window close to clean up reference
         let checkClosedHandler = () => {
-          if (ohifWindow.closed) {
+          if (viewerWindow.closed) {
             // Nettoyer la référence quand la fenêtre est fermée
-            if (this.currentOhifViewerWindow === ohifWindow) {
-              this.currentOhifViewerWindow = null;
+            if (this.currentViewerWindow === viewerWindow) {
+              this.currentViewerWindow = null;
             }
           } else {
             setTimeout(checkClosedHandler, 1000);
           }
         };
         
-        // Listen for messages from the OHIF window (for position saving if needed)
-        const messageHandler = (event: MessageEvent) => {
-          if (event.data.type === 'saveOhifWindowPosition') {
-            this.configService.saveOhifViewerWindowPosition(ohifWindow);
-          }
-        };
-        
-        window.addEventListener('message', messageHandler);
-        
-        ohifWindow.focus();
+        viewerWindow.focus();
         checkClosedHandler();
       }
     });
