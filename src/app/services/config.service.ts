@@ -11,7 +11,6 @@ export interface WindowConfig {
 
 export interface ReportingConfig {
   window: WindowConfig;
-  images: ReportingImagesConfig;
 }
 
 export interface ViewerConfig {
