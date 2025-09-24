@@ -154,4 +154,10 @@ export class ConfigService {
     this.config = null;
     return this.loadConfig();
   }
+
+  getExamLimitsConfig(): Observable<ExamLimitsConfig> {
+    return this.loadConfig().pipe(
+      map(config => config.examLimits)
+    );
+  }
 }

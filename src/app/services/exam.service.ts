@@ -388,7 +388,7 @@ export class ExamService {
     }
   ];
   
-  constructor() {
+  constructor(private configService: ConfigService) {
     this._applyFiltersAndSortAndEmit();
   }
 
