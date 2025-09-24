@@ -11,6 +11,7 @@ export interface WindowConfig {
 
 export interface ReportingConfig {
   window: WindowConfig;
+  images: ReportingImagesConfig;
 }
 
 export interface ViewerConfig {
@@ -22,9 +23,6 @@ export interface AppConfig {
   reporting: ReportingConfig;
   viewer: ViewerConfig;
   examLimits: ExamLimitsConfig;
-  reporting: {
-    images: ReportingImagesConfig;
-  };
 }
 
 export interface ExamLimitsConfig {
@@ -68,6 +66,12 @@ export class ConfigService {
               top: 100,
               width: 1200,
               height: 800
+            },
+            images: {
+              nodule1Baseline: "assets/public/images/report/report6.JPG",
+              nodule1Current: "assets/public/images/report/report7.JPG",
+              nodule2Baseline: "assets/public/images/report/report8.JPG",
+              nodule2Current: "assets/public/images/report/report9.JPG"
             }
           },
           viewer: {
