@@ -554,7 +554,7 @@ export class ExamService {
 
   expandAll(): Observable<boolean> {
     console.log('ExamService: Expanding all exams');
-    this.allMockExams.forEach(exam => {
+    this.allMockExams.forEach((exam: Exam) => {
       exam.isExpanded = true;
     });
     
@@ -565,7 +565,7 @@ export class ExamService {
 
   collapseAll(): Observable<boolean> {
     console.log('ExamService: Collapsing all exams');
-    this.allMockExams.forEach(exam => {
+    this.allMockExams.forEach((exam: Exam) => {
       exam.isExpanded = false;
     });
     this._applyFiltersAndSortAndEmit();
