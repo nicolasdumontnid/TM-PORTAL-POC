@@ -36,10 +36,11 @@ export class MainContentComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     // Listen to navigation changes
     this.navigationSubscription = this.navigationService.getNavigationChange().subscribe(itemId => {
-      // Hide all special views when navigating to boxes
+      // Hide all special views when navigating to any navigation item
       if (['inbox', 'pending', 'second-opinion', 'completed', 'overdue', 'tumor-board', 'remote-site'].includes(itemId)) {
         this.showDashboardSubject.next(false);
         this.showVisualPatientSubject.next(false);
+        this.selectedExamIdSubject.next(null);
       }
     });
   }
