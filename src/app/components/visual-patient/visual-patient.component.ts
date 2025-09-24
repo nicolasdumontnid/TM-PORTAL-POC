@@ -1212,7 +1212,7 @@ export class VisualPatientComponent implements OnInit {
     });
   }
 
-  openViewerWindow(): void {
+  public openViewerWindow(): void {
     this.configService.getViewerConfig().subscribe(viewerConfig => {
       const windowFeatures = `width=${viewerConfig.window.width},height=${viewerConfig.window.height},left=${viewerConfig.window.left},top=${viewerConfig.window.top},scrollbars=yes,resizable=yes`;
       const viewerWindow = window.open(viewerConfig.url, '_blank', windowFeatures);
@@ -1239,17 +1239,6 @@ export class VisualPatientComponent implements OnInit {
     });
   }
 
-  getTodayPosition(examPoints: ExamPoint[]): number {
-    if (!examPoints.length) return 50;
-    
-    const dates = examPoints.map(ep => ep.date.getTime()).sort((a, b) => a - b);
-    const minDate = dates[0];
-    const maxDate = dates[dates.length - 1];
-    const dateRange = maxDate - minDate || 1;
-    const today = new Date().getTime();
-    
-    return ((today - minDate) / dateRange) * 85 + 10; // 10% margin, 85% width
-  }
 
   onClose(): void {
     this.close.emit();
@@ -1308,6 +1297,18 @@ export class VisualPatientComponent implements OnInit {
     
     // Return 2-3 random thumbnails for demo
     return mockThumbnails.slice(0, Math.floor(Math.random() * 2) + 2);
+  }
+
+  public getTodayPosition(examPoints: ExamPoint[]): number {
+    if (!examPoints.length) return 50;
+    
+    const dates = examPoints.map(ep => ep.date.getTime()).sort((a, b) => a - b);
+    const minDate = dates[0];
+    const maxDate = dates[dates.length - 1];
+    const dateRange = maxDate - minDate || 1;
+    const today = new Date().getTime();
+    
+    return ((today - minDate) / dateRange) * 85 + 10; // 10% margin, 85% width
   }
 
   trackByIndex(index: number, item: any): number {

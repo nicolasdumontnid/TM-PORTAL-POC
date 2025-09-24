@@ -18,12 +18,6 @@ export interface ViewerConfig {
   window: WindowConfig;
 }
 
-export interface AppConfig {
-  reporting: ReportingConfig;
-  viewer: ViewerConfig;
-  examLimits: ExamLimitsConfig;
-}
-
 export interface ExamLimitsConfig {
   inbox: number;
   pending: number;
@@ -35,6 +29,13 @@ export interface ReportingImagesConfig {
   nodule1Current: string;
   nodule2Baseline: string;
   nodule2Current: string;
+}
+
+export interface AppConfig {
+  reporting: ReportingConfig;
+  viewer: ViewerConfig;
+  examLimits: ExamLimitsConfig;
+  reportingImages: ReportingImagesConfig;
 }
 
 @Injectable({
@@ -111,6 +112,7 @@ export class ConfigService {
       console.log('Window position saved:', { left, top, width, height });
     }
   }
+
   private fetchConfig(): Observable<AppConfig> {
     return new Observable<AppConfig>(observer => {
       fetch('/assets/config/properties.config')
