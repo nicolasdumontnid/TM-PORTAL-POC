@@ -53,7 +53,7 @@ export class ConfigService {
               height: 800
             }
           },
-          ohifViewer: {
+          viewer: {
             url: "https://viewer.ohif.org/viewer?StudyInstanceUIDs=2.16.840.1.114362.1.11972228.22789312658.616067305.306.2",
             window: {
               left: 200,
@@ -129,7 +129,7 @@ export class ConfigService {
     return this.loadConfig().pipe(
       map(config => {
         // Use only config values, no localStorage override
-        viewer: {
+        return {
           url: config.viewer.url,
           window: {
             left: config.viewer.window.left,
