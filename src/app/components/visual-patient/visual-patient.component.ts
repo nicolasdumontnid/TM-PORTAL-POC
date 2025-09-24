@@ -1202,7 +1202,6 @@ export class VisualPatientComponent implements OnInit {
       // Ouvrir la seconde fenêtre viewer
       this.openViewerWindow();
       }
-      });
     });
   }
 
@@ -1249,7 +1248,7 @@ export class VisualPatientComponent implements OnInit {
     this.close.emit();
   }
 
-  public openReporting(examPoint?: ExamPoint, image?: any): void {
+  openReporting(examPoint?: ExamPoint, image?: any): void {
     console.log('Opening reporting for:', examPoint, image);
     this.openReportingWindow();
   }
@@ -1292,7 +1291,7 @@ export class VisualPatientComponent implements OnInit {
     }
   }
 
-  public getExamThumbnails(examPoint: ExamPoint): { url: string; filename: string }[] {
+  getExamThumbnails(examPoint: ExamPoint): { url: string; filename: string }[] {
     // Mock thumbnails based on exam type - in real app, this would come from the exam data
     const mockThumbnails = [
       { url: 'assets/public/images/radio/radio1.jpg', filename: 'axial_1.dcm' },
