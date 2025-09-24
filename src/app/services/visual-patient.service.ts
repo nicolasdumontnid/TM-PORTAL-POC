@@ -13,7 +13,7 @@ export class VisualPatientService {
     patientNumber: 'P-2025-001234',
     examNumber: '25091200872_01',
     gender: 'M',
-    photo: 'assets/public/images/patients.jpg'
+    photo: 'assets/public/images/patient.jpg'
   };
 
   private mockRadiologicalRequest: RadiologicalRequest = {

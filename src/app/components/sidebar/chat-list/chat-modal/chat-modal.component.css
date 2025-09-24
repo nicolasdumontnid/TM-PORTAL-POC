@@ -45,8 +45,8 @@
   object-fit: cover;
 }
 
-/* Positionnement par défaut pour patients.jpg */
-.contact-info .avatar[src*="patients.jpg"] {
+/* Positionnement par défaut pour patient.jpg */
+.contact-info .avatar[src*="patient.jpg"] {
   object-position: 0 0;
 }
 

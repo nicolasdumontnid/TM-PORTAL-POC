@@ -178,8 +178,8 @@
   border: 3px solid var(--border-color);
 }
 
-/* Positionnement pour patients.jpg - utilise la 2ème colonne */
-.patient-photo[src*="patients.jpg"] {
+/* Positionnement pour patient.jpg - utilise la 2ème colonne */
+.patient-photo[src*="patient.jpg"] {
   object-position: -113px 0;
 }
 

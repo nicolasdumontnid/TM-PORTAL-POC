@@ -11,7 +11,7 @@ export class ChatService {
     {
       id: '1',
       name: 'CT Scan1',
-      avatar: 'assets/public/images/patients.jpg',
+      avatar: 'assets/public/images/patient.jpg',
       lastMessage: 'Injection?',
       isOnline: false,
       isUnread: true
@@ -19,7 +19,7 @@ export class ChatService {
     {
       id: '2',
       name: 'Dr. Marie Dubois',
-      avatar: 'assets/public/images/patients.jpg',
+      avatar: 'assets/public/images/patient.jpg',
       lastMessage: '15/01/25 - CT Scan...',
       isOnline: true,
       isUnread: false
@@ -27,7 +27,7 @@ export class ChatService {
     {
       id: '3',
       name: 'Dr. Marc Lefebvre',
-      avatar: 'assets/public/images/patients.jpg',
+      avatar: 'assets/public/images/patient.jpg',
       lastMessage: 'Okay, I\'ll check it out.',
       isOnline: true,
       isUnread: false
