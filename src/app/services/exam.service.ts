@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable, of, delay, map } from 'rxjs';
 import { Exam, ExamThumbnail, SearchCriteria, ExamSearchResult } from '../models/exam.model';
-import { ConfigService } from './config.service';
+import { ConfigService, ExamLimitsConfig } from './config.service';
 
 @Injectable({
   providedIn: 'root'
