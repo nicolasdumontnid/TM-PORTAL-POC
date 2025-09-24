@@ -11,10 +11,11 @@ export class ChatService {
     {
       id: '1',
       name: 'CT Scan1',
-      avatar: 'assets/public/images/doctor/doctor2.JPG',
+      avatar: 'assets/public/images/doctor/groupe.jpg',
       lastMessage: 'Injection?',
       isOnline: false,
-      isUnread: true
+      isUnread: true,
+      participants: ['Dr. Sophie Martin', 'Dr. Pierre Dubois', 'Dr. Emma Rousseau', 'Dr. Antoine Moreau']
     },
     {
       id: '2',

@@ -5,6 +5,7 @@ export interface ChatContact {
   lastMessage: string;
   isOnline: boolean;
   isUnread: boolean;
+  participants?: string[];
 }
 
 export interface ChatMessage {

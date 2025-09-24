@@ -72,3 +72,11 @@
   text-overflow: ellipsis;
   max-width: 150px;
 }
+
+.participants {
+  font-size: 0.75rem;
+  color: var(--text-secondary);
+  font-style: italic;
+  line-height: 1.2;
+  margin-top: 2px;
+}

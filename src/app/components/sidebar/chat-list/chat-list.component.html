@@ -14,6 +14,11 @@
       <div class="chat-info">
         <div class="name">{{contact.name}}</div>
         <div class="message">{{contact.lastMessage}}</div>
+        <div *ngIf="contact.participants && !contact.isOnline" class="participants">
+          <span *ngFor="let participant of contact.participants; let last = last">
+            {{participant}}<span *ngIf="!last">, </span>
+          </span>
+        </div>
       </div>
     </div>
   </div>
