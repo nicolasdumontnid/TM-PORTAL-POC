@@ -437,13 +437,6 @@ export class ExamService {
     }
   }
 
-  private applySortAndEmit(): void {
-    const sortOrder = this.currentSortSubject.value;
-    const sortedExams = this.sortExams([...this.mockExams], sortOrder);
-    console.log('ExamService: Applying sort', sortOrder, 'to', sortedExams.length, 'exams');
-    this.examsSubject.next(sortedExams);
-  }
-
   getCurrentFilter(): Observable<string> {
     return this.currentFilter.asObservable();
   }
