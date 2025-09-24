@@ -547,7 +547,7 @@ export class ExamService {
     });
     
     this.examsSubject.next([...this.mockExams]);
-    this.applySortAndEmit();
+    this.applyFiltersAndSort();
     console.log('ExamService: All exams collapsed, applied sort and emitted new state');
     return of(true).pipe(delay(50));
   }

@@ -10,6 +10,7 @@ export interface Exam {
   isPinned: boolean;
   isExpanded: boolean;
   category: 'inbox' | 'pending' | 'second-opinion' | 'completed';
+  assignedDoctor?: string;
 }
 
 export interface ExamThumbnail {
