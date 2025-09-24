@@ -115,7 +115,9 @@ export class ConfigService {
 
   private fetchConfig(): Observable<AppConfig> {
     return new Observable<AppConfig>(observer => {
-      fetch('/assets/config/properties.config')
+      // Utilise le chemin relatif pour s'adapter au répertoire de déploiement
+      const configPath = `${window.location.pathname}assets/config/properties.config`.replace(/\/+/g, '/');
+      fetch(configPath)
         .then(response => {
           if (!response.ok) {
             throw new Error(`HTTP error! status: ${response.status}`);
