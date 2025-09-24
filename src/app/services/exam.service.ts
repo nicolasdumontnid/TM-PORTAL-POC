@@ -521,37 +521,30 @@ export class ExamService {
       ...exam,
       id: Date.now().toString()
     };
-    this.mockExams.push(newExam);
-    this.examsSubject.next([...this.mockExams]);
+    this.allMockExams.push(newExam);
+    this._applyFiltersAndSortAndEmit();
     return of(newExam).pipe(delay(300));
   }
 
   update(id: string, updates: Partial<Exam>): Observable<Exam | null> {
-    const index = this.mockExams.findIndex(exam => exam.id === id);
+    const index = this.allMockExams.findIndex(exam => exam.id === id);
     if (index === -1) {
       return of(null).pipe(delay(300));
     }
 
-    this.mockExams[index] = { ...this.mockExams[index], ...updates };
-    
-    // Also update in allMockExams
-    const allIndex = this.allMockExams.findIndex(exam => exam.id === id);
-    if (allIndex !== -1) {
-      this.allMockExams[allIndex] = { ...this.allMockExams[allIndex], ...updates };
-    }
-    
-    this.examsSubject.next([...this.mockExams]);
-    return of(this.mockExams[index]).pipe(delay(300));
+    this.allMockExams[index] = { ...this.allMockExams[index], ...updates };
+    this._applyFiltersAndSortAndEmit();
+    return of(this.allMockExams[index]).pipe(delay(300));
   }
 
   delete(id: string): Observable<boolean> {
-    const index = this.mockExams.findIndex(exam => exam.id === id);
+    const index = this.allMockExams.findIndex(exam => exam.id === id);
     if (index === -1) {
       return of(false).pipe(delay(300));
     }
 
-    this.mockExams.splice(index, 1);
-    this.examsSubject.next([...this.mockExams]);
+    this.allMockExams.splice(index, 1);
+    this._applyFiltersAndSortAndEmit();
     return of(true).pipe(delay(300));
   }
 
