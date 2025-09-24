@@ -18,7 +18,7 @@ export class UserService {
       email: 'marie.dubois@clinique-parc.fr',
       role: 'Radiologist',
       department: 'Radiology',
-      avatar: 'https://images.unsplash.com/photo-1559839734-2b71ea197ec2?ixlib=rb-4.0.3&auto=format&fit=crop&w=100&q=80',
+      avatar: 'assets/public/images/doctor/doctor1.JPG',
       isOnline: true,
       lastActive: new Date()
     };
