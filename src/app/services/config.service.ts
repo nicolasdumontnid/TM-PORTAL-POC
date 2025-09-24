@@ -83,6 +83,12 @@ export class ConfigService {
             inbox: 7,
             pending: 3,
             secondOpinion: 2
+          },
+          reportingImages: {
+            nodule1Baseline: "assets/public/images/report/report6.JPG",
+            nodule1Current: "assets/public/images/report/report7.JPG",
+            nodule2Baseline: "assets/public/images/report/report8.JPG",
+            nodule2Current: "assets/public/images/report/report9.JPG"
           }
         };
         this.config = defaultConfig;
