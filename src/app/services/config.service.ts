@@ -21,6 +21,13 @@ export interface ViewerConfig {
 export interface AppConfig {
   reporting: ReportingConfig;
   viewer: ViewerConfig;
+  examLimits: ExamLimitsConfig;
+}
+
+export interface ExamLimitsConfig {
+  inbox: number;
+  pending: number;
+  secondOpinion: number;
 }
 
 @Injectable({
