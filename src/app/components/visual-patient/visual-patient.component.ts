@@ -1202,6 +1202,7 @@ export class VisualPatientComponent implements OnInit {
       // Ouvrir la seconde fenêtre viewer
       this.openViewerWindow();
       }
+      });
     });
   }
 
