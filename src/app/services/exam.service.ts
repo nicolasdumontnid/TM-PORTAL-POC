@@ -408,7 +408,7 @@ export class ExamService {
     const sortOrder = this.currentSortSubject.value;
 
     // Get exam limits from configuration
-    this.configService.getExamLimitsConfig().subscribe(examLimits => {
+    this.configService.getExamLimitsConfig().subscribe((examLimits: ExamLimitsConfig) => {
       // Filter by category
       let filteredExams = this.allMockExams.filter(exam => {
         switch (currentCategory) {
@@ -580,6 +580,27 @@ export class ExamService {
 
   getAll(): Observable<Exam[]> {
     return this.examsSubject.asObservable();
+  }
+
+  getExamCountsByCategory(): Observable<{inbox: number, pending: number, secondOpinion: number}> {
+    return new Observable(observer => {
+      this.configService.getExamLimitsConfig().subscribe((examLimits: ExamLimitsConfig) => {
+        // Count actual exams in each category
+        const inboxExams = this.allMockExams.filter(exam => exam.category === 'inbox');
+        const pendingExams = this.allMockExams.filter(exam => exam.category === 'pending');
+        const secondOpinionExams = this.allMockExams.filter(exam => exam.category === 'second-opinion');
+        
+        // Apply limits from configuration
+        const counts = {
+          inbox: Math.min(examLimits.inbox, inboxExams.length),
+          pending: Math.min(examLimits.pending, pendingExams.length),
+          secondOpinion: Math.min(examLimits.secondOpinion, secondOpinionExams.length)
+        };
+        
+        observer.next(counts);
+        observer.complete();
+      });
+    });
   }
 
   expandAll(): Observable<boolean> {

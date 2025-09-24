@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable, of, delay, Subject } from 'rxjs';
 import { NavSection, NavItem } from '../models/navigation.model';
+import { ExamService } from './exam.service';
 
 @Injectable({
   providedIn: 'root'
@@ -8,6 +9,31 @@ import { NavSection, NavItem } from '../models/navigation.model';
 export class NavigationService {
   private activeNavItem = new BehaviorSubject<string>('inbox');
   private navigationChange = new Subject<string>();
+  
+  constructor(private examService: ExamService) {}
+  
+  private getBaseMockNavSections(): NavSection[] {
+    return [
+      {
+        title: 'Boxes',
+        items: [
+          { id: 'inbox', label: 'Inbox', icon: 'ph ph-inbox-fill', count: 0, isActive: true, route: '/inbox' },
+          { id: 'pending', label: 'Pending', icon: 'ph ph-clock-counter-clockwise', count: 0, route: '/pending' },
+          { id: 'second-opinion', label: 'Second Opinion', icon: 'ph ph-users-three', count: 0, route: '/second-opinion' },
+          { id: 'completed', label: 'Completed', icon: 'ph ph-check-circle', route: '/completed' }
+        ]
+      },
+      {
+        title: 'Presets',
+        items: [
+          { id: 'overdue', label: 'Overdue', icon: 'ph ph-warning-circle', count: 3, isAlert: true, route: '/overdue' },
+          { id: 'tumor-board', label: 'Tumor board', icon: 'ph ph-presentation-chart', route: '/tumor-board' },
+          { id: 'remote-site', label: 'Remote site', icon: 'ph ph-globe-hemisphere-west', route: '/remote-site' }
+        ]
+      }
+    ];
+  }
+
   private mockNavSections: NavSection[] = [
     {
       title: 'Boxes',
@@ -28,7 +54,6 @@ export class NavigationService {
     }
   ];
 
-  constructor() {}
 
   getById(id: string): Observable<NavItem | null> {
     const allItems = this.mockNavSections.flatMap(section => section.items);
@@ -72,7 +97,30 @@ export class NavigationService {
   }
 
   getNavSections(): Observable<NavSection[]> {
-    return of([...this.mockNavSections]).pipe(delay(200));
+    return new Observable(observer => {
+      // Get current exam counts from ExamService
+      this.examService.getExamCountsByCategory().subscribe(counts => {
+        const sections = this.getBaseMockNavSections();
+        
+        // Update counts for each box
+        sections[0].items.forEach(item => {
+          switch (item.id) {
+            case 'inbox':
+              item.count = counts.inbox;
+              break;
+            case 'pending':
+              item.count = counts.pending;
+              break;
+            case 'second-opinion':
+              item.count = counts.secondOpinion;
+              break;
+          }
+        });
+        
+        observer.next(sections);
+        observer.complete();
+      });
+    }).pipe(delay(200));
   }
 
   getActiveNavItem(): Observable<string> {
