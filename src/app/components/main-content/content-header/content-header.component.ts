@@ -19,6 +19,7 @@ export class ContentHeaderComponent implements OnInit, OnDestroy {
   isExpandedAll$ = this.isExpandedAllSubject.asObservable();
   showSortDropdown = new BehaviorSubject<boolean>(false);
   currentSort$!: Observable<string>;
+  currentSortLabel$!: Observable<string>;
   pageTitle$!: Observable<string>;
   private navigationSubscription?: Subscription;
 
