@@ -421,81 +421,19 @@ export class ExamService {
     this.examsSubject.next(sortedExams);
   }
 
-  private matchesSearchQuery(exam: Exam, query: string): boolean {
-    const searchTerm = query.toLowerCase();
-    
-    // Search in patient name (split by space for first/last name)
-    const patientNameParts = exam.patientName.toLowerCase().split(' ');
-    const patientNameMatch = patientNameParts.some(part => part.includes(searchTerm)) || 
-                            exam.patientName.toLowerCase().includes(searchTerm);
-    
-    // Search in assigned doctor (if exists)
-    const assignedDoctor = exam.assignedDoctor?.toLowerCase() || '';
-    const doctorNameParts = assignedDoctor.split(' ');
-    const doctorNameMatch = doctorNameParts.some(part => part.includes(searchTerm)) || 
-                           assignedDoctor.includes(searchTerm);
-    
-    // Search in exam ID
-    const examIdMatch = exam.examId.toLowerCase().includes(searchTerm);
-    
-    // Search in date (multiple formats)
-    const dateStr = exam.date.toLocaleDateString('fr-FR');
-    const isoDateStr = exam.date.toISOString().split('T')[0];
-    const dateMatch = dateStr.includes(searchTerm) || isoDateStr.includes(searchTerm);
-    
-    // Search in indication
-    const indicationMatch = exam.indication.toLowerCase().includes(searchTerm);
-    
-    // Search in AI status
-    const statusMatch = exam.aiStatus.toLowerCase().includes(searchTerm);
-    
-    // Search in exam type
-    const examTypeMatch = exam.examType.toLowerCase().includes(searchTerm);
-    
-    return patientNameMatch || doctorNameMatch || examIdMatch || 
-           dateMatch || indicationMatch || statusMatch || examTypeMatch;
-  }
-
-  private updateExamsForFilter(filter: string): void {
-    switch (filter) {
-      case 'inbox':
-        this.mockExams = this.allMockExams.filter(exam => exam.category === 'inbox');
-        break;
-      case 'pending':
-        this.mockExams = this.allMockExams.filter(exam => exam.category === 'pending');
-        break;
-      case 'second-opinion':
-        this.mockExams = this.allMockExams.filter(exam => exam.category === 'second-opinion');
-        break;
-      case 'completed':
-        this.mockExams = this.allMockExams.filter(exam => exam.category === 'completed');
-        break;
-      default:
-        this.mockExams = this.allMockExams.filter(exam => exam.category === 'inbox');
-    }
-    this.currentFilter.next(filter);
-    this.applyFiltersAndSort();
-  }
-
   setFilter(filter: string): void {
-    this.updateExamsForFilter(filter);
+    this.currentCategoryFilterSubject.next(filter);
+    this._applyFiltersAndSortAndEmit();
   }
 
   setSortOrder(sortOrder: string): void {
     console.log('ExamService: Setting sort order to', sortOrder);
     this.currentSortSubject.next(sortOrder);
-    this.applySortAndEmit();
+    this._applyFiltersAndSortAndEmit();
   }
 
   getCurrentSort(): Observable<string> {
     return this.currentSortSubject.asObservable();
-  }
-
-  private applySortAndEmit(): void {
-    const sortOrder = this.currentSortSubject.value;
-    const sortedExams = this.sortExams([...this.mockExams], sortOrder);
-    console.log('ExamService: Applying sort', sortOrder, 'to', sortedExams.length, 'exams');
-    this.examsSubject.next(sortedExams);
   }
 
   private sortExams(exams: Exam[], sortOrder: string): Exam[] {
@@ -551,11 +489,11 @@ export class ExamService {
   }
 
   getById(id: string): Observable<Exam | null> {
-    return of(this.mockExams.find(exam => exam.id === id) || null).pipe(delay(300));
+    return of(this.allMockExams.find(exam => exam.id === id) || null).pipe(delay(300));
   }
 
   search(criteria: SearchCriteria): Observable<ExamSearchResult> {
-    let filteredExams = [...this.mockExams];
+    let filteredExams = [...this.allMockExams];
 
     if (criteria.query) {
       const query = criteria.query.toLowerCase();
@@ -623,19 +561,11 @@ export class ExamService {
 
   expandAll(): Observable<boolean> {
     console.log('ExamService: Expanding all exams');
-    this.mockExams.forEach(exam => {
+    this.allMockExams.forEach(exam => {
       exam.isExpanded = true;
     });
     
-    // Also update in allMockExams to maintain consistency
-    this.allMockExams.forEach(exam => {
-      if (this.mockExams.find(mockExam => mockExam.id === exam.id)) {
-        exam.isExpanded = true;
-      }
-    });
-    
-    this.examsSubject.next([...this.mockExams]);
-    this.applySortAndEmit();
+    this._applyFiltersAndSortAndEmit();
     console.log('ExamService: All exams expanded, applied sort and emitted new state');
     return of(true).pipe(delay(50));
   }
