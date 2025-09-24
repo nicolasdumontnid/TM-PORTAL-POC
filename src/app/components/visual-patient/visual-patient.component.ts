@@ -1314,6 +1314,18 @@ export class VisualPatientComponent implements OnInit {
     return index;
   }
 
+  public getExamThumbnails(examPoint: ExamPoint): { url: string; filename: string }[] {
+    // Mock thumbnails based on exam type - in real app, this would come from the exam data
+    const mockThumbnails = [
+      { url: 'assets/public/images/radio/radio1.jpg', filename: 'axial_1.dcm' },
+      { url: 'assets/public/images/radio/radio2.jpg', filename: 'axial_2.dcm' },
+      { url: 'assets/public/images/radio/radio3.jpg', filename: 'sagittal_1.dcm' }
+    ];
+    
+    // Return 2-3 random thumbnails for demo
+    return mockThumbnails.slice(0, Math.floor(Math.random() * 2) + 2);
+  }
+
   onDepartmentLabelsScroll(event: Event): void {
     const target = event.target as HTMLElement;
     if (this.chartVerticalScroll && this.chartVerticalScroll.nativeElement) {
