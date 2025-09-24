@@ -485,6 +485,7 @@ export class ExamService {
     this.mockExams.forEach(exam => {
       exam.isExpanded = true;
     });
+    this.examsSubject.next([...this.mockExams]);
     return of(true).pipe(delay(100));
   }
 
@@ -492,6 +493,7 @@ export class ExamService {
     this.mockExams.forEach(exam => {
       exam.isExpanded = false;
     });
+    this.examsSubject.next([...this.mockExams]);
     return of(true).pipe(delay(100));
   }
 }
