@@ -397,7 +397,7 @@ export class VisualPatientComponent implements OnInit {
         // Register the window for theme synchronization
         this.themeService.registerReportingWindow(reportingWindow);
         // Handle window close to unregister
-        const checkClosedHandler = () => {
+        let checkClosedHandler = () => {
           if (reportingWindow.closed) {
             this.themeService.unregisterReportingWindow(reportingWindow);
           } else {
@@ -1171,16 +1171,6 @@ export class VisualPatientComponent implements OnInit {
       };
       
       window.addEventListener('message', messageHandler);
-      
-      // Clean up event listener when window closes
-      const checkClosedHandler = () => {
-        if (reportingWindow.closed) {
-          window.removeEventListener('message', messageHandler);
-          this.themeService.unregisterReportingWindow(reportingWindow);
-        } else {
-          setTimeout(checkClosedHandler, 1000);
-        }
-      };
       
       checkClosedHandler();
       }
