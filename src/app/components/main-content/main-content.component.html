@@ -1,7 +1,7 @@
 <main class="main-content">
   <div *ngIf="!(showVisualPatient$ | async) && !(showDashboard$ | async)">
     <app-content-header></app-content-header>
-    <app-exam-list (examDoubleClick)="onExamDoubleClick()"></app-exam-list>
+    <app-exam-list (examDoubleClick)="onExamDoubleClick($event)"></app-exam-list>
   </div>
   
   <app-visual-patient 
