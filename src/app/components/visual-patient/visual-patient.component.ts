@@ -414,6 +414,10 @@ export class VisualPatientComponent implements OnInit {
     // Combiner les deux observables
     windowConfig$.subscribe(windowConfig => {
       imagesConfig$.subscribe(imagesConfig => {
+      // Get the absolute base URL for assets
+      const baseUrl = window.location.origin;
+      const getAbsoluteImagePath = (relativePath: string) => `${baseUrl}/${relativePath}`;
+      
       const windowFeatures = `width=${windowConfig.width},height=${windowConfig.height},left=${windowConfig.left},top=${windowConfig.top},scrollbars=yes,resizable=yes`;
       const reportingWindow = window.open('about:blank', '_blank', windowFeatures);
       
@@ -1013,7 +1017,7 @@ export class VisualPatientComponent implements OnInit {
                   <div class="matrix-row">
                     <div class="matrix-cell image-cell">
                       <div class="medical-image-container">
-                        <img src="${imagesConfig.nodule1Baseline}" 
+                        <img src="${getAbsoluteImagePath(imagesConfig.nodule1Baseline)}" 
                              alt="Medical scan 6 months ago" class="medical-scan">
                         <div class="measurement-overlay">
                           <div class="measurement-line"></div>
@@ -1025,7 +1029,7 @@ export class VisualPatientComponent implements OnInit {
                     
                     <div class="matrix-cell image-cell">
                       <div class="medical-image-container">
-                        <img src="${imagesConfig.nodule1Current}" 
+                        <img src="${getAbsoluteImagePath(imagesConfig.nodule1Current)}" 
                              alt="Medical scan today" class="medical-scan">
                         <div class="measurement-overlay">
                           <div class="measurement-line"></div>
@@ -1064,7 +1068,7 @@ export class VisualPatientComponent implements OnInit {
                   <div class="matrix-row">
                     <div class="matrix-cell image-cell">
                       <div class="medical-image-container">
-                        <img src="${imagesConfig.nodule2Baseline}" 
+                        <img src="${getAbsoluteImagePath(imagesConfig.nodule2Baseline)}" 
                              alt="Medical scan 6 months ago" class="medical-scan">
                         <div class="measurement-overlay">
                           <div class="measurement-line"></div>
@@ -1076,7 +1080,7 @@ export class VisualPatientComponent implements OnInit {
                     
                     <div class="matrix-cell image-cell">
                       <div class="medical-image-container">
-                        <img src="${imagesConfig.nodule2Current}" 
+                        <img src="${getAbsoluteImagePath(imagesConfig.nodule2Current)}" 
                              alt="Medical scan today" class="medical-scan">
                         <div class="measurement-overlay">
                           <div class="measurement-line"></div>
