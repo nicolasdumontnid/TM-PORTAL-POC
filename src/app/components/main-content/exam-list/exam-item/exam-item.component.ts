@@ -9,26 +9,21 @@ import { ExamService } from '../../../../services/exam.service';
   imports: [CommonModule],
   templateUrl: './exam-item.component.html',
   styleUrl: './exam-item.component.css',
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.Default
 })
 export class ExamItemComponent {
   @Input() exam!: Exam;
 
   constructor(
-    private examService: ExamService,
-    private cdr: ChangeDetectorRef
+    private examService: ExamService
   ) {}
 
   toggleExpansion(): void {
-    this.examService.update(this.exam.id, { isExpanded: !this.exam.isExpanded }).subscribe(() => {
-      this.cdr.markForCheck();
-    });
+    this.examService.update(this.exam.id, { isExpanded: !this.exam.isExpanded }).subscribe();
   }
 
   togglePin(): void {
-    this.examService.update(this.exam.id, { isPinned: !this.exam.isPinned }).subscribe(() => {
-      this.cdr.markForCheck();
-    });
+    this.examService.update(this.exam.id, { isPinned: !this.exam.isPinned }).subscribe();
   }
 
   getAiButtonClass(): string {

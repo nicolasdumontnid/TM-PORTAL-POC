@@ -11,7 +11,7 @@ import { ExamService } from '../../../services/exam.service';
   imports: [CommonModule, FormsModule],
   templateUrl: './content-header.component.html',
   styleUrl: './content-header.component.css',
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.Default
 })
 export class ContentHeaderComponent implements OnInit {
   searchQuery = '';
@@ -23,8 +23,7 @@ export class ContentHeaderComponent implements OnInit {
 
   constructor(
     private navigationService: NavigationService,
-    private examService: ExamService,
-    private cdr: ChangeDetectorRef
+    private examService: ExamService
   ) {}
 
   ngOnInit(): void {
@@ -47,7 +46,6 @@ export class ContentHeaderComponent implements OnInit {
     this.examService.getAll().subscribe(exams => {
       const allExpanded = exams.length > 0 && exams.every(exam => exam.isExpanded);
       this.isExpandedAllSubject.next(allExpanded);
-      this.cdr.markForCheck();
     });
   }
 
@@ -60,14 +58,13 @@ export class ContentHeaderComponent implements OnInit {
   );
 
   toggleExpandAll(): void {
+    console.log('Toggle expand all clicked, current state:', this.isExpandedAllSubject.value);
     if (this.isExpandedAllSubject.value) {
-      this.examService.collapseAll().subscribe(() => {
-        this.cdr.markForCheck();
-      });
+      console.log('Collapsing all exams');
+      this.examService.collapseAll().subscribe();
     } else {
-      this.examService.expandAll().subscribe(() => {
-        this.cdr.markForCheck();
-      });
+      console.log('Expanding all exams');
+      this.examService.expandAll().subscribe();
     }
   }
   

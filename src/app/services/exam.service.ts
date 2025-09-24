@@ -482,18 +482,38 @@ export class ExamService {
   }
 
   expandAll(): Observable<boolean> {
+    console.log('ExamService: Expanding all exams');
     this.mockExams.forEach(exam => {
       exam.isExpanded = true;
     });
+    
+    // Also update in allMockExams to maintain consistency
+    this.allMockExams.forEach(exam => {
+      if (this.mockExams.find(mockExam => mockExam.id === exam.id)) {
+        exam.isExpanded = true;
+      }
+    });
+    
     this.examsSubject.next([...this.mockExams]);
+    console.log('ExamService: All exams expanded, emitted new state');
     return of(true).pipe(delay(100));
   }
 
   collapseAll(): Observable<boolean> {
+    console.log('ExamService: Collapsing all exams');
     this.mockExams.forEach(exam => {
       exam.isExpanded = false;
     });
+    
+    // Also update in allMockExams to maintain consistency
+    this.allMockExams.forEach(exam => {
+      if (this.mockExams.find(mockExam => mockExam.id === exam.id)) {
+        exam.isExpanded = false;
+      }
+    });
+    
     this.examsSubject.next([...this.mockExams]);
+    console.log('ExamService: All exams collapsed, emitted new state');
     return of(true).pipe(delay(100));
   }
 }
