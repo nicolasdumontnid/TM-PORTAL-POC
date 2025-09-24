@@ -14,8 +14,8 @@ import { ExamService } from '../../../services/exam.service';
   changeDetection: ChangeDetectionStrategy.Default
 })
 export class ContentHeaderComponent implements OnInit, OnDestroy {
-  searchQuery = '';
-  isSearchFocused = false;
+  public searchQuery = '';
+  public isSearchFocused = false;
   private isExpandedAllSubject = new BehaviorSubject<boolean>(false);
   isExpandedAll$ = this.isExpandedAllSubject.asObservable();
   showSortDropdown = new BehaviorSubject<boolean>(false);
@@ -114,11 +114,11 @@ export class ContentHeaderComponent implements OnInit, OnDestroy {
     console.log('Searching for:', this.searchQuery);
   }
 
-  onSearchFocus(): void {
+  public onSearchFocus(): void {
     this.isSearchFocused = true;
   }
 
-  onSearchBlur(): void {
+  public onSearchBlur(): void {
     this.isSearchFocused = false;
   }
 }
