@@ -38,15 +38,22 @@ export class ConfigService {
         const savedWidth = localStorage.getItem('reporting.window.width');
         const savedHeight = localStorage.getItem('reporting.window.height');
         
-        // Use localStorage values if they exist, otherwise use config values
-        return {
-          left: savedLeft ? parseInt(savedLeft, 10) : config.reporting.window.left,
-          top: savedTop ? parseInt(savedTop, 10) : config.reporting.window.top,
-          width: savedWidth ? parseInt(savedWidth, 10) : config.reporting.window.width,
-          height: savedHeight ? parseInt(savedHeight, 10) : config.reporting.window.height
+        // Create updated config with localStorage values if they exist
+        const updatedConfig: AppConfig = {
+          ...config,
+          reporting: {
+            ...config.reporting,
+            window: {
+              left: savedLeft ? parseInt(savedLeft, 10) : config.reporting.window.left,
+              top: savedTop ? parseInt(savedTop, 10) : config.reporting.window.top,
+              width: savedWidth ? parseInt(savedWidth, 10) : config.reporting.window.width,
+              height: savedHeight ? parseInt(savedHeight, 10) : config.reporting.window.height
+            }
+          }
         };
-        this.config = config;
-        return config;
+        
+        this.config = updatedConfig;
+        return updatedConfig;
       }),
       catchError(error => {
         console.error('Error loading configuration:', error);
@@ -62,6 +69,7 @@ export class ConfigService {
           }
         };
         this.config = defaultConfig;
+        return of(defaultConfig);
       })
     );
   }
