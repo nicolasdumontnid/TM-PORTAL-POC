@@ -1,4 +1,4 @@
-import { Component, ChangeDetectionStrategy, OnInit, ChangeDetectorRef } from '@angular/core';
+import { Component, ChangeDetectionStrategy, OnInit, OnDestroy, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { BehaviorSubject, Observable, map, Subscription } from 'rxjs';
@@ -13,7 +13,7 @@ import { ExamService } from '../../../services/exam.service';
   styleUrl: './content-header.component.css',
   changeDetection: ChangeDetectionStrategy.Default
 })
-export class ContentHeaderComponent implements OnInit {
+export class ContentHeaderComponent implements OnInit, OnDestroy {
   searchQuery = '';
   private isExpandedAllSubject = new BehaviorSubject<boolean>(false);
   isExpandedAll$ = this.isExpandedAllSubject.asObservable();
