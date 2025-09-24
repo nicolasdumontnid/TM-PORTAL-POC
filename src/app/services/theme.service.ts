@@ -6,6 +6,7 @@ import { BehaviorSubject, Observable } from 'rxjs';
 })
 export class ThemeService {
   private currentTheme = new BehaviorSubject<'light' | 'dark'>('light');
+  private reportingWindows: Window[] = [];
   
   constructor() {
     this.initializeTheme();
@@ -33,5 +34,35 @@ export class ThemeService {
     document.documentElement.setAttribute('data-theme', theme);
     localStorage.setItem('theme', theme);
     this.currentTheme.next(theme);
+    this.syncThemeToReportingWindows(theme);
+  }
+
+  registerReportingWindow(window: Window): void {
+    this.reportingWindows.push(window);
+    // Apply current theme to the new window
+    this.syncThemeToWindow(window, this.currentTheme.value);
+  }
+
+  unregisterReportingWindow(window: Window): void {
+    const index = this.reportingWindows.indexOf(window);
+    if (index > -1) {
+      this.reportingWindows.splice(index, 1);
+    }
+  }
+
+  private syncThemeToReportingWindows(theme: 'light' | 'dark'): void {
+    // Clean up closed windows
+    this.reportingWindows = this.reportingWindows.filter(window => !window.closed);
+    
+    // Apply theme to all open reporting windows
+    this.reportingWindows.forEach(window => {
+      this.syncThemeToWindow(window, theme);
+    });
+  }
+
+  private syncThemeToWindow(window: Window, theme: 'light' | 'dark'): void {
+    if (window && !window.closed && window.document) {
+      window.document.documentElement.setAttribute('data-theme', theme);
+    }
   }
 }

@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { Observable, BehaviorSubject, combineLatest, map, of } from 'rxjs';
 import { VisualPatientService } from '../../services/visual-patient.service';
 import { ConfigService, WindowConfig } from '../../services/config.service';
+import { ThemeService } from '../../services/theme.service';
 import { PatientInfo, RadiologicalRequest, AISummary, RadioReport, PatientRecord, ExamPoint, ImagesByDate, VisualPatientBlock, GraphicFilter, Department, AnatomyRegion } from '../../models/visual-patient.model';
 
 @Component({
@@ -73,7 +74,8 @@ export class VisualPatientComponent implements OnInit {
   ];
   constructor(
     private visualPatientService: VisualPatientService,
-    private configService: ConfigService
+    private configService: ConfigService,
+    private themeService: ThemeService
   ) {}
 
   ngOnInit(): void {
@@ -392,10 +394,23 @@ export class VisualPatientComponent implements OnInit {
       const reportingWindow = window.open('about:blank', '_blank', windowFeatures);
       
       if (reportingWindow) {
+        // Register the window for theme synchronization
+        this.themeService.registerReportingWindow(reportingWindow);
+        
+        // Handle window close to unregister
+        const checkClosed = () => {
+          if (reportingWindow.closed) {
+            this.themeService.unregisterReportingWindow(reportingWindow);
+          } else {
+            setTimeout(checkClosed, 1000);
+          }
+        };
+        setTimeout(checkClosed, 1000);
+        
         // Create a complete HTML document with Angular component
         const htmlContent = `
         <!DOCTYPE html>
-        <html lang="en">
+        <html lang="en" data-theme="${this.themeService.currentThemeValue}">
         <head>
           <meta charset="UTF-8">
           <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -404,6 +419,31 @@ export class VisualPatientComponent implements OnInit {
           <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
           <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
           <style>
+            :root {
+              /* Light Theme (Default) */
+              --primary-color: #14B8A6;
+              --primary-light: #F0FDFA;
+              --bg-main: #F7F8FA;
+              --bg-container: #FFFFFF;
+              --border-color: #EAEBEE;
+              --text-primary: #2C3E50;
+              --text-secondary: #7F8C9A;
+              --exam-bg: #546E7A;
+              --exam-text: #ECF0F1;
+              --online-green: #2ECC71;
+              --alert-red: #E74C3C;
+            }
+
+            html[data-theme="dark"] {
+              --primary-light: rgba(20, 184, 166, 0.1);
+              --bg-main: #1A202C;
+              --bg-container: #2D3748;
+              --border-color: #4A5568;
+              --text-primary: #EDF2F7;
+              --text-secondary: #A0AEC0;
+              --exam-bg: #34495E;
+            }
+
             * {
               box-sizing: border-box;
               margin: 0;
@@ -414,9 +454,10 @@ export class VisualPatientComponent implements OnInit {
               font-family: 'Poppins', sans-serif; 
               margin: 0; 
               padding: 20px; 
-              background: #f8f9fa;
-              color: #333;
+              background: var(--bg-main);
+              color: var(--text-primary);
               line-height: 1.6;
+              transition: background-color 0.3s ease, color 0.3s ease;
             }
             
             .container {
@@ -430,13 +471,13 @@ export class VisualPatientComponent implements OnInit {
               align-items: center; 
               margin-bottom: 30px; 
               padding-bottom: 20px;
-              border-bottom: 2px solid #14B8A6;
+              border-bottom: 2px solid var(--primary-color);
             }
             
             .logo { 
               font-size: 24px; 
               font-weight: bold; 
-              color: #14B8A6;
+              color: var(--primary-color);
             }
             
             .template-selector {
@@ -446,10 +487,10 @@ export class VisualPatientComponent implements OnInit {
             
             .template-dropdown {
               padding: 8px 12px;
-              border: 1px solid #ddd;
+              border: 1px solid var(--border-color);
               border-radius: 6px;
-              background: white;
-              color: #333;
+              background: var(--bg-container);
+              color: var(--text-primary);
               font-family: inherit;
               font-size: 14px;
               cursor: pointer;
@@ -459,19 +500,19 @@ export class VisualPatientComponent implements OnInit {
             
             .template-dropdown:focus {
               outline: none;
-              border-color: #14B8A6;
-              box-shadow: 0 0 0 2px rgba(20, 184, 166, 0.1);
+              border-color: var(--primary-color);
+              box-shadow: 0 0 0 2px var(--primary-light);
             }
             
             .template-dropdown:hover {
-              border-color: #14B8A6;
+              border-color: var(--primary-color);
             }
             
             .patient-info { 
               display: flex; 
               justify-content: space-between; 
               margin-bottom: 30px;
-              background: white;
+              background: var(--bg-container);
               padding: 20px;
               border-radius: 8px;
               box-shadow: 0 2px 4px rgba(0,0,0,0.1);
@@ -484,7 +525,7 @@ export class VisualPatientComponent implements OnInit {
             
             .info-section h3 { 
               margin: 0 0 15px 0; 
-              color: #14B8A6; 
+              color: var(--primary-color); 
               font-size: 18px;
               font-weight: 600;
             }
@@ -497,7 +538,7 @@ export class VisualPatientComponent implements OnInit {
             
             .label { 
               font-weight: 600; 
-              color: #666; 
+              color: var(--text-secondary); 
               display: inline-block; 
               width: 120px;
               flex-shrink: 0;
@@ -505,19 +546,19 @@ export class VisualPatientComponent implements OnInit {
             
             .value {
               flex: 1;
-              color: #333;
+              color: var(--text-primary);
             }
             
             .report-section { 
               margin-bottom: 20px;
-              background: white;
+              background: var(--bg-container);
               border-radius: 8px;
               overflow: hidden;
               box-shadow: 0 2px 4px rgba(0,0,0,0.1);
             }
             
             .section-header { 
-              background: #14B8A6; 
+              background: var(--primary-color); 
               color: white; 
               padding: 12px 20px; 
               font-weight: 600;
@@ -533,20 +574,21 @@ export class VisualPatientComponent implements OnInit {
             textarea { 
               width: 100%; 
               min-height: 100px; 
-              border: 1px solid #ddd; 
+              border: 1px solid var(--border-color); 
               border-radius: 4px; 
               padding: 12px; 
               font-family: inherit; 
               font-size: 14px;
               resize: vertical;
               line-height: 1.5;
-              background: #fff;
+              background: var(--bg-container);
+              color: var(--text-primary);
             }
             
             textarea:focus { 
               outline: none; 
-              border-color: #14B8A6; 
-              box-shadow: 0 0 0 2px rgba(20, 184, 166, 0.1);
+              border-color: var(--primary-color); 
+              box-shadow: 0 0 0 2px var(--primary-light);
             }
             
             .actions { 
@@ -555,7 +597,7 @@ export class VisualPatientComponent implements OnInit {
               justify-content: center; 
               margin-top: 30px;
               padding-top: 20px;
-              border-top: 1px solid #eee;
+              border-top: 1px solid var(--border-color);
               flex-wrap: wrap;
             }
             
@@ -576,39 +618,39 @@ export class VisualPatientComponent implements OnInit {
             }
             
             .btn-secondary { 
-              background: #6c757d !important; 
+              background: var(--text-secondary) !important; 
               color: white !important; 
             }
             
             .btn-secondary:hover { 
-              background: #5a6268 !important; 
+              background: var(--exam-bg) !important; 
             }
             
             .btn-warning { 
-              background: #6c757d !important; 
+              background: var(--text-secondary) !important; 
               color: white !important; 
             }
             
             .btn-warning:hover { 
-              background: #5a6268 !important; 
+              background: var(--exam-bg) !important; 
             }
             
             .btn-primary { 
-              background: #28a745 !important; 
+              background: var(--online-green) !important; 
               color: white !important; 
             }
             
             .btn-primary:hover { 
-              background: #218838 !important; 
+              background: #27AE60 !important; 
             }
             
             .btn-success { 
-              background: #28a745 !important; 
+              background: var(--online-green) !important; 
               color: white !important; 
             }
             
             .btn-success:hover { 
-              background: #218838 !important; 
+              background: #27AE60 !important; 
             }
             
             /* Findings Matrix Styles */
@@ -632,14 +674,14 @@ export class VisualPatientComponent implements OnInit {
             }
             
             .matrix-cell {
-              background: white;
+              background: var(--bg-container);
               border-radius: 8px;
               padding: 15px;
               box-shadow: 0 2px 4px rgba(0,0,0,0.1);
             }
             
             .header-cell {
-              background: #14B8A6;
+              background: var(--primary-color);
               color: white;
               text-align: center;
               font-weight: 600;
@@ -654,7 +696,7 @@ export class VisualPatientComponent implements OnInit {
             
             .medical-image-container {
               position: relative;
-              background: #2c3e50;
+              background: var(--exam-bg);
               border-radius: 8px;
               overflow: hidden;
               aspect-ratio: 1;
@@ -711,12 +753,12 @@ export class VisualPatientComponent implements OnInit {
             
             .image-label {
               font-size: 12px;
-              color: #666;
+              color: var(--text-secondary);
               font-weight: 500;
             }
             
             .chart-cell {
-              background: #2c3e50;
+              background: var(--exam-bg);
               color: white;
             }
             
@@ -724,7 +766,7 @@ export class VisualPatientComponent implements OnInit {
               text-align: center;
               font-weight: 600;
               margin-bottom: 10px;
-              color: #ecf0f1;
+              color: var(--exam-text);
               font-size: 14px;
             }
             
@@ -737,7 +779,7 @@ export class VisualPatientComponent implements OnInit {
             .evolution-chart {
               width: 100%;
               height: 120px;
-              background: #34495e;
+              background: var(--exam-bg);
               border-radius: 4px;
               margin-bottom: 10px;
             }
@@ -753,16 +795,16 @@ export class VisualPatientComponent implements OnInit {
               font-weight: 600;
               padding: 4px 8px;
               border-radius: 4px;
-              background: #34495e;
+              background: var(--exam-bg);
             }
             
             .stat-value.decrease {
-              color: #2ecc71;
+              color: var(--online-green);
               background: rgba(46, 204, 113, 0.2);
             }
             
             .stat-value.increase {
-              color: #e74c3c;
+              color: var(--alert-red);
               background: rgba(231, 76, 60, 0.2);
             }
             
