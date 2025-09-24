@@ -430,10 +430,8 @@ export class VisualPatientComponent implements OnInit {
           }
         };
         
-        // Get reporting images configuration
-        this.configService.getReportingImagesConfig().subscribe((imagesConfig: ReportingImagesConfig) => {
-          // Create a complete HTML document with Angular component
-          const htmlContent = `
+        // Create a complete HTML document with Angular component
+        const htmlContent = `
         <!DOCTYPE html>
         <html lang="en" data-theme="${this.themeService.currentThemeValue}">
         <head>
@@ -1060,7 +1058,7 @@ export class VisualPatientComponent implements OnInit {
                   <div class="matrix-row">
                     <div class="matrix-cell image-cell">
                       <div class="medical-image-container">
-                        <img src="https://images.unsplash.com/photo-1576091160399-112ba8d25d1f?ixlib=rb-4.0.3&auto=format&fit=crop&w=200&q=80" 
+                        <img src="${imagesConfig.nodule2Baseline}" 
                              alt="Medical scan 6 months ago" class="medical-scan">
                         <div class="measurement-overlay">
                           <div class="measurement-line"></div>
@@ -1072,7 +1070,7 @@ export class VisualPatientComponent implements OnInit {
                     
                     <div class="matrix-cell image-cell">
                       <div class="medical-image-container">
-                        <img src="https://images.unsplash.com/photo-1576091160399-112ba8d25d1f?ixlib=rb-4.0.3&auto=format&fit=crop&w=200&q=80" 
+                        <img src="${imagesConfig.nodule2Current}" 
                              alt="Medical scan today" class="medical-scan">
                         <div class="measurement-overlay">
                           <div class="measurement-line"></div>
