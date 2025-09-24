@@ -1,4 +1,4 @@
-<div class="content-header">
+<div class="content-header" *ngIf="hasExams$ | async">
   <div class="header-left">
     <h1>{{pageTitle$ | async}}</h1>
     <button 
@@ -37,4 +37,9 @@
       (blur)="onSearchBlur()"
     >
   </div>
+</div>
+
+<!-- Titre seul quand il n'y a pas d'examens -->
+<div class="page-title-only" *ngIf="!(hasExams$ | async)">
+  <h1>{{pageTitle$ | async}}</h1>
 </div>

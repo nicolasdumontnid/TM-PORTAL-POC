@@ -138,3 +138,23 @@ html[data-theme="dark"] .header-btn:hover {
     width: 100%;
   }
 }
+
+/* Titre seul pour les pages vides */
+.page-title-only {
+  display: flex;
+  align-items: center;
+  margin-bottom: 20px;
+  flex-shrink: 0;
+  padding: 0 15px 0 0;
+  min-height: 60px;
+}
+
+.page-title-only h1 {
+  font-size: 1.8rem;
+  color: var(--exam-bg);
+  margin: 0;
+}
+
+html[data-theme="dark"] .page-title-only h1 {
+  color: var(--text-primary);
+}
