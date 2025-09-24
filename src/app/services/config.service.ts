@@ -68,6 +68,11 @@ export class ConfigService {
               width: 926,
               height: 1183
             }
+          },
+          examLimits: {
+            inbox: 7,
+            pending: 3,
+            secondOpinion: 2
           }
         };
         this.config = defaultConfig;
