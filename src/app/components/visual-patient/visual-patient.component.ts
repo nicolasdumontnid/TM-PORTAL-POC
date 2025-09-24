@@ -407,7 +407,13 @@ export class VisualPatientComponent implements OnInit {
       this.currentViewerWindow = null;
     }
 
-    this.configService.getReportingWindowConfig().subscribe(windowConfig => {
+    // Charger les configurations en parallèle
+    const windowConfig$ = this.configService.getReportingWindowConfig();
+    const imagesConfig$ = this.configService.getReportingImagesConfig();
+    
+    // Combiner les deux observables
+    windowConfig$.subscribe(windowConfig => {
+      imagesConfig$.subscribe(imagesConfig => {
       const windowFeatures = `width=${windowConfig.width},height=${windowConfig.height},left=${windowConfig.left},top=${windowConfig.top},scrollbars=yes,resizable=yes`;
       const reportingWindow = window.open('about:blank', '_blank', windowFeatures);
       
@@ -1202,6 +1208,7 @@ export class VisualPatientComponent implements OnInit {
       // Ouvrir la seconde fenêtre viewer
       this.openViewerWindow();
       }
+    });
     });
   }
 
