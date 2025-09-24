@@ -11,7 +11,7 @@
     </button>
     <div class="sort-container">
       <button class="header-btn" (click)="toggleSortDropdown()">
-        <span>Sort by: {{currentSort$ | async}}</span>
+        <span>Sort by: {{currentSortLabel$ | async}}</span>
         <i class="ph ph-caret-down-bold"></i>
       </button>
       <div 
@@ -20,7 +20,8 @@
       >
         <a href="javascript:void(0)" (click)="selectSort('date-desc', 'Date DESC')">Date DESC</a>
         <a href="javascript:void(0)" (click)="selectSort('date-asc', 'Date ASC')">Date ASC</a>
-        <a href="javascript:void(0)" (click)="selectSort('patient-name', 'Patient Name')">Patient Name</a>
+        <a href="javascript:void(0)" (click)="selectSort('patient-name-asc', 'Patient Name ASC')">Patient Name ASC</a>
+        <a href="javascript:void(0)" (click)="selectSort('patient-name-desc', 'Patient Name DESC')">Patient Name DESC</a>
       </div>
     </div>
   </div>

@@ -92,6 +92,16 @@ export class ContentHeaderComponent implements OnInit, OnDestroy {
     this.showSortDropdown.next(false);
   }
 
+  private getSortLabel(sort: string): string {
+    switch (sort) {
+      case 'date-desc': return 'Date DESC';
+      case 'date-asc': return 'Date ASC';
+      case 'patient-name-asc': return 'Patient Name ASC';
+      case 'patient-name-desc': return 'Patient Name DESC';
+      default: return 'Date DESC';
+    }
+  }
+
   onSearch(): void {
     this.examService.setSearchQuery(this.searchQuery);
     console.log('Searching for:', this.searchQuery);

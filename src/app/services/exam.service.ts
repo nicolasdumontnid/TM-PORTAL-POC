@@ -472,8 +472,10 @@ export class ExamService {
         return exams.sort((a, b) => b.date.getTime() - a.date.getTime());
       case 'date-asc':
         return exams.sort((a, b) => a.date.getTime() - b.date.getTime());
-      case 'patient-name':
+      case 'patient-name-asc':
         return exams.sort((a, b) => a.patientName.localeCompare(b.patientName));
+      case 'patient-name-desc':
+        return exams.sort((a, b) => b.patientName.localeCompare(a.patientName));
       default:
         return exams;
     }
