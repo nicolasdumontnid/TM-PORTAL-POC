@@ -13,8 +13,14 @@ export interface ReportingConfig {
   window: WindowConfig;
 }
 
+export interface OhifViewerConfig {
+  url: string;
+  window: WindowConfig;
+}
+
 export interface AppConfig {
   reporting: ReportingConfig;
+  ohifViewer: OhifViewerConfig;
 }
 
 @Injectable({
@@ -45,6 +51,15 @@ export class ConfigService {
               top: 100,
               width: 1200,
               height: 800
+            }
+          },
+          ohifViewer: {
+            url: "https://viewer.ohif.org/viewer?StudyInstanceUIDs=2.16.840.1.114362.1.11972228.22789312658.616067305.306.2",
+            window: {
+              left: 200,
+              top: 200,
+              width: 1400,
+              height: 900
             }
           }
         };
@@ -108,6 +123,48 @@ export class ConfigService {
         };
       })
     );
+  }
+
+  getOhifViewerConfig(): Observable<OhifViewerConfig> {
+    return this.loadConfig().pipe(
+      map(config => {
+        // Check localStorage for saved OHIF viewer window position
+        const savedLeft = localStorage.getItem('ohifViewer.window.left');
+        const savedTop = localStorage.getItem('ohifViewer.window.top');
+        const savedWidth = localStorage.getItem('ohifViewer.window.width');
+        const savedHeight = localStorage.getItem('ohifViewer.window.height');
+        const savedUrl = localStorage.getItem('ohifViewer.url');
+        
+        // Use localStorage values if they exist, otherwise use config values
+        return {
+          url: savedUrl || config.ohifViewer.url,
+          window: {
+            left: savedLeft ? parseInt(savedLeft, 10) : config.ohifViewer.window.left,
+            top: savedTop ? parseInt(savedTop, 10) : config.ohifViewer.window.top,
+            width: savedWidth ? parseInt(savedWidth, 10) : config.ohifViewer.window.width,
+            height: savedHeight ? parseInt(savedHeight, 10) : config.ohifViewer.window.height
+          }
+        };
+      })
+    );
+  }
+
+  saveOhifViewerWindowPosition(windowRef: Window): void {
+    if (windowRef && !windowRef.closed) {
+      // Get current window position and size
+      const left = windowRef.screenX || windowRef.screenLeft || 0;
+      const top = windowRef.screenY || windowRef.screenTop || 0;
+      const width = windowRef.outerWidth || 1400;
+      const height = windowRef.outerHeight || 900;
+      
+      // Save to localStorage
+      localStorage.setItem('ohifViewer.window.left', left.toString());
+      localStorage.setItem('ohifViewer.window.top', top.toString());
+      localStorage.setItem('ohifViewer.window.width', width.toString());
+      localStorage.setItem('ohifViewer.window.height', height.toString());
+      
+      console.log('OHIF Viewer window position saved:', { left, top, width, height });
+    }
   }
 
   // Method to reload configuration (useful for runtime updates)
