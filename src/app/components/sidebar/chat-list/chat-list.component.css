@@ -48,55 +48,6 @@
   object-fit: cover;
 }
 
-/* Positionnement des sprites pour patient.jpg (684x240px, 6 colonnes de 113px, 2 lignes de 120px) */
-.chat-contact:nth-child(1) .avatar[src*="patient.jpg"] {
-  object-position: 0 0;
-}
-
-.chat-contact:nth-child(2) .avatar[src*="patient.jpg"] {
-  object-position: -113px 0;
-}
-
-.chat-contact:nth-child(3) .avatar[src*="patient.jpg"] {
-  object-position: -226px 0;
-}
-
-.chat-contact:nth-child(4) .avatar[src*="patient.jpg"] {
-  object-position: -339px 0;
-}
-
-.chat-contact:nth-child(5) .avatar[src*="patient.jpg"] {
-  object-position: -452px 0;
-}
-
-.chat-contact:nth-child(6) .avatar[src*="patient.jpg"] {
-  object-position: -565px 0;
-}
-
-.chat-contact:nth-child(7) .avatar[src*="patient.jpg"] {
-  object-position: 0 -120px;
-}
-
-.chat-contact:nth-child(8) .avatar[src*="patient.jpg"] {
-  object-position: -113px -120px;
-}
-
-.chat-contact:nth-child(9) .avatar[src*="patient.jpg"] {
-  object-position: -226px -120px;
-}
-
-.chat-contact:nth-child(10) .avatar[src*="patient.jpg"] {
-  object-position: -339px -120px;
-}
-
-.chat-contact:nth-child(11) .avatar[src*="patient.jpg"] {
-  object-position: -452px -120px;
-}
-
-.chat-contact:nth-child(12) .avatar[src*="patient.jpg"] {
-  object-position: -565px -120px;
-}
-
 .chat-contact .status-dot {
   width: 10px;
   height: 10px;

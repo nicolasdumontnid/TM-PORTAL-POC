@@ -45,11 +45,6 @@
   object-fit: cover;
 }
 
-/* Positionnement par défaut pour patient.jpg */
-.contact-info .avatar[src*="patient.jpg"] {
-  object-position: 0 0;
-}
-
 .contact-details h3 {
   margin: 0;
   color: var(--text-primary);
