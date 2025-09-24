@@ -79,7 +79,7 @@ export class ContentHeaderComponent implements OnInit {
   }
 
   onSearch(): void {
-    // Implement search logic
+    this.examService.setSearchQuery(this.searchQuery);
     console.log('Searching for:', this.searchQuery);
   }
 }

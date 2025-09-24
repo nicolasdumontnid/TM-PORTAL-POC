@@ -31,6 +31,7 @@
       placeholder="Search exams..."
       [(ngModel)]="searchQuery"
       (input)="onSearch()"
+      (keyup.enter)="onSearch()"
     >
   </div>
 </div>
