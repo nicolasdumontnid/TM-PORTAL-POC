@@ -1013,7 +1013,7 @@ export class VisualPatientComponent implements OnInit {
                   <div class="matrix-row">
                     <div class="matrix-cell image-cell">
                       <div class="medical-image-container">
-                        <img src="https://images.unsplash.com/photo-1559757148-5c350d0d3c56?ixlib=rb-4.0.3&auto=format&fit=crop&w=200&q=80" 
+                        <img src="${imagesConfig.nodule1Baseline}" 
                              alt="Medical scan 6 months ago" class="medical-scan">
                         <div class="measurement-overlay">
                           <div class="measurement-line"></div>
@@ -1025,7 +1025,7 @@ export class VisualPatientComponent implements OnInit {
                     
                     <div class="matrix-cell image-cell">
                       <div class="medical-image-container">
-                        <img src="https://images.unsplash.com/photo-1559757148-5c350d0d3c56?ixlib=rb-4.0.3&auto=format&fit=crop&w=200&q=80" 
+                        <img src="${imagesConfig.nodule1Current}" 
                              alt="Medical scan today" class="medical-scan">
                         <div class="measurement-overlay">
                           <div class="measurement-line"></div>
@@ -1064,7 +1064,7 @@ export class VisualPatientComponent implements OnInit {
                   <div class="matrix-row">
                     <div class="matrix-cell image-cell">
                       <div class="medical-image-container">
-                        <img src="https://images.unsplash.com/photo-1576091160399-112ba8d25d1f?ixlib=rb-4.0.3&auto=format&fit=crop&w=200&q=80" 
+                        <img src="${imagesConfig.nodule2Baseline}" 
                              alt="Medical scan 6 months ago" class="medical-scan">
                         <div class="measurement-overlay">
                           <div class="measurement-line"></div>
@@ -1076,7 +1076,7 @@ export class VisualPatientComponent implements OnInit {
                     
                     <div class="matrix-cell image-cell">
                       <div class="medical-image-container">
-                        <img src="https://images.unsplash.com/photo-1576091160399-112ba8d25d1f?ixlib=rb-4.0.3&auto=format&fit=crop&w=200&q=80" 
+                        <img src="${imagesConfig.nodule2Current}" 
                              alt="Medical scan today" class="medical-scan">
                         <div class="measurement-overlay">
                           <div class="measurement-line"></div>
