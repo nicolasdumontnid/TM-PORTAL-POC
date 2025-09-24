@@ -388,7 +388,7 @@ export class ExamService {
     }
   ];
   
-  constructor(private configService: ConfigService) {
+  constructor() {
     this._applyFiltersAndSortAndEmit();
   }
 
@@ -406,29 +406,48 @@ export class ExamService {
     const searchQuery = this.searchQuerySubject.value;
     const sortOrder = this.currentSortSubject.value;
 
-    // Filter by category
-    let filteredExams = this.allMockExams.filter(exam => {
-      switch (currentCategory) {
-        case 'inbox': return exam.category === 'inbox';
-        case 'pending': return exam.category === 'pending';
-        case 'second-opinion': return exam.category === 'second-opinion';
-        case 'completed': return exam.category === 'completed';
-        default: return exam.category === 'inbox';
+    // Get exam limits from configuration
+    this.configService.getExamLimitsConfig().subscribe(examLimits => {
+      // Filter by category
+      let filteredExams = this.allMockExams.filter(exam => {
+        switch (currentCategory) {
+          case 'inbox': return exam.category === 'inbox';
+          case 'pending': return exam.category === 'pending';
+          case 'second-opinion': return exam.category === 'second-opinion';
+          case 'completed': return exam.category === 'completed';
+          default: return exam.category === 'inbox';
+        }
+      });
+
+      // Apply search filter
+      if (searchQuery.trim()) {
+        filteredExams = filteredExams.filter(exam => 
+          this.matchesSearchQuery(exam, searchQuery)
+        );
       }
+
+      // Apply sorting
+      const sortedExams = this.sortExams([...filteredExams], sortOrder);
+
+      // Apply exam limits based on configuration
+      let limitedExams = sortedExams;
+      switch (currentCategory) {
+        case 'inbox':
+          limitedExams = sortedExams.slice(0, Math.min(examLimits.inbox, sortedExams.length));
+          break;
+        case 'pending':
+          limitedExams = sortedExams.slice(0, Math.min(examLimits.pending, sortedExams.length));
+          break;
+        case 'second-opinion':
+          limitedExams = sortedExams.slice(0, Math.min(examLimits.secondOpinion, sortedExams.length));
+          break;
+        default:
+          limitedExams = sortedExams;
+      }
+
+      // Emit results
+      this.examsSubject.next(limitedExams);
     });
-
-    // Apply search filter
-    if (searchQuery.trim()) {
-      filteredExams = filteredExams.filter(exam => 
-        this.matchesSearchQuery(exam, searchQuery)
-      );
-    }
-
-    // Apply sorting
-    const sortedExams = this.sortExams([...filteredExams], sortOrder);
-
-    // Emit results
-    this.examsSubject.next(sortedExams);
   }
 
   setFilter(filter: string): void {
