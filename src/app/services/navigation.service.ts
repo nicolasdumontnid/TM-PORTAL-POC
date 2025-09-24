@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, Observable, of, delay, Subject } from 'rxjs';
+import { BehaviorSubject, Observable, of, Subject } from 'rxjs';
+import { delay } from 'rxjs/operators';
 import { NavSection, NavItem } from '../models/navigation.model';
 import { ExamService } from './exam.service';
 
