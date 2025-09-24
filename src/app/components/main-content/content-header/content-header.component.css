@@ -5,6 +5,7 @@
   margin-bottom: 20px;
   flex-shrink: 0;
   gap: 20px;
+  padding: 0 15px 0 0;
 }
 
 .header-left {
