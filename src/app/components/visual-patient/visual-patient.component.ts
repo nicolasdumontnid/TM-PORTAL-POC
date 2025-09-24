@@ -430,8 +430,10 @@ export class VisualPatientComponent implements OnInit {
           }
         };
         
-        // Create a complete HTML document with Angular component
-        const htmlContent = `
+        // Get reporting images configuration
+        this.configService.getReportingImagesConfig().subscribe((imagesConfig: ReportingImagesConfig) => {
+          // Create a complete HTML document with Angular component
+          const htmlContent = `
         <!DOCTYPE html>
         <html lang="en" data-theme="${this.themeService.currentThemeValue}">
         <head>

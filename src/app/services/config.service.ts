@@ -22,12 +22,22 @@ export interface AppConfig {
   reporting: ReportingConfig;
   viewer: ViewerConfig;
   examLimits: ExamLimitsConfig;
+  reporting: {
+    images: ReportingImagesConfig;
+  };
 }
 
 export interface ExamLimitsConfig {
   inbox: number;
   pending: number;
   secondOpinion: number;
+}
+
+export interface ReportingImagesConfig {
+  nodule1Baseline: string;
+  nodule1Current: string;
+  nodule2Baseline: string;
+  nodule2Current: string;
 }
 
 @Injectable({
@@ -163,6 +173,12 @@ export class ConfigService {
   getExamLimitsConfig(): Observable<ExamLimitsConfig> {
     return this.loadConfig().pipe(
       map(config => config.examLimits)
+    );
+  }
+
+  getReportingImagesConfig(): Observable<ReportingImagesConfig> {
+    return this.loadConfig().pipe(
+      map(config => config.reporting.images)
     );
   }
 }
