@@ -1,7 +1,7 @@
-import { Component, ChangeDetectionStrategy, OnInit } from '@angular/core';
+import { Component, ChangeDetectionStrategy, OnInit, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { BehaviorSubject, Observable, map, switchMap, startWith, ChangeDetectorRef } from 'rxjs';
+import { BehaviorSubject, Observable, map, switchMap, startWith } from 'rxjs';
 import { NavigationService } from '../../../services/navigation.service';
 import { ExamService } from '../../../services/exam.service';
 
