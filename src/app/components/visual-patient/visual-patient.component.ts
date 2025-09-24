@@ -15,6 +15,7 @@ import { PatientInfo, RadiologicalRequest, AISummary, RadioReport, PatientRecord
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class VisualPatientComponent implements OnInit {
+  @Input() selectedExamId?: string;
   @Output() close = new EventEmitter<void>();
 
   // Référence vers la fenêtre reporting ouverte
@@ -89,7 +90,7 @@ export class VisualPatientComponent implements OnInit {
   }
 
   private loadData(): void {
-    this.patientInfo$ = this.visualPatientService.getPatientInfo();
+    this.patientInfo$ = this.visualPatientService.getPatientInfo(this.selectedExamId);
     this.radiologicalRequest$ = this.visualPatientService.getRadiologicalRequest();
     this.aiSummary$ = this.visualPatientService.getAISummary();
     this.radioReport$ = this.visualPatientService.getRadioReport();

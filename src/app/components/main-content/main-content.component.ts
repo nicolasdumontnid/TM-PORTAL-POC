@@ -23,6 +23,9 @@ export class MainContentComponent implements OnInit, OnDestroy {
   private showDashboardSubject = new BehaviorSubject<boolean>(false);
   showDashboard$ = this.showDashboardSubject.asObservable();
 
+  private selectedExamIdSubject = new BehaviorSubject<string | null>(null);
+  selectedExamId$ = this.selectedExamIdSubject.asObservable();
+
   private navigationSubscription?: Subscription;
 
   constructor(
@@ -47,7 +50,8 @@ export class MainContentComponent implements OnInit, OnDestroy {
     }
   }
 
-  onExamDoubleClick(): void {
+  onExamDoubleClick(examId: string): void {
+    this.selectedExamIdSubject.next(examId);
     this.showVisualPatientSubject.next(true);
     this.showDashboardSubject.next(false);
   }

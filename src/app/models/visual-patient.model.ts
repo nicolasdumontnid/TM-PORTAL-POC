@@ -6,6 +6,8 @@ export interface PatientInfo {
   examNumber: string;
   gender: 'M' | 'F' | 'Other';
   photo: string;
+  examType?: string;
+  indication?: string;
 }
 
 export interface RadiologicalRequest {

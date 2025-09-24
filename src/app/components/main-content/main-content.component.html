@@ -6,6 +6,7 @@
   
   <app-visual-patient 
     *ngIf="showVisualPatient$ | async"
+    [selectedExamId]="(selectedExamId$ | async) || undefined"
     (close)="onCloseVisualPatient()">
   </app-visual-patient>
   

@@ -16,24 +16,50 @@ export class VisualPatientService {
     photo: this.getRandomPatientImage()
   };
 
-  private getRandomPatientImage(): string {
-    // Liste des images disponibles dans le dossier patient
-    const patientImages = [
-      'assets/public/images/patient/patient0.JPG',
-      'assets/public/images/patient/patient1.JPG',
-      'assets/public/images/patient/patient2.JPG',
-      'assets/public/images/patient/patient3.JPG',
-      'assets/public/images/patient/patient4.JPG',
-      'assets/public/images/patient/patient5.JPG',
-      'assets/public/images/patient/patient6.JPG',
-      'assets/public/images/patient/patient7.JPG',
-      'assets/public/images/patient/patient8.JPG',
-      'assets/public/images/patient/patient9.JPG'
-    ];
+  private getPatientImageByGender(gender: 'M' | 'F' | 'Other'): string {
+    let availableImages: string[];
     
-    // Sélection aléatoire
-    const randomIndex = Math.floor(Math.random() * patientImages.length);
-    return patientImages[randomIndex];
+    if (gender === 'M') {
+      // Images masculines
+      availableImages = [
+        'assets/public/images/patient/patient0.JPG',
+        'assets/public/images/patient/patient4.JPG',
+        'assets/public/images/patient/patient7.JPG',
+        'assets/public/images/patient/patient8.JPG',
+        'assets/public/images/patient/patient9.JPG'
+      ];
+    } else if (gender === 'F') {
+      // Images féminines
+      availableImages = [
+        'assets/public/images/patient/patient1.JPG',
+        'assets/public/images/patient/patient2.JPG',
+        'assets/public/images/patient/patient3.JPG',
+        'assets/public/images/patient/patient5.JPG',
+        'assets/public/images/patient/patient6.JPG'
+      ];
+    } else {
+      // Genre autre ou non spécifié - utiliser toutes les images
+      availableImages = [
+        'assets/public/images/patient/patient0.JPG',
+        'assets/public/images/patient/patient1.JPG',
+        'assets/public/images/patient/patient2.JPG',
+        'assets/public/images/patient/patient3.JPG',
+        'assets/public/images/patient/patient4.JPG',
+        'assets/public/images/patient/patient5.JPG',
+        'assets/public/images/patient/patient6.JPG',
+        'assets/public/images/patient/patient7.JPG',
+        'assets/public/images/patient/patient8.JPG',
+        'assets/public/images/patient/patient9.JPG'
+      ];
+    }
+    
+    // Sélection aléatoire parmi les images appropriées
+    const randomIndex = Math.floor(Math.random() * availableImages.length);
+    return availableImages[randomIndex];
+  }
+
+  private getRandomPatientImage(): string {
+    return this.getPatientImageByGender('M'); // Par défaut pour la compatibilité
   }
 
   private mockRadiologicalRequest: RadiologicalRequest = {
@@ -303,8 +329,96 @@ export class VisualPatientService {
     return of(true).pipe(delay(200));
   }
 
-  getPatientInfo(): Observable<PatientInfo> {
+  getPatientInfo(examId?: string): Observable<PatientInfo> {
+    if (examId) {
+      // Si un examId est fourni, créer les informations patient basées sur l'examen
+      return this.createPatientInfoFromExam(examId);
+    }
     return of(this.mockPatientInfo).pipe(delay(200));
+  }
+
+  private createPatientInfoFromExam(examId: string): Observable<PatientInfo> {
+    // Simuler la récupération des données d'examen
+    // Dans une vraie application, ceci ferait un appel API
+    const mockExamData = this.getMockExamData(examId);
+    
+    if (mockExamData) {
+      const patientInfo: PatientInfo = {
+        id: mockExamData.id,
+        name: mockExamData.patientName,
+        dateOfBirth: this.generateDateOfBirth(mockExamData.patientName),
+        patientNumber: `P-2025-${mockExamData.id.padStart(6, '0')}`,
+        examNumber: mockExamData.examId,
+        gender: this.getGenderFromName(mockExamData.patientName),
+        photo: this.getPatientImageByGender(this.getGenderFromName(mockExamData.patientName)),
+        examType: mockExamData.examType,
+        indication: mockExamData.indication
+      };
+      return of(patientInfo).pipe(delay(200));
+    }
+    
+    return of(this.mockPatientInfo).pipe(delay(200));
+  }
+
+  private getMockExamData(examId: string): any {
+    // Données d'examens simulées basées sur celles du ExamService
+    const mockExams = [
+      { id: '1', patientName: 'Jean Dupont', examId: '25091200872_01', examType: 'CT - Abdomen - 2025-09-12 09:05', indication: 'Follow-up scan for previously identified lesion in the upper right quadrant, patient reports mild discomfort.' },
+      { id: '2', patientName: 'Marie Curie', examId: '25091200456_03', examType: 'MRI - Brain - 2025-09-12 08:30', indication: 'suspected tumor - FEMALE - 67y' },
+      { id: '3', patientName: 'Louis Pasteur', examId: '25091200112_02', examType: 'X-RAY - Chest - 2025-09-12 07:45', indication: 'Routine check-up - MALE - 72y' },
+      { id: '4', patientName: 'Claire Dubois', examId: '25091200789_04', examType: 'CT - Thorax - 2025-09-11 16:30', indication: 'Persistent cough evaluation - FEMALE - 58y' },
+      { id: '5', patientName: 'Michel Leroy', examId: '25091200567_05', examType: 'Ultrasound - Abdomen - 2025-09-11 14:15', indication: 'Abdominal pain investigation - MALE - 62y' },
+      { id: '6', patientName: 'Sylvie Moreau', examId: '25091200345_06', examType: 'MRI - Knee - 2025-09-10 10:20', indication: 'Sports injury assessment - FEMALE - 34y' },
+      { id: '7', patientName: 'François Bernard', examId: '25091200123_07', examType: 'CT - Head - 2025-09-10 08:45', indication: 'Headache evaluation - MALE - 45y' },
+      { id: '8', patientName: 'Isabelle Petit', examId: '25091200890_08', examType: 'Mammography - Bilateral - 2025-09-09 15:30', indication: 'Routine screening - FEMALE - 52y' },
+      { id: '9', patientName: 'Robert Garnier', examId: '25091200456_09', examType: 'X-RAY - Spine - 2025-09-09 11:00', indication: 'Back pain evaluation - MALE - 67y' },
+      { id: '10', patientName: 'Nathalie Roux', examId: '25091200234_10', examType: 'CT - Pelvis - 2025-09-08 13:45', indication: 'Pelvic pain investigation - FEMALE - 41y' },
+      { id: '11', patientName: 'Thierry Blanc', examId: '25091200678_11', examType: 'MRI - Shoulder - 2025-09-08 09:30', indication: 'Rotator cuff injury - MALE - 55y' },
+      { id: '12', patientName: 'Valérie Durand', examId: '25091200345_12', examType: 'Ultrasound - Thyroid - 2025-09-07 16:00', indication: 'Thyroid nodule evaluation - FEMALE - 48y' },
+      { id: '13', patientName: 'Alain Mercier', examId: '25091200789_13', examType: 'CT - Abdomen - 2025-09-07 12:15', indication: 'Digestive symptoms evaluation - MALE - 59y' },
+      { id: '14', patientName: 'Céline Fabre', examId: '25091200567_14', examType: 'MRI - Brain - 2025-09-06 14:30', indication: 'Migraine investigation - FEMALE - 36y' },
+      { id: '15', patientName: 'Didier Lemoine', examId: '25091200123_15', examType: 'X-RAY - Hip - 2025-09-06 10:45', indication: 'Hip pain assessment - MALE - 71y' },
+      { id: '16', patientName: 'Monique Girard', examId: '25091200890_16', examType: 'CT - Thorax - 2025-09-05 15:20', indication: 'Lung nodule follow-up - FEMALE - 64y' },
+      { id: '17', patientName: 'Philippe Roussel', examId: '25091200456_17', examType: 'Ultrasound - Cardiac - 2025-09-05 11:30', indication: 'Cardiac function assessment - MALE - 68y' },
+      { id: '18', patientName: 'Sophie Martin', examId: '25091200234_18', examType: 'MRI - Spine - 2025-09-11 14:20', indication: 'Lower back pain, suspected herniated disc - FEMALE - 45y' },
+      { id: '19', patientName: 'Pierre Dubois', examId: '25091200345_19', examType: 'CT - Thorax - 2025-09-11 11:45', indication: 'Persistent cough, rule out pulmonary nodules - MALE - 58y' },
+      { id: '20', patientName: 'Emma Rousseau', examId: '25091200456_20', examType: 'Mammography - Bilateral - 2025-09-11 09:30', indication: 'Routine screening mammography - FEMALE - 52y' },
+      { id: '21', patientName: 'Antoine Moreau', examId: '25091200567_21', examType: 'CT - Head - 2025-09-10 16:15', indication: 'Post-surgical follow-up, brain tumor resection - MALE - 34y' },
+      { id: '22', patientName: 'Isabelle Leroy', examId: '25091200678_22', examType: 'MRI - Pelvis - 2025-09-10 13:00', indication: 'Suspected endometriosis, pelvic pain - FEMALE - 29y' }
+    ];
+    
+    return mockExams.find(exam => exam.examId === examId);
+  }
+
+  private getGenderFromName(name: string): 'M' | 'F' | 'Other' {
+    // Noms masculins
+    const maleNames = ['Jean', 'Louis', 'Michel', 'François', 'Robert', 'Thierry', 'Alain', 'Didier', 'Philippe', 'Pierre', 'Antoine'];
+    // Noms féminins
+    const femaleNames = ['Marie', 'Claire', 'Sylvie', 'Isabelle', 'Nathalie', 'Valérie', 'Céline', 'Monique', 'Sophie', 'Emma'];
+    
+    const firstName = name.split(' ')[0];
+    
+    if (maleNames.includes(firstName)) {
+      return 'M';
+    } else if (femaleNames.includes(firstName)) {
+      return 'F';
+    }
+    
+    return 'Other';
+  }
+
+  private generateDateOfBirth(name: string): Date {
+    // Générer une date de naissance basée sur le nom pour la cohérence
+    const hash = name.split('').reduce((a, b) => {
+      a = ((a << 5) - a) + b.charCodeAt(0);
+      return a & a;
+    }, 0);
+    
+    const year = 1940 + Math.abs(hash % 60); // Entre 1940 et 2000
+    const month = Math.abs(hash % 12);
+    const day = 1 + Math.abs(hash % 28);
+    
+    return new Date(year, month, day);
   }
 
   getRadiologicalRequest(): Observable<RadiologicalRequest> {
