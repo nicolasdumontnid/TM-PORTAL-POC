@@ -1,5 +1,7 @@
 import { Component, ChangeDetectionStrategy, Input, OnInit, OnDestroy, Output, EventEmitter, ViewChild, ElementRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { Observable, BehaviorSubject, combineLatest, of } from 'rxjs';
+import { map } from 'rxjs/operators';
 import { VisualPatientService } from '../../services/visual-patient.service';
 import { WindowManagerService } from '../../services/window-manager.service';
 import { ThemeService } from '../../services/theme.service';
@@ -403,13 +405,12 @@ export class VisualPatientComponent implements OnInit, OnDestroy {
       examsByMonth.get(monthKey)!.push(ep.date);
     });
     
-        const patientName = reportingData.patient ? `${reportingData.patient.firstName} ${reportingData.patient.lastName}` : 'Unknown Patient';
-        const patientId = examPoint?.id || '';
+    examsByMonth.forEach((dates, monthKey) => {
       const [year, month] = monthKey.split('-').map(Number);
       const monthDate = new Date(year, month, 1);
-        const populatedHtml = html.replace(/{{patientName}}/g, patientName);
-        const populatedHtml2 = populatedHtml.replace(/{{patientId}}/g, patientId);
-        const populatedHtml3 = populatedHtml2.replace(/{{examDate}}/g, examDate);
+      const position = ((monthDate.getTime() - minDate.getTime()) / dateRange) * 85 + 10;
+      
+      labels.push({
         label: monthDate.toLocaleDateString('en-US', { month: 'short', year: '2-digit' }),
         position
       });
@@ -1348,9 +1349,13 @@ export class VisualPatientComponent implements OnInit, OnDestroy {
         // Replace placeholders in the HTML template with actual data
         let populatedHtml = htmlTemplate;
         if (reportingData) {
-          populatedHtml = populatedHtml.replace(/{{patientName}}/g, reportingData.patientName || '');
-          populatedHtml = populatedHtml.replace(/{{patientId}}/g, reportingData.patientId || '');
-          populatedHtml = populatedHtml.replace(/{{examDate}}/g, reportingData.examDate || '');
+          const patientName = reportingData.patient ? `${reportingData.patient.firstName} ${reportingData.patient.lastName}` : 'Unknown Patient';
+          const patientId = examPoint?.id || '';
+          const examDate = examPoint?.date.toLocaleDateString() || '';
+          
+          populatedHtml = populatedHtml.replace(/{{patientName}}/g, patientName);
+          populatedHtml = populatedHtml.replace(/{{patientId}}/g, patientId);
+          populatedHtml = populatedHtml.replace(/{{examDate}}/g, examDate);
           populatedHtml = populatedHtml.replace(/{{examType}}/g, reportingData.examType || '');
         }
         
