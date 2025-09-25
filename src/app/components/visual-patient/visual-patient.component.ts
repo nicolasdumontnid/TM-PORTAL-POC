@@ -417,7 +417,14 @@ export class VisualPatientComponent implements OnInit, OnDestroy {
       // Load reporting content
       this.visualPatientService.getReportingData().subscribe(reportingData => {
         this.configService.getReportingImagesConfig().subscribe(imagesConfig => {
-          const reportingHtml = `
+          this.loadReportingContent(reportingWindow, reportingData, imagesConfig);
+        });
+      });
+    }
+  }
+
+  private loadReportingContent(reportingWindow: Window, reportingData: any, imagesConfig: any): void {
+    const reportingHtml = `
             <!DOCTYPE html>
             <html lang="fr">
             <head>
@@ -1005,9 +1012,6 @@ export class VisualPatientComponent implements OnInit, OnDestroy {
           reportingWindow.document.open();
           reportingWindow.document.write(reportingHtml);
           reportingWindow.document.close();
-        });
-      });
-    }
   }
 
   openViewer(examPoint?: ExamPoint, image?: MedicalImage): void {
