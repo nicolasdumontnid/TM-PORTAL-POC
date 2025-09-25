@@ -4,7 +4,6 @@ import { Observable, BehaviorSubject, combineLatest, map, of } from 'rxjs';
 import { VisualPatientService } from '../../services/visual-patient.service';
 import { WindowManagerService } from '../../services/window-manager.service';
 import { ThemeService } from '../../services/theme.service';
-import { WindowManagerService } from '../../services/window-manager.service';
 import { ConfigService } from '../../services/config.service';
 import { PatientInfo, RadiologicalRequest, AISummary, RadioReport, PatientRecord, ExamPoint, ImagesByDate, VisualPatientBlock, GraphicFilter, Department, AnatomyRegion } from '../../models/visual-patient.model';
 
@@ -83,8 +82,7 @@ export class VisualPatientComponent implements OnInit, OnDestroy {
     private visualPatientService: VisualPatientService,
     private windowManagerService: WindowManagerService,
     private configService: ConfigService,
-    private themeService: ThemeService,
-    private windowManagerService: WindowManagerService
+    private themeService: ThemeService
   ) {
     // Listen for beforeunload event to close child windows
     window.addEventListener('beforeunload', () => {
@@ -411,13 +409,9 @@ export class VisualPatientComponent implements OnInit, OnDestroy {
     examsByMonth.forEach((monthDates, monthKey) => {
       const [year, month] = monthKey.split('-').map(Number);
       const monthDate = new Date(year, month, 1);
-        const patientName = reportingData.patient ? `${reportingData.patient.firstName} ${reportingData.patient.lastName}` : '';
-        const patientId = reportingData.patient ? `${reportingData.patient.firstName}-${reportingData.patient.lastName}`.toLowerCase() : '';
-        const examDate = examPoint ? examPoint.date : new Date().toLocaleDateString();
-        
-        const populatedHtml = html.replace(/{{patientName}}/g, patientName);
-        const finalHtml = populatedHtml.replace(/{{patientId}}/g, patientId);
-        const completeHtml = finalHtml.replace(/{{examDate}}/g, examDate);
+      const position = ((monthDate.getTime() - minDate.getTime()) / dateRange) * 85 + 10;
+      
+      labels.push({
         label: monthDate.toLocaleDateString('en-US', { month: 'short', year: '2-digit' }),
         position
       });
@@ -1335,16 +1329,15 @@ export class VisualPatientComponent implements OnInit, OnDestroy {
       return;
     }
 
-          const patientName = reportingData.patient ? `${reportingData.patient.firstName} ${reportingData.patient.lastName}` : 'Patient Inconnu';
-          const patientId = reportingData.patient ? `${reportingData.patient.firstName}_${reportingData.patient.lastName}` : 'unknown';
-          const examDate = examPoint?.date || new Date().toLocaleDateString();
-          
-          const populatedHtml = htmlTemplate
-            .replace(/{{patientName}}/g, patientName)
-            .replace(/{{patientId}}/g, patientId)
-            .replace(/{{examDate}}/g, examDate);
-          
-          this.windowManagerService.openAndPopulateReportingWindow(populatedHtml);
+    // Load the reporting HTML content into the existing window
+    fetch('src/app/reporting.html')
+      .then(response => response.text())
+      .then(htmlTemplate => {
+        if (reportingWindow) {
+          reportingWindow.document.open();
+          reportingWindow.document.write(htmlTemplate);
+          reportingWindow.document.close();
+        }
       });
   }
 
@@ -1357,13 +1350,20 @@ export class VisualPatientComponent implements OnInit, OnDestroy {
         // Replace placeholders in the HTML template with actual data
         let populatedHtml = htmlTemplate;
         if (reportingData) {
+          const patientName = `${reportingData.patient.firstName} ${reportingData.patient.lastName}`;
+          const patientId = `${reportingData.patient.firstName}_${reportingData.patient.lastName}`;
+          const examDate = examPoint ? examPoint.date : new Date().toLocaleDateString();
+          
+          const populatedHtml = html.replace(/{{patientName}}/g, patientName);
+          const finalHtml = populatedHtml.replace(/{{patientId}}/g, patientId);
+          const completeHtml = finalHtml.replace(/{{examDate}}/g, examDate);
           populatedHtml = populatedHtml.replace(/{{patientName}}/g, reportingData.patientName || '');
           populatedHtml = populatedHtml.replace(/{{patientId}}/g, reportingData.patientId || '');
           populatedHtml = populatedHtml.replace(/{{examDate}}/g, reportingData.examDate || '');
           populatedHtml = populatedHtml.replace(/{{examType}}/g, reportingData.examType || '');
-        const populatedHtml = html.replace(/{{patientName}}/g, patientName)
-                                 .replace(/{{patientId}}/g, patientId)
-                                 .replace(/{{examDate}}/g, examDate);
+          populatedHtml = populatedHtml.replace(/{{findings}}/g, reportingData.findings || '');
+        }
+        
         // Open and populate the reporting window
         this.windowManagerService.openAndPopulateReportingWindow(populatedHtml);
       },
