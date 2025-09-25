@@ -1283,7 +1283,7 @@ export class VisualPatientComponent implements OnInit, OnDestroy {
     this.reportingWindow = window.open('', 'reportingWindow');
     if (this.reportingWindow) {
       this.reportingWindow.focus();
-      this.configService.getReportingConfig().subscribe(config => {
+      this.configService.getReportingWindowConfig().subscribe((config: any) => {
         this.configService.getImagesConfig().subscribe(imagesConfig => {
           this.loadReportingContent(this.reportingWindow!, examPoint);
         });

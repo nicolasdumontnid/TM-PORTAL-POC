@@ -172,7 +172,6 @@ import { ExamPoint, GraphicFilter, Department, AnatomyRegion } from '../../../..
                   <div class="chart-area"
                        [class.department-view]="(graphicFilter$ | async)?.view === 'department'"
                        [class.anatomy-view]="(graphicFilter$ | async)?.view === 'anatomy'"
-                       [style.--department-count]="(graphicFilter$ | async)?.view === 'department' ? (getYAxisLabels() | async)?.length || 0 : 0">
                     <!-- Region lines -->
                     <div *ngFor="let label of (getYAxisLabels() | async) || []; let i = index; trackBy: trackByIndex" 
                          class="region-line"
@@ -210,7 +209,6 @@ import { ExamPoint, GraphicFilter, Department, AnatomyRegion } from '../../../..
                         <small>{{examPoint.date | date:'dd/MM/yy'}}</small>
                       </div>
                     </div>
-                  </ng-container>
                   </div>
                 </ng-container>
                 </div>
