@@ -1,0 +1,14 @@
+<div class="images-container">
+  <div *ngFor="let dateGroup of imagesByDate$ | async" class="date-group">
+    <h4 class="date-header">{{dateGroup.displayDate}}</h4>
+    <div class="images-grid">
+      <div *ngFor="let image of dateGroup.images" class="image-thumbnail">
+        <img [src]="image.url" [alt]="image.filename" class="medical-image" (click)="onImageClick(image)">
+        <p class="image-filename">{{image.filename}}</p>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="block-footer">
+  <button class="see-all-btn">see all -></button>
+</div>

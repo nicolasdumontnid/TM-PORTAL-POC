@@ -1,0 +1,33 @@
+.patient-info {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.patient-photo {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 3px solid var(--border-color);
+}
+
+.patient-details {
+  flex: 1;
+}
+
+.detail-row {
+  display: flex;
+  margin-bottom: 8px;
+}
+
+.detail-row .label {
+  font-weight: 600;
+  color: var(--text-secondary);
+  min-width: 120px;
+  margin-right: 10px;
+}
+
+.detail-row .value {
+  color: var(--text-primary);
+}

@@ -1,0 +1,36 @@
+<ng-container *ngIf="recordsFilter$ | async as currentFilter">
+  <div class="badges">
+    <span 
+      class="badge filter-badge"
+      [class.active]="currentFilter === 'All'"
+      (click)="onFilterChange('All')"
+    >All</span>
+    <span 
+      class="badge filter-badge"
+      [class.active]="currentFilter === 'Imaging'"
+      (click)="onFilterChange('Imaging')"
+    >Imaging</span>
+    <span 
+      class="badge filter-badge"
+      [class.active]="currentFilter === 'Lab'"
+      (click)="onFilterChange('Lab')"
+    >Lab</span>
+    <span 
+      class="badge filter-badge"
+      [class.active]="currentFilter === 'Reports'"
+      (click)="onFilterChange('Reports')"
+    >Reports</span>
+  </div>
+</ng-container>
+<div class="records-list">
+  <div *ngFor="let record of filteredPatientRecords$ | async" class="record-item">
+    <div class="record-header">
+      <span class="record-date">{{record.date | date:'dd/MM/yyyy'}}</span>
+      <span class="record-name">{{record.examName}}</span>
+    </div>
+    <p class="record-description">{{record.description}}</p>
+  </div>
+</div>
+<div class="block-footer">
+  <button class="see-all-btn">see all -></button>
+</div>
