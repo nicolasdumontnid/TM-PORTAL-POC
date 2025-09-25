@@ -7,11 +7,6 @@ import { ThemeService } from '../../services/theme.service';
 import { PatientInfo, RadiologicalRequest, AISummary, RadioReport, PatientRecord, ExamPoint, ImagesByDate, VisualPatientBlock, GraphicFilter, Department, AnatomyRegion, MedicalImage } from '../../models/visual-patient.model';
 
 // Import des nouveaux composants
-import { PatientInfoBlockComponent } from './blocks/patient-info-block/patient-info-block.component';
-import { AiSummaryBlockComponent } from './blocks/ai-summary-block/ai-summary-block.component';
-import { PatientRecordsBlockComponent } from './blocks/patient-records-block/patient-records-block.component';
-import { CalendarMapBlockComponent } from './blocks/calendar-map-block/calendar-map-block.component';
-import { ImagesPreviewBlockComponent } from './blocks/images-preview-block/images-preview-block.component';
 
 @Component({
   selector: 'app-visual-patient',
