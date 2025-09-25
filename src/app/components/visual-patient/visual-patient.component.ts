@@ -1,6 +1,5 @@
 import { Component, ChangeDetectionStrategy, Input, OnInit, OnDestroy, Output, EventEmitter, ViewChild, ElementRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { Observable, BehaviorSubject, combineLatest, map, of } from 'rxjs';
 import { VisualPatientService } from '../../services/visual-patient.service';
 import { WindowManagerService } from '../../services/window-manager.service';
 import { ThemeService } from '../../services/theme.service';
@@ -80,7 +79,6 @@ export class VisualPatientComponent implements OnInit, OnDestroy {
   ];
   constructor(
     private visualPatientService: VisualPatientService,
-    private windowManagerService: WindowManagerService,
     private configService: ConfigService,
     private themeService: ThemeService
   ) {
@@ -405,13 +403,13 @@ export class VisualPatientComponent implements OnInit, OnDestroy {
       examsByMonth.get(monthKey)!.push(ep.date);
     });
     
-    // Create labels for months that have exams
-    examsByMonth.forEach((monthDates, monthKey) => {
+        const patientName = reportingData.patient ? `${reportingData.patient.firstName} ${reportingData.patient.lastName}` : 'Unknown Patient';
+        const patientId = examPoint?.id || '';
       const [year, month] = monthKey.split('-').map(Number);
       const monthDate = new Date(year, month, 1);
-      const position = ((monthDate.getTime() - minDate.getTime()) / dateRange) * 85 + 10;
-      
-      labels.push({
+        const populatedHtml = html.replace(/{{patientName}}/g, patientName);
+        const populatedHtml2 = populatedHtml.replace(/{{patientId}}/g, patientId);
+        const populatedHtml3 = populatedHtml2.replace(/{{examDate}}/g, examDate);
         label: monthDate.toLocaleDateString('en-US', { month: 'short', year: '2-digit' }),
         position
       });
