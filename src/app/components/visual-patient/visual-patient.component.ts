@@ -1286,6 +1286,8 @@ export class VisualPatientComponent implements OnInit, OnDestroy {
       this.configService.getReportingWindowConfig().subscribe((config: any) => {
         this.configService.getImagesConfig().subscribe(imagesConfig => {
           this.loadReportingContent(this.reportingWindow!, examPoint);
+        });
+      });
       this.configService.getReportingImagesConfig().subscribe((imagesConfig: any) => {
       });
     }
