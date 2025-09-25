@@ -52,6 +52,8 @@ export class VisualPatientComponent implements OnInit, OnDestroy {
 
   showBurgerMenu = false;
   hoveredRegion: string | null = null;
+  private reportingWindow: Window | null = null;
+  private viewerWindow: Window | null = null;
   hoveredExamPoint: ExamPoint | null = null;
   tooltipPosition = { x: 0, y: 0 };
   isTooltipHovered = false;
@@ -1233,13 +1235,13 @@ export class VisualPatientComponent implements OnInit, OnDestroy {
       }
       
       // Réutilise la fenêtre existante en utilisant le nom de fenêtre
-      const reportingWindow = window.open('', 'reportingWindow');
-      
-      if (reportingWindow) {
+      this.reportingWindow = window.open('', 'reportingWindow');
+      if (this.reportingWindow) {
+        this.reportingWindow.focus();
         // Load reporting data into existing window
         this.visualPatientService.getReportingData().subscribe(data => {
           this.loadReportingContent(reportingWindow, data);
-        });
+        this.loadReportingContent(this.reportingWindow, reportingData);
       }
     });
     });
@@ -1266,7 +1268,7 @@ export class VisualPatientComponent implements OnInit, OnDestroy {
             setTimeout(checkClosedHandler, 1000);
           }
         };
-        checkClosedHandler();
+        this.loadReportingContent(this.reportingWindow, data);
       }
       // Try to get existing viewer window by name and load new URL
       this.configService.getViewerConfig().subscribe(viewerConfig => {
@@ -1278,8 +1280,8 @@ export class VisualPatientComponent implements OnInit, OnDestroy {
         }
       });
     });
-  }
-
+      this.reportingWindow = window.open('about:blank', '_blank', 'width=800,height=600,scrollbars=yes,resizable=yes');
+      if (this.reportingWindow) {
 
   onClose(): void {
     // Close all child windows before closing the component
