@@ -7,6 +7,7 @@ import { BehaviorSubject, Observable } from 'rxjs';
 export class ThemeService {
   private currentTheme = new BehaviorSubject<'light' | 'dark'>('light');
   private reportingWindows: Window[] = [];
+  private viewerWindows: Window[] = [];
   
   constructor() {
     this.initializeTheme();
@@ -35,10 +36,17 @@ export class ThemeService {
     localStorage.setItem('theme', theme);
     this.currentTheme.next(theme);
     this.syncThemeToReportingWindows(theme);
+    this.syncThemeToViewerWindows(theme);
   }
 
   registerReportingWindow(window: Window): void {
     this.reportingWindows.push(window);
+    // Apply current theme to the new window
+    this.syncThemeToWindow(window, this.currentTheme.value);
+  }
+
+  registerViewerWindow(window: Window): void {
+    this.viewerWindows.push(window);
     // Apply current theme to the new window
     this.syncThemeToWindow(window, this.currentTheme.value);
   }
@@ -50,12 +58,29 @@ export class ThemeService {
     }
   }
 
+  unregisterViewerWindow(window: Window): void {
+    const index = this.viewerWindows.indexOf(window);
+    if (index > -1) {
+      this.viewerWindows.splice(index, 1);
+    }
+  }
+
   private syncThemeToReportingWindows(theme: 'light' | 'dark'): void {
     // Clean up closed windows
     this.reportingWindows = this.reportingWindows.filter(window => !window.closed);
     
     // Apply theme to all open reporting windows
     this.reportingWindows.forEach(window => {
+      this.syncThemeToWindow(window, theme);
+    });
+  }
+
+  private syncThemeToViewerWindows(theme: 'light' | 'dark'): void {
+    // Clean up closed windows
+    this.viewerWindows = this.viewerWindows.filter(window => !window.closed);
+    
+    // Apply theme to all open viewer windows
+    this.viewerWindows.forEach(window => {
       this.syncThemeToWindow(window, theme);
     });
   }
