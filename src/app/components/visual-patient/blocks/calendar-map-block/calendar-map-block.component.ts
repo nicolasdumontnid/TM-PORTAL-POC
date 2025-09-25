@@ -211,8 +211,6 @@ import { ExamPoint, GraphicFilter, Department, AnatomyRegion } from '../../../..
                       </div>
                     </div>
                   </div>
-                  </div>
-                </ng-container>
                 </div>
               </div>
             </div>
