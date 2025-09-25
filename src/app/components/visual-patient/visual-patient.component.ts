@@ -4,6 +4,7 @@ import { Observable, BehaviorSubject, combineLatest, map, of } from 'rxjs';
 import { VisualPatientService } from '../../services/visual-patient.service';
 import { WindowManagerService } from '../../services/window-manager.service';
 import { ThemeService } from '../../services/theme.service';
+import { WindowManagerService } from '../../services/window-manager.service';
 import { ConfigService } from '../../services/config.service';
 import { PatientInfo, RadiologicalRequest, AISummary, RadioReport, PatientRecord, ExamPoint, ImagesByDate, VisualPatientBlock, GraphicFilter, Department, AnatomyRegion } from '../../models/visual-patient.model';
 
@@ -82,7 +83,8 @@ export class VisualPatientComponent implements OnInit, OnDestroy {
     private visualPatientService: VisualPatientService,
     private windowManagerService: WindowManagerService,
     private configService: ConfigService,
-    private themeService: ThemeService
+    private themeService: ThemeService,
+    private windowManagerService: WindowManagerService
   ) {
     // Listen for beforeunload event to close child windows
     window.addEventListener('beforeunload', () => {
@@ -1328,17 +1330,6 @@ export class VisualPatientComponent implements OnInit, OnDestroy {
       reportingWindow.focus();
       return;
     }
-
-    // Load the reporting HTML content into the existing window
-    fetch('src/app/reporting.html')
-      .then(response => response.text())
-      .then(htmlTemplate => {
-        if (reportingWindow) {
-          reportingWindow.document.open();
-          reportingWindow.document.write(htmlTemplate);
-          reportingWindow.document.close();
-        }
-      });
   }
 
   private loadAndPopulateReportingWindow(): void {
@@ -1350,18 +1341,10 @@ export class VisualPatientComponent implements OnInit, OnDestroy {
         // Replace placeholders in the HTML template with actual data
         let populatedHtml = htmlTemplate;
         if (reportingData) {
-          const patientName = `${reportingData.patient.firstName} ${reportingData.patient.lastName}`;
-          const patientId = `${reportingData.patient.firstName}_${reportingData.patient.lastName}`;
-          const examDate = examPoint ? examPoint.date : new Date().toLocaleDateString();
-          
-          const populatedHtml = html.replace(/{{patientName}}/g, patientName);
-          const finalHtml = populatedHtml.replace(/{{patientId}}/g, patientId);
-          const completeHtml = finalHtml.replace(/{{examDate}}/g, examDate);
           populatedHtml = populatedHtml.replace(/{{patientName}}/g, reportingData.patientName || '');
           populatedHtml = populatedHtml.replace(/{{patientId}}/g, reportingData.patientId || '');
           populatedHtml = populatedHtml.replace(/{{examDate}}/g, reportingData.examDate || '');
           populatedHtml = populatedHtml.replace(/{{examType}}/g, reportingData.examType || '');
-          populatedHtml = populatedHtml.replace(/{{findings}}/g, reportingData.findings || '');
         }
         
         // Open and populate the reporting window
