@@ -95,6 +95,9 @@ export class MainContentComponent implements OnInit, OnDestroy {
       this.viewerWindow = window.open('', 'viewerWindow', features);
       
       if (this.viewerWindow) {
+        // Apply current theme to the window
+        this.themeService.registerReportingWindow(this.viewerWindow);
+        
         // Set up the empty content
         this.setupEmptyViewerContent(this.viewerWindow);
       }
