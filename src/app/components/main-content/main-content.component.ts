@@ -108,7 +108,7 @@ export class MainContentComponent implements OnInit, OnDestroy {
       <!DOCTYPE html>
       <html lang="en" data-theme="${currentTheme}">
       <head>
-        <title>Telemis Portal - Reporting</title>
+        <title>Telemis Reporting Module</title>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <style>
@@ -199,7 +199,7 @@ export class MainContentComponent implements OnInit, OnDestroy {
       <body>
         <div class="empty-container">
           <div class="icon">📋</div>
-          <h1>Reporting Module</h1>
+          <h1>Telemis Reporting Module</h1>
           <p><span class="spinner"></span>Waiting for content...</p>
         </div>
       </body>
@@ -215,7 +215,7 @@ export class MainContentComponent implements OnInit, OnDestroy {
       <!DOCTYPE html>
       <html lang="en" data-theme="${currentTheme}">
       <head>
-        <title>Telemis Portal - Viewer</title>
+        <title>Telemis Medical Viewer</title>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <style>
@@ -306,7 +306,7 @@ export class MainContentComponent implements OnInit, OnDestroy {
       <body>
         <div class="empty-container">
           <div class="icon">🔍</div>
-          <h1>Medical Viewer</h1>
+          <h1>Telemis Medical Viewer</h1>
           <p><span class="spinner"></span>Waiting for content...</p>
         </div>
       </body>
