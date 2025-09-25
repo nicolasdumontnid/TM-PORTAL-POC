@@ -10,15 +10,7 @@ import { PatientInfo, RadiologicalRequest, AISummary, RadioReport, PatientRecord
 
 @Component({
   selector: 'app-visual-patient',
-  standalone: true,
-  imports: [
-    CommonModule,
-    PatientInfoBlockComponent,
-    AiSummaryBlockComponent,
-    PatientRecordsBlockComponent,
-    CalendarMapBlockComponent,
-    ImagesPreviewBlockComponent
-  ],
+  imports: [CommonModule, FormsModule],
   templateUrl: './visual-patient.component.html',
   styleUrl: './visual-patient.component.css',
   changeDetection: ChangeDetectionStrategy.OnPush
