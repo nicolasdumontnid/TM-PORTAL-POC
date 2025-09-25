@@ -1324,7 +1324,7 @@ export class VisualPatientComponent implements OnInit, OnDestroy {
     // Use the global window manager service
     const reportingWindow = this.windowManagerService.reportingWindow;
     if (reportingWindow && !reportingWindow.closed) {
-      // Focus the existing window
+      this.loadAndPopulateReportingWindow();
       reportingWindow.focus();
       return;
     }
@@ -1334,28 +1334,29 @@ export class VisualPatientComponent implements OnInit, OnDestroy {
       .then(response => response.text())
       if (reportingWindow) {
         if (reportingWindow) {
-          reportingWindow.document.open();
-          reportingWindow.document.write(html);
-          reportingWindow.document.close();
-          reportingWindow.focus();
+  private loadAndPopulateReportingWindow(): void {
+    this.windowManagerService.loadReportingHtmlTemplate().subscribe({
+      next: (htmlTemplate) => {
+        // Get reporting data
+        const reportingData = this.visualPatientService.getReportingData();
+        
+        // Replace placeholders in the HTML template with actual data
+        let populatedHtml = htmlTemplate;
+        if (reportingData) {
+          populatedHtml = populatedHtml.replace(/{{patientName}}/g, reportingData.patientName || '');
+          populatedHtml = populatedHtml.replace(/{{patientId}}/g, reportingData.patientId || '');
+          populatedHtml = populatedHtml.replace(/{{examDate}}/g, reportingData.examDate || '');
+          populatedHtml = populatedHtml.replace(/{{examType}}/g, reportingData.examType || '');
+          populatedHtml = populatedHtml.replace(/{{findings}}/g, reportingData.findings || '');
         }
+        
+        // Open and populate the reporting window
+        this.windowManagerService.openAndPopulateReportingWindow(populatedHtml);
+      },
+      error: (error) => {
+        console.error('Error loading reporting template:', error);
       }
-      .catch(error => {
-        console.error('Error loading reporting content:', error);
-        // Fallback to basic content
-        reportingWindow.document.open();
-        reportingWindow.document.write(`
-          <html>
-            <head><title>Reporting</title></head>
-            <body>
-              <h1>Medical Reporting</h1>
-              <p>Loading reporting interface...</p>
-            </body>
-          </html>
-        `);
-        reportingWindow.document.close();
-        reportingWindow.focus();
-      });
+    });
   }
 
   trackByBlockId(index: number, block: VisualPatientBlock): string {

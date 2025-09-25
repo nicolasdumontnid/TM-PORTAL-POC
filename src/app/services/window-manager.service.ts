@@ -1,5 +1,7 @@
 import { Injectable } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
 import { BehaviorSubject, Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
 import { ConfigService } from './config.service';
 import { ThemeService } from './theme.service';
 
@@ -14,6 +16,7 @@ export class WindowManagerService {
   public viewerWindow$ = this.viewerWindowSubject.asObservable();
 
   constructor(
+    private http: HttpClient,
     private configService: ConfigService,
     private themeService: ThemeService
   ) {}
@@ -260,6 +263,20 @@ export class WindowManagerService {
       </html>
     `);
     window.document.close();
+  }
+
+  loadReportingHtmlTemplate(): Observable<string> {
+    return this.http.get('assets/reporting.html', { responseType: 'text' });
+  }
+
+  openAndPopulateReportingWindow(htmlContent: string): void {
+    const reportingWindow = this.reportingWindow;
+    if (reportingWindow && !reportingWindow.closed) {
+      reportingWindow.document.open();
+      reportingWindow.document.write(htmlContent);
+      reportingWindow.document.close();
+      reportingWindow.focus();
+    }
   }
 
   updateReportingContent(content: string): void {
