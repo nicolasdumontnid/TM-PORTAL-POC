@@ -1221,6 +1221,22 @@ export class VisualPatientComponent implements OnInit, OnDestroy {
         </html>
       `;
       
+      const html = `
+        <!DOCTYPE html>
+        <html>
+        <head>
+          <title>Reporting Module</title>
+          <style>
+            body { font-family: Arial, sans-serif; margin: 20px; }
+            h1 { color: #14b8a6; }
+          </style>
+        </head>
+        <body>
+          <h1>Reporting Module</h1>
+          <p>This is the reporting content from the visual patient component.</p>
+        </body>
+        </html>
+      `;
       reportingWindow.document.open();
       reportingWindow.document.write(htmlContent);
       reportingWindow.document.close();
