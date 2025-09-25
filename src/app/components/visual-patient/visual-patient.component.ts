@@ -1279,38 +1279,65 @@ export class VisualPatientComponent implements OnInit, OnDestroy {
   }
 
   openReporting(examPoint?: ExamPoint, image?: any): void {
-    // Use the global reporting window
-    const reportingWindow = this.windowManagerService.reportingWindow;
+    console.log('Opening reporting for exam point:', examPoint);
     
-    if (reportingWindow && !reportingWindow.closed) {
-      // Load the reporting HTML content into the existing window
-      fetch('src/app/reporting.html')
-        .then(response => response.text())
-        .then(html => {
-          reportingWindow.document.open();
-          reportingWindow.document.write(html);
-          reportingWindow.document.close();
-          reportingWindow.focus();
-        })
-        .catch(error => {
-          console.error('Error loading reporting content:', error);
-          // Fallback to basic content
-          reportingWindow.document.open();
-          reportingWindow.document.write(`
-            <html>
-              <head><title>Reporting</title></head>
-              <body>
-                <h1>Medical Reporting</h1>
-                <p>Loading reporting interface...</p>
-              </body>
-            </html>
-          `);
-          reportingWindow.document.close();
-          reportingWindow.focus();
-        });
-    } else {
-      console.warn('Reporting window is not available');
+    const reportingWindow = this.windowManagerService.reportingWindow;
+    if (!reportingWindow || reportingWindow.closed) {
+      console.error('Reporting window is not available');
+      return;
     }
+
+    // Get configuration and images
+    const windowConfig$ = this.configService.getReportingWindowConfig();
+    const imagesConfig$ = this.configService.getReportingImagesConfig();
+    
+    // Combine both observables
+    combineLatest([windowConfig$, imagesConfig$]).subscribe(([windowConfig, imagesConfig]) => {
+      console.log('Window config:', windowConfig);
+      console.log('Images config:', imagesConfig);
+
+      // Update the existing reporting window with HTML content
+      this.updateReportingWindowContent(reportingWindow, imagesConfig);
+      reportingWindow.focus();
+    });
+  }
+
+  private updateReportingWindowContent(window: Window, imagesConfig: any): void {
+    const currentTheme = this.themeService.currentThemeValue;
+    
+    // Use the global window manager service
+    const reportingWindow = this.windowManagerService.reportingWindow;
+    if (reportingWindow && !reportingWindow.closed) {
+      // Focus the existing window
+      reportingWindow.focus();
+      return;
+    }
+
+    // Load the reporting HTML content into the existing window
+    fetch('src/app/reporting.html')
+      .then(response => response.text())
+      .then(html => {
+        reportingWindow.document.open();
+        reportingWindow.document.write(html);
+        reportingWindow.document.close();
+        reportingWindow.focus();
+      })
+      .catch(error => {
+        console.error('Error loading reporting content:', error);
+        // Fallback to basic content
+        reportingWindow.document.open();
+        reportingWindow.document.write(`
+          <html>
+            <head><title>Reporting</title></head>
+            <body>
+              <h1>Medical Reporting</h1>
+              <p>Loading reporting interface...</p>
+            </body>
+          </html>
+        `);
+        reportingWindow.document.close();
+        reportingWindow.focus();
+      });
   }
 
   trackByBlockId(index: number, block: VisualPatientBlock): string {
