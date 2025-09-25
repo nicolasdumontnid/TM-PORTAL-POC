@@ -444,6 +444,7 @@ export class VisualPatientComponent implements OnInit, OnDestroy {
       const getAbsoluteImagePath = (relativePath: string) => `${baseUrl}/${relativePath}`;
       
       const windowFeatures = `width=${windowConfig.width},height=${windowConfig.height},left=${windowConfig.left},top=${windowConfig.top},scrollbars=yes,resizable=yes`;
+      console.log("Open reporting with param", windowFeatures)
       const reportingWindow = window.open('about:blank', '_blank', windowFeatures);
       
       if (reportingWindow) {
