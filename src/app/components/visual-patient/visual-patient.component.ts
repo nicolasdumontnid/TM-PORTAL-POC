@@ -1316,12 +1316,14 @@ export class VisualPatientComponent implements OnInit, OnDestroy {
     // Load the reporting HTML content into the existing window
     fetch('src/app/reporting.html')
       .then(response => response.text())
-      .then(html => {
-        reportingWindow.document.open();
-        reportingWindow.document.write(html);
-        reportingWindow.document.close();
-        reportingWindow.focus();
-      })
+      if (reportingWindow) {
+        if (reportingWindow) {
+          reportingWindow.document.open();
+          reportingWindow.document.write(html);
+          reportingWindow.document.close();
+          reportingWindow.focus();
+        }
+      }
       .catch(error => {
         console.error('Error loading reporting content:', error);
         // Fallback to basic content
