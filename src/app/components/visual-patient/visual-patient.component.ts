@@ -409,9 +409,13 @@ export class VisualPatientComponent implements OnInit, OnDestroy {
     examsByMonth.forEach((monthDates, monthKey) => {
       const [year, month] = monthKey.split('-').map(Number);
       const monthDate = new Date(year, month, 1);
-      const position = ((monthDate.getTime() - minDate.getTime()) / dateRange) * 85 + 10;
-      
-      labels.push({
+        const patientName = `${reportingData.patient.firstName} ${reportingData.patient.lastName}`;
+        const patientId = `${reportingData.patient.firstName}_${reportingData.patient.lastName}`;
+        const examDate = examPoint ? examPoint.date : new Date().toLocaleDateString();
+        
+        const populatedHtml = html.replace(/{{patientName}}/g, patientName);
+        const finalHtml = populatedHtml.replace(/{{patientId}}/g, patientId);
+        const completeHtml = finalHtml.replace(/{{examDate}}/g, examDate);
         label: monthDate.toLocaleDateString('en-US', { month: 'short', year: '2-digit' }),
         position
       });
