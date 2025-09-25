@@ -5,7 +5,7 @@ import { VisualPatientService } from '../../services/visual-patient.service';
 import { WindowManagerService } from '../../services/window-manager.service';
 import { ThemeService } from '../../services/theme.service';
 import { ConfigService } from '../../services/config.service';
-import { PatientInfo, RadiologicalRequest, AISummary, RadioReport, PatientRecord, ExamPoint, ImagesByDate, VisualPatientBlock, GraphicFilter, Department, AnatomyRegion, ReportingData } from '../../models/visual-patient.model';
+import { PatientInfo, RadiologicalRequest, AISummary, RadioReport, PatientRecord, ExamPoint, ImagesByDate, VisualPatientBlock, GraphicFilter, Department, AnatomyRegion } from '../../models/visual-patient.model';
 
 @Component({
   selector: 'app-visual-patient',
@@ -1345,28 +1345,19 @@ export class VisualPatientComponent implements OnInit, OnDestroy {
     this.windowManagerService.loadReportingHtmlTemplate().subscribe({
       next: (htmlTemplate) => {
         // Get reporting data
-        this.visualPatientService.getReportingData().subscribe((reportingData: ReportingData) => {
-          
-          // Replace placeholders in the HTML template with actual data
-          let populatedHtml = htmlTemplate;
-          if (reportingData) {
-            const patientName = `${reportingData.patient.firstName} ${reportingData.patient.lastName}`;
-            const patientId = `${reportingData.patient.firstName}_${reportingData.patient.lastName}`;
-            const examDate = examPoint ? examPoint.date : new Date().toLocaleDateString();
-            
-            const populatedHtml = html.replace(/{{patientName}}/g, patientName);
-            const finalHtml = populatedHtml.replace(/{{patientId}}/g, patientId);
-            const completeHtml = finalHtml.replace(/{{examDate}}/g, examDate);
-            populatedHtml = populatedHtml.replace(/{{patientName}}/g, reportingData.patientName || '');
-            populatedHtml = populatedHtml.replace(/{{patientId}}/g, reportingData.patientId || '');
-            populatedHtml = populatedHtml.replace(/{{examDate}}/g, reportingData.examDate || '');
-            populatedHtml = populatedHtml.replace(/{{examType}}/g, reportingData.examType || '');
-            populatedHtml = populatedHtml.replace(/{{findings}}/g, reportingData.findings || '');
-          }
-          
-          // Open and populate the reporting window
-          this.windowManagerService.openAndPopulateReportingWindow(populatedHtml);
-        });
+        const reportingData = this.visualPatientService.getReportingData();
+        
+        // Replace placeholders in the HTML template with actual data
+        let populatedHtml = htmlTemplate;
+        if (reportingData) {
+          populatedHtml = populatedHtml.replace(/{{patientName}}/g, reportingData.patientName || '');
+          populatedHtml = populatedHtml.replace(/{{patientId}}/g, reportingData.patientId || '');
+          populatedHtml = populatedHtml.replace(/{{examDate}}/g, reportingData.examDate || '');
+          populatedHtml = populatedHtml.replace(/{{examType}}/g, reportingData.examType || '');
+        }
+        
+        // Open and populate the reporting window
+        this.windowManagerService.openAndPopulateReportingWindow(populatedHtml);
       },
       error: (error) => {
         console.error('Error loading reporting template:', error);
