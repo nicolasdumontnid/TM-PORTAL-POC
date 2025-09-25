@@ -1332,8 +1332,15 @@ export class VisualPatientComponent implements OnInit, OnDestroy {
     // Load the reporting HTML content into the existing window
     fetch('src/app/reporting.html')
       .then(response => response.text())
-      if (reportingWindow) {
+      .then(htmlTemplate => {
         if (reportingWindow) {
+          reportingWindow.document.open();
+          reportingWindow.document.write(htmlTemplate);
+          reportingWindow.document.close();
+        }
+      });
+  }
+
   private loadAndPopulateReportingWindow(): void {
     this.windowManagerService.loadReportingHtmlTemplate().subscribe({
       next: (htmlTemplate) => {
