@@ -409,8 +409,8 @@ export class VisualPatientComponent implements OnInit, OnDestroy {
     examsByMonth.forEach((monthDates, monthKey) => {
       const [year, month] = monthKey.split('-').map(Number);
       const monthDate = new Date(year, month, 1);
-        const patientName = `${reportingData.patient.firstName} ${reportingData.patient.lastName}`;
-        const patientId = `${reportingData.patient.firstName}_${reportingData.patient.lastName}`;
+        const patientName = reportingData.patient ? `${reportingData.patient.firstName} ${reportingData.patient.lastName}` : '';
+        const patientId = reportingData.patient ? `${reportingData.patient.firstName}-${reportingData.patient.lastName}`.toLowerCase() : '';
         const examDate = examPoint ? examPoint.date : new Date().toLocaleDateString();
         
         const populatedHtml = html.replace(/{{patientName}}/g, patientName);
@@ -1358,9 +1358,9 @@ export class VisualPatientComponent implements OnInit, OnDestroy {
           populatedHtml = populatedHtml.replace(/{{patientId}}/g, reportingData.patientId || '');
           populatedHtml = populatedHtml.replace(/{{examDate}}/g, reportingData.examDate || '');
           populatedHtml = populatedHtml.replace(/{{examType}}/g, reportingData.examType || '');
-          populatedHtml = populatedHtml.replace(/{{findings}}/g, reportingData.findings || '');
-        }
-        
+        const populatedHtml = html.replace(/{{patientName}}/g, patientName)
+                                 .replace(/{{patientId}}/g, patientId)
+                                 .replace(/{{examDate}}/g, examDate);
         // Open and populate the reporting window
         this.windowManagerService.openAndPopulateReportingWindow(populatedHtml);
       },

@@ -1,5 +1,6 @@
 import { Component, ViewChild } from '@angular/core';
 import { bootstrapApplication } from '@angular/platform-browser';
+import { provideHttpClient } from '@angular/common/http';
 import { CommonModule } from '@angular/common';
 import { SidebarComponent } from './app/components/sidebar/sidebar.component';
 import { MainContentComponent } from './app/components/main-content/main-content.component';
@@ -26,4 +27,8 @@ export class App {
   }
 }
 
-bootstrapApplication(App);
+bootstrapApplication(App, {
+  providers: [
+    provideHttpClient()
+  ]
+});
