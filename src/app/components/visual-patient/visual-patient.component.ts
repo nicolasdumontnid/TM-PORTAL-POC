@@ -4,7 +4,6 @@ import { Observable, BehaviorSubject, combineLatest, map, of } from 'rxjs';
 import { VisualPatientService } from '../../services/visual-patient.service';
 import { WindowManagerService } from '../../services/window-manager.service';
 import { ThemeService } from '../../services/theme.service';
-import { WindowManagerService } from '../../services/window-manager.service';
 import { ConfigService } from '../../services/config.service';
 import { PatientInfo, RadiologicalRequest, AISummary, RadioReport, PatientRecord, ExamPoint, ImagesByDate, VisualPatientBlock, GraphicFilter, Department, AnatomyRegion } from '../../models/visual-patient.model';
 
@@ -83,8 +82,7 @@ export class VisualPatientComponent implements OnInit, OnDestroy {
     private visualPatientService: VisualPatientService,
     private windowManagerService: WindowManagerService,
     private configService: ConfigService,
-    private themeService: ThemeService,
-    private windowManagerService: WindowManagerService
+    private themeService: ThemeService
   ) {
     // Listen for beforeunload event to close child windows
     window.addEventListener('beforeunload', () => {
@@ -448,7 +446,7 @@ export class VisualPatientComponent implements OnInit, OnDestroy {
       const getAbsoluteImagePath = (relativePath: string) => `${baseUrl}/${relativePath}`;
       
       const windowFeatures = `width=${windowConfig.width},height=${windowConfig.height},left=${windowConfig.left},top=${windowConfig.top},scrollbars=yes,resizable=yes`;
-      console.log("Open reporting with param", windowFeatures)
+      console.log("Open reporting with param", windowFeatures);
       const reportingWindow = window.open('about:blank', '_blank', windowFeatures);
       
       if (reportingWindow) {
@@ -1330,6 +1328,17 @@ export class VisualPatientComponent implements OnInit, OnDestroy {
       reportingWindow.focus();
       return;
     }
+
+    // Load the reporting HTML content into the existing window
+    fetch('src/app/reporting.html')
+      .then(response => response.text())
+      .then(htmlTemplate => {
+        if (reportingWindow) {
+          reportingWindow.document.open();
+          reportingWindow.document.write(htmlTemplate);
+          reportingWindow.document.close();
+        }
+      });
   }
 
   private loadAndPopulateReportingWindow(): void {
