@@ -4,6 +4,8 @@ import { FormsModule } from '@angular/forms';
 import { Observable, BehaviorSubject, of } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { takeUntil } from 'rxjs/operators';
+import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
 import { ConfigService } from '../../services/config.service';
 import { ThemeService } from '../../services/theme.service';
 import { VisualPatientService } from '../../services/visual-patient.service';
@@ -12,10 +14,9 @@ import { PatientInfo, RadiologicalRequest, AISummary, RadioReport, PatientRecord
 @Component({
   selector: 'app-visual-patient',
   standalone: true,
-  imports: [CommonModule, FormsModule],
-  standalone: true,
-  imports: [CommonModule, FormsModule],
   styleUrl: './visual-patient.component.css',
+  standalone: true,
+  imports: [CommonModule, FormsModule]
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class VisualPatientComponent implements OnInit, OnDestroy {
