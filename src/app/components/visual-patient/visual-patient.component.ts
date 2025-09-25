@@ -2,8 +2,9 @@ import { Component, ChangeDetectionStrategy, Input, OnInit, OnDestroy, Output, E
 import { CommonModule } from '@angular/common';
 import { Observable, BehaviorSubject, combineLatest, of } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { VisualPatientService } from '../../services/visual-patient.service';
+import { takeUntil, combineLatest } from 'rxjs/operators';
 import { WindowManagerService } from '../../services/window-manager.service';
+import { ConfigService } from '../../services/config.service';
 import { ThemeService } from '../../services/theme.service';
 import { ConfigService } from '../../services/config.service';
 import { PatientInfo, RadiologicalRequest, AISummary, RadioReport, PatientRecord, ExamPoint, ImagesByDate, VisualPatientBlock, GraphicFilter, Department, AnatomyRegion } from '../../models/visual-patient.model';
@@ -81,6 +82,8 @@ export class VisualPatientComponent implements OnInit, OnDestroy {
   ];
   constructor(
     private visualPatientService: VisualPatientService,
+    private windowManagerService: WindowManagerService,
+    private configService: ConfigService
     private configService: ConfigService,
     private themeService: ThemeService
   ) {
@@ -1291,30 +1294,28 @@ export class VisualPatientComponent implements OnInit, OnDestroy {
     // Close all child windows before closing the component
     this.closeAllChildWindows();
     this.close.emit();
-  }
-
-  openReporting(examPoint?: ExamPoint, image?: any): void {
-    console.log('Opening reporting for exam point:', examPoint);
+    this.windowManagerService.openReportingWindow();
     
-    const reportingWindow = this.windowManagerService.reportingWindow;
-    if (!reportingWindow || reportingWindow.closed) {
-      console.error('Reporting window is not available');
-      return;
-    }
-
-    // Get configuration and images
-    const windowConfig$ = this.configService.getReportingWindowConfig();
-    const imagesConfig$ = this.configService.getReportingImagesConfig();
-    
-    // Combine both observables
-    combineLatest([windowConfig$, imagesConfig$]).subscribe(([windowConfig, imagesConfig]) => {
-      console.log('Window config:', windowConfig);
+    combineLatest([
+      this.visualPatientService.getReportingData(this.patientId),
+      this.configService.getReportingImagesConfig(),
+      this.windowManagerService.loadReportingTemplate()
+    ]).subscribe(([reportingData, imagesConfig, html]) => {
+      const patientName = reportingData.patient ? `${reportingData.patient.firstName} ${reportingData.patient.lastName}` : 'Unknown Patient';
+      const patientId = examPoint?.id || 'N/A';
+      const examDate = examPoint ? examPoint.date : new Date().toLocaleDateString();
+      
+      const populatedHtml = html.replace(/{{patientName}}/g, patientName)
+                               .replace(/{{patientId}}/g, patientId)
+                               .replace(/{{examDate}}/g, examDate);
+      
+      this.windowManagerService.openAndPopulateReportingWindow(populatedHtml);
+      
+      const reportingWindow = this.windowManagerService.reportingWindow;
+      if (reportingWindow) {
+        reportingWindow.focus();
+      }
       console.log('Images config:', imagesConfig);
-
-      // Update the existing reporting window with HTML content
-      this.updateReportingWindowContent(reportingWindow, imagesConfig);
-      reportingWindow.focus();
-    });
   }
 
   private updateReportingWindowContent(window: Window, imagesConfig: any): void {
