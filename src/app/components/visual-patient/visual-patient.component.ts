@@ -1,8 +1,8 @@
-import { Component, ChangeDetectionStrategy, OnInit, OnDestroy, Input, Output, EventEmitter, ViewChild, ElementRef } from '@angular/core';
+import { Component, ChangeDetectionStrategy, Input, OnInit, OnDestroy, Output, EventEmitter, ViewChild, ElementRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Observable, BehaviorSubject, combineLatest, map, of } from 'rxjs';
 import { VisualPatientService } from '../../services/visual-patient.service';
-import { ConfigService, WindowConfig } from '../../services/config.service';
+import { WindowManagerService } from '../../services/window-manager.service';
 import { ThemeService } from '../../services/theme.service';
 import { PatientInfo, RadiologicalRequest, AISummary, RadioReport, PatientRecord, ExamPoint, ImagesByDate, VisualPatientBlock, GraphicFilter, Department, AnatomyRegion } from '../../models/visual-patient.model';
 
@@ -79,7 +79,7 @@ export class VisualPatientComponent implements OnInit, OnDestroy {
   ];
   constructor(
     private visualPatientService: VisualPatientService,
-    private configService: ConfigService,
+    private windowManagerService: WindowManagerService,
     private themeService: ThemeService
   ) {
     // Listen for beforeunload event to close child windows
@@ -1277,8 +1277,38 @@ export class VisualPatientComponent implements OnInit, OnDestroy {
   }
 
   openReporting(examPoint?: ExamPoint, image?: any): void {
-    console.log('Opening reporting for:', examPoint, image);
-    this.openReportingWindow();
+    // Use the global reporting window
+    const reportingWindow = this.windowManagerService.reportingWindow;
+    
+    if (reportingWindow && !reportingWindow.closed) {
+      // Load the reporting HTML content into the existing window
+      fetch('src/app/reporting.html')
+        .then(response => response.text())
+        .then(html => {
+          reportingWindow.document.open();
+          reportingWindow.document.write(html);
+          reportingWindow.document.close();
+          reportingWindow.focus();
+        })
+        .catch(error => {
+          console.error('Error loading reporting content:', error);
+          // Fallback to basic content
+          reportingWindow.document.open();
+          reportingWindow.document.write(`
+            <html>
+              <head><title>Reporting</title></head>
+              <body>
+                <h1>Medical Reporting</h1>
+                <p>Loading reporting interface...</p>
+              </body>
+            </html>
+          `);
+          reportingWindow.document.close();
+          reportingWindow.focus();
+        });
+    } else {
+      console.warn('Reporting window is not available');
+    }
   }
 
   trackByBlockId(index: number, block: VisualPatientBlock): string {
