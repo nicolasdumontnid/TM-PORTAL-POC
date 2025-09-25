@@ -1,5 +1,6 @@
 import { Component, ChangeDetectionStrategy, OnInit, OnDestroy, Input, Output, EventEmitter, ViewChild, ElementRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
 import { BehaviorSubject, Observable, combineLatest, map, switchMap, of } from 'rxjs';
 import { VisualPatientService } from '../../services/visual-patient.service';
 import { ConfigService, WindowConfig, ReportingImagesConfig } from '../../services/config.service';
