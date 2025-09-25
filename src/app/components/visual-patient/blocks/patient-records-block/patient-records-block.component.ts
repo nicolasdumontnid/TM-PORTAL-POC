@@ -8,28 +8,30 @@ import { PatientRecord } from '../../../../models/visual-patient.model';
   standalone: true,
   imports: [CommonModule],
   template: `
-    <div class="badges">
-      <span 
-        class="badge filter-badge"
-        [class.active]="recordsFilter$ | async === 'All'"
-        (click)="onFilterChange('All')"
-      >All</span>
-      <span 
-        class="badge filter-badge"
-        [class.active]="recordsFilter$ | async === 'Imaging'"
-        (click)="onFilterChange('Imaging')"
-      >Imaging</span>
-      <span 
-        class="badge filter-badge"
-        [class.active]="recordsFilter$ | async === 'Lab'"
-        (click)="onFilterChange('Lab')"
-      >Lab</span>
-      <span 
-        class="badge filter-badge"
-        [class.active]="recordsFilter$ | async === 'Reports'"
-        (click)="onFilterChange('Reports')"
-      >Reports</span>
-    </div>
+    <ng-container *ngIf="recordsFilter$ | async as currentFilter">
+      <div class="badges">
+        <span 
+          class="badge filter-badge"
+          [class.active]="currentFilter === 'All'"
+          (click)="onFilterChange('All')"
+        >All</span>
+        <span 
+          class="badge filter-badge"
+          [class.active]="currentFilter === 'Imaging'"
+          (click)="onFilterChange('Imaging')"
+        >Imaging</span>
+        <span 
+          class="badge filter-badge"
+          [class.active]="currentFilter === 'Lab'"
+          (click)="onFilterChange('Lab')"
+        >Lab</span>
+        <span 
+          class="badge filter-badge"
+          [class.active]="currentFilter === 'Reports'"
+          (click)="onFilterChange('Reports')"
+        >Reports</span>
+      </div>
+    </ng-container>
     <div class="records-list">
       <div *ngFor="let record of filteredPatientRecords$ | async" class="record-item">
         <div class="record-header">

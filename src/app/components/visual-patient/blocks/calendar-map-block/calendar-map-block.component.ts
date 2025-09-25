@@ -168,50 +168,50 @@ import { ExamPoint, GraphicFilter, Department, AnatomyRegion } from '../../../..
                     </div>
                   </div>
                   
-                  <!-- Chart area -->
-                  <div class="chart-area"
-                       [class.department-view]="(graphicFilter$ | async)?.view === 'department'"
-                       [class.anatomy-view]="(graphicFilter$ | async)?.view === 'anatomy'"
-                       >
-                    <!-- Region lines -->
-                    <div *ngFor="let label of (getYAxisLabels() | async) || []; let i = index; trackBy: trackByIndex" 
-                         class="region-line"
-                         [style.top.px]="(graphicFilter$ | async)?.view === 'department' ? i * 40 : undefined"
-                         [style.height.px]="(graphicFilter$ | async)?.view === 'department' ? 40 : undefined"
-                         [style.top.%]="(graphicFilter$ | async)?.view === 'anatomy' ? (i / ((getYAxisLabels() | async)?.length || 1)) * 100 : undefined"
-                         [style.height.%]="(graphicFilter$ | async)?.view === 'anatomy' ? (100 / ((getYAxisLabels() | async)?.length || 1)) : undefined"
-                         [class.hovered]="hoveredRegion === label || isRegionFiltered(label)"
-                         (mouseenter)="onRegionHover(label)"
-                         (mouseleave)="onRegionLeave()">
-                    </div>
-                    
-                    <!-- TODAY line -->
-                    <div class="today-line"
-                         [style.left.%]="getTodayPosition(examPoints)"
-                         [style.height.px]="(graphicFilter$ | async)?.view === 'department' ? ((getYAxisLabels() | async)?.length || 0) * 40 : null"
-                         [style.height]="(graphicFilter$ | async)?.view === 'anatomy' ? '100%' : null">
-                      <div class="today-label">TODAY</div>
-                    </div>
-                    
-                    <!-- Exam points -->
-                    <div *ngFor="let examPoint of examPoints" 
-                         class="exam-point"
-                         [class.future-point]="examPoint.isFuture"
-                         [style.left.%]="getExamPointPosition(examPoint, examPoints).x"
-                         [style.top.px]="(graphicFilter$ | async)?.view === 'department' ? getExamPointPosition(examPoint, examPoints).y : undefined"
-                         [style.top.%]="(graphicFilter$ | async)?.view === 'anatomy' ? getExamPointPosition(examPoint, examPoints).y : undefined"
-                         (mouseenter)="onExamPointHover(examPoint, $event)"
-                         (mouseleave)="onExamPointLeave()"
-                         (click)="onExamPointClick(examPoint)">
-                      <div class="exam-point-label" 
+                  <ng-container *ngIf="filteredExamPoints$ | async as examPoints">
+                    <!-- Chart area -->
+                    <div class="chart-area"
+                         [class.department-view]="(graphicFilter$ | async)?.view === 'department'"
+                         [class.anatomy-view]="(graphicFilter$ | async)?.view === 'anatomy'">
+                      <!-- Region lines -->
+                      <div *ngFor="let label of (getYAxisLabels() | async) || []; let i = index; trackBy: trackByIndex" 
+                           class="region-line"
+                           [style.top.px]="(graphicFilter$ | async)?.view === 'department' ? i * 40 : undefined"
+                           [style.height.px]="(graphicFilter$ | async)?.view === 'department' ? 40 : undefined"
+                           [style.top.%]="(graphicFilter$ | async)?.view === 'anatomy' ? (i / ((getYAxisLabels() | async)?.length || 1)) * 100 : undefined"
+                           [style.height.%]="(graphicFilter$ | async)?.view === 'anatomy' ? (100 / ((getYAxisLabels() | async)?.length || 1)) : undefined"
+                           [class.hovered]="hoveredRegion === label || isRegionFiltered(label)"
+                           (mouseenter)="onRegionHover(label)"
+                           (mouseleave)="onRegionLeave()">
+                      </div>
+                      
+                      <!-- TODAY line -->
+                      <div class="today-line"
+                           [style.left.%]="getTodayPosition(examPoints)"
+                           [style.height.px]="(graphicFilter$ | async)?.view === 'department' ? ((getYAxisLabels() | async)?.length || 0) * 40 : null"
+                           [style.height]="(graphicFilter$ | async)?.view === 'anatomy' ? '100%' : null">
+                        <div class="today-label">TODAY</div>
+                      </div>
+                      
+                      <!-- Exam points -->
+                      <div *ngFor="let examPoint of examPoints" 
+                           class="exam-point"
+                           [class.future-point]="examPoint.isFuture"
+                           [style.left.%]="getExamPointPosition(examPoint, examPoints).x"
+                           [style.top.px]="(graphicFilter$ | async)?.view === 'department' ? getExamPointPosition(examPoint, examPoints).y : undefined"
+                           [style.top.%]="(graphicFilter$ | async)?.view === 'anatomy' ? getExamPointPosition(examPoint, examPoints).y : undefined"
                            (mouseenter)="onExamPointHover(examPoint, $event)"
-                           (mouseleave)="onExamPointLeave()">
-                        {{examPoint.examName}}<br>
-                        <small>{{examPoint.date | date:'dd/MM/yy'}}</small>
+                           (mouseleave)="onExamPointLeave()"
+                           (click)="onExamPointClick(examPoint)">
+                        <div class="exam-point-label" 
+                             (mouseenter)="onExamPointHover(examPoint, $event)"
+                             (mouseleave)="onExamPointLeave()">
+                          {{examPoint.examName}}<br>
+                          <small>{{examPoint.date | date:'dd/MM/yy'}}</small>
+                        </div>
                       </div>
                     </div>
-                  </div>
-                </div>
+                  </ng-container>
               </div>
             </div>
           </div>
