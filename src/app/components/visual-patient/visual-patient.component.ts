@@ -1,15 +1,29 @@
 import { Component, ChangeDetectionStrategy, OnInit, OnDestroy, Input, Output, EventEmitter, ViewChild, ElementRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { Observable, BehaviorSubject, combineLatest, map, of } from 'rxjs';
+import { BehaviorSubject, Observable, combineLatest, map, switchMap, of } from 'rxjs';
 import { VisualPatientService } from '../../services/visual-patient.service';
-import { ConfigService, WindowConfig } from '../../services/config.service';
+import { ConfigService, WindowConfig, ReportingImagesConfig } from '../../services/config.service';
 import { ThemeService } from '../../services/theme.service';
-import { PatientInfo, RadiologicalRequest, AISummary, RadioReport, PatientRecord, ExamPoint, ImagesByDate, VisualPatientBlock, GraphicFilter, Department, AnatomyRegion } from '../../models/visual-patient.model';
+import { PatientInfo, RadiologicalRequest, AISummary, RadioReport, PatientRecord, ExamPoint, ImagesByDate, VisualPatientBlock, GraphicFilter, Department, AnatomyRegion, MedicalImage } from '../../models/visual-patient.model';
+
+// Import des nouveaux composants
+import { PatientInfoBlockComponent } from './blocks/patient-info-block/patient-info-block.component';
+import { AiSummaryBlockComponent } from './blocks/ai-summary-block/ai-summary-block.component';
+import { PatientRecordsBlockComponent } from './blocks/patient-records-block/patient-records-block.component';
+import { CalendarMapBlockComponent } from './blocks/calendar-map-block/calendar-map-block.component';
+import { ImagesPreviewBlockComponent } from './blocks/images-preview-block/images-preview-block.component';
 
 @Component({
   selector: 'app-visual-patient',
   standalone: true,
-  imports: [CommonModule],
+  imports: [
+    CommonModule,
+    PatientInfoBlockComponent,
+    AiSummaryBlockComponent,
+    PatientRecordsBlockComponent,
+    CalendarMapBlockComponent,
+    ImagesPreviewBlockComponent
+  ],
   templateUrl: './visual-patient.component.html',
   styleUrl: './visual-patient.component.css',
   changeDetection: ChangeDetectionStrategy.OnPush
@@ -52,6 +66,8 @@ export class VisualPatientComponent implements OnInit, OnDestroy {
 
   showBurgerMenu = false;
   hoveredRegion: string | null = null;
+  private reportingWindow: Window | null = null;
+  private viewerWindow: Window | null = null;
   hoveredExamPoint: ExamPoint | null = null;
   tooltipPosition = { x: 0, y: 0 };
   isTooltipHovered = false;
@@ -77,6 +93,7 @@ export class VisualPatientComponent implements OnInit, OnDestroy {
     'Pulmonology',
     'Radiology'
   ];
+
   constructor(
     private visualPatientService: VisualPatientService,
     private configService: ConfigService,
@@ -438,12 +455,13 @@ export class VisualPatientComponent implements OnInit, OnDestroy {
     
     // Combiner les deux observables
     windowConfig$.subscribe(windowConfig => {
-      imagesConfig$.subscribe(imagesConfig => {
+      imagesConfig$.subscribe((imagesConfig: ReportingImagesConfig) => {
       // Get the absolute base URL for assets
       const baseUrl = window.location.origin;
       const getAbsoluteImagePath = (relativePath: string) => `${baseUrl}/${relativePath}`;
       
       const windowFeatures = `width=${windowConfig.width},height=${windowConfig.height},left=${windowConfig.left},top=${windowConfig.top},scrollbars=yes,resizable=yes`;
+      console.log("Open reporting with param", windowFeatures);
       const reportingWindow = window.open('about:blank', '_blank', windowFeatures);
       
       if (reportingWindow) {
@@ -1224,20 +1242,9 @@ export class VisualPatientComponent implements OnInit, OnDestroy {
       reportingWindow.focus();
       
       // Listen for messages from the child window
-      const messageHandler = (event: MessageEvent) => {
-        if (event.data.type === 'saveWindowPosition') {
-          this.configService.saveReportingWindowPosition(reportingWindow);
-        }
-      };
-      
-      window.addEventListener('message', messageHandler);
-      
       checkClosedHandler();
-      
-      // Ouvrir la seconde fenêtre viewer
-      this.openViewerWindow();
       }
-    });
+      });
     });
   }
 
@@ -1261,13 +1268,10 @@ export class VisualPatientComponent implements OnInit, OnDestroy {
             setTimeout(checkClosedHandler, 1000);
           }
         };
-        
-        viewerWindow.focus();
         checkClosedHandler();
       }
     });
   }
-
 
   onClose(): void {
     // Close all child windows before closing the component
@@ -1276,8 +1280,108 @@ export class VisualPatientComponent implements OnInit, OnDestroy {
   }
 
   openReporting(examPoint?: ExamPoint, image?: any): void {
-    console.log('Opening reporting for:', examPoint, image);
-    this.openReportingWindow();
+    this.reportingWindow = window.open('', 'reportingWindow');
+    if (this.reportingWindow) {
+      this.reportingWindow.focus();
+      this.configService.getReportingWindowConfig().subscribe((config: any) => {
+        this.configService.getReportingImagesConfig().subscribe((imagesConfig: ReportingImagesConfig) => {
+          this.loadReportingContent(this.reportingWindow!, examPoint);
+        });
+      });
+    }
+  }
+
+  private loadReportingContent(reportingWindow: Window, data: any): void {
+    const htmlContent = `
+      <!DOCTYPE html>
+      <html>
+      <head>
+        <title>Telemis Medical Reporting</title>
+        <style>
+          body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f5f5f5;
+            color: #333;
+          }
+          .header {
+            background: linear-gradient(135deg, #14b8a6, #0f9488);
+            color: white;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            text-align: center;
+          }
+          .content {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+          }
+          h1 { margin: 0; font-size: 1.8rem; }
+          h2 { color: #14b8a6; margin-top: 30px; }
+          .patient-info { 
+            display: grid; 
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); 
+            gap: 15px; 
+            margin: 20px 0; 
+          }
+          .info-item { 
+            padding: 10px; 
+            background: #f8f9fa; 
+            border-radius: 5px; 
+            border-left: 4px solid #14b8a6; 
+          }
+          .info-label { font-weight: bold; color: #666; }
+          .info-value { margin-top: 5px; }
+        </style>
+      </head>
+      <body>
+        <div class="header">
+          <h1>📋 Telemis Medical Reporting</h1>
+          <p>Patient Report - ${new Date().toLocaleDateString()}</p>
+        </div>
+        <div class="content">
+          <h2>Patient Information</h2>
+          <div class="patient-info">
+            <div class="info-item">
+              <div class="info-label">Patient ID</div>
+              <div class="info-value">${data.patientId || 'N/A'}</div>
+            </div>
+            <div class="info-item">
+              <div class="info-label">Name</div>
+              <div class="info-value">${data.patientName || 'N/A'}</div>
+            </div>
+            <div class="info-item">
+              <div class="info-label">Date</div>
+              <div class="info-value">${data.date || 'N/A'}</div>
+            </div>
+            <div class="info-item">
+              <div class="info-label">Department</div>
+              <div class="info-value">${data.department || 'N/A'}</div>
+            </div>
+          </div>
+          <h2>Exam Details</h2>
+          <p><strong>Exam Type:</strong> ${data.examType || 'N/A'}</p>
+          <p><strong>Description:</strong> ${data.description || 'No description available'}</p>
+          <p><strong>Status:</strong> ${data.status || 'N/A'}</p>
+        </div>
+      </body>
+      </html>
+    `;
+    
+    reportingWindow.document.open();
+    reportingWindow.document.write(htmlContent);
+    reportingWindow.document.close();
+  }
+
+  openViewer(imageUrl: string): void {
+    this.viewerWindow = window.open('', 'viewerWindow');
+    if (this.viewerWindow) {
+      this.viewerWindow.focus();
+      this.viewerWindow.location.href = imageUrl;
+    }
   }
 
   trackByBlockId(index: number, block: VisualPatientBlock): string {
