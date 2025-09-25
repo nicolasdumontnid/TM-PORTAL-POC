@@ -1,15 +1,29 @@
 import { Component, ChangeDetectionStrategy, OnInit, OnDestroy, Input, Output, EventEmitter, ViewChild, ElementRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { Observable, BehaviorSubject, combineLatest, map, of } from 'rxjs';
+import { BehaviorSubject, Observable, combineLatest, map, switchMap, of } from 'rxjs';
 import { VisualPatientService } from '../../services/visual-patient.service';
 import { ConfigService, WindowConfig } from '../../services/config.service';
 import { ThemeService } from '../../services/theme.service';
-import { PatientInfo, RadiologicalRequest, AISummary, RadioReport, PatientRecord, ExamPoint, ImagesByDate, VisualPatientBlock, GraphicFilter, Department, AnatomyRegion } from '../../models/visual-patient.model';
+import { PatientInfo, RadiologicalRequest, AISummary, RadioReport, PatientRecord, ExamPoint, ImagesByDate, VisualPatientBlock, GraphicFilter, Department, AnatomyRegion, MedicalImage } from '../../models/visual-patient.model';
+
+// Import des nouveaux composants
+import { PatientInfoBlockComponent } from './blocks/patient-info-block/patient-info-block.component';
+import { AiSummaryBlockComponent } from './blocks/ai-summary-block/ai-summary-block.component';
+import { PatientRecordsBlockComponent } from './blocks/patient-records-block/patient-records-block.component';
+import { CalendarMapBlockComponent } from './blocks/calendar-map-block/calendar-map-block.component';
+import { ImagesPreviewBlockComponent } from './blocks/images-preview-block/images-preview-block.component';
 
 @Component({
   selector: 'app-visual-patient',
   standalone: true,
-  imports: [CommonModule],
+  imports: [
+    CommonModule,
+    PatientInfoBlockComponent,
+    AiSummaryBlockComponent,
+    PatientRecordsBlockComponent,
+    CalendarMapBlockComponent,
+    ImagesPreviewBlockComponent
+  ],
   templateUrl: './visual-patient.component.html',
   styleUrl: './visual-patient.component.css',
   changeDetection: ChangeDetectionStrategy.OnPush
@@ -79,9 +93,6 @@ export class VisualPatientComponent implements OnInit, OnDestroy {
     'Pulmonology',
     'Radiology'
   ];
-
-  private reportingWindow: Window | null = null;
-  private viewerWindow: Window | null = null;
 
   constructor(
     private visualPatientService: VisualPatientService,
@@ -450,7 +461,7 @@ export class VisualPatientComponent implements OnInit, OnDestroy {
       const getAbsoluteImagePath = (relativePath: string) => `${baseUrl}/${relativePath}`;
       
       const windowFeatures = `width=${windowConfig.width},height=${windowConfig.height},left=${windowConfig.left},top=${windowConfig.top},scrollbars=yes,resizable=yes`;
-      console.log("Open reporting with param", windowFeatures)
+      console.log("Open reporting with param", windowFeatures);
       const reportingWindow = window.open('about:blank', '_blank', windowFeatures);
       
       if (reportingWindow) {
@@ -1233,17 +1244,7 @@ export class VisualPatientComponent implements OnInit, OnDestroy {
       // Listen for messages from the child window
       checkClosedHandler();
       }
-      
-      // Réutilise la fenêtre existante en utilisant le nom de fenêtre
-      this.reportingWindow = window.open('', 'reportingWindow');
-      if (this.reportingWindow) {
-        this.reportingWindow.focus();
-        // Load reporting data into existing window
-        this.visualPatientService.getReportingData().subscribe(data => {
-          this.loadReportingContent(reportingWindow, data);
-        this.loadReportingContent(this.reportingWindow, reportingData);
-      }
-    });
+      });
     });
   }
 
@@ -1251,8 +1252,7 @@ export class VisualPatientComponent implements OnInit, OnDestroy {
     this.configService.getViewerConfig().subscribe(viewerConfig => {
       const windowFeatures = `width=${viewerConfig.window.width},height=${viewerConfig.window.height},left=${viewerConfig.window.left},top=${viewerConfig.window.top},scrollbars=yes,resizable=yes`;
       const viewerWindow = window.open(viewerConfig.url, '_blank', windowFeatures);
-      // Réutilise la fenêtre existante en utilisant le nom de fenêtre
-      const viewerWindow = window.open('', 'viewerWindow');
+      
       if (viewerWindow) {
         // Stocker la référence de la nouvelle fenêtre viewer
         this.currentViewerWindow = viewerWindow;
@@ -1268,20 +1268,10 @@ export class VisualPatientComponent implements OnInit, OnDestroy {
             setTimeout(checkClosedHandler, 1000);
           }
         };
-        this.loadReportingContent(this.reportingWindow, data);
+        checkClosedHandler();
       }
-      // Try to get existing viewer window by name and load new URL
-      this.configService.getViewerConfig().subscribe(viewerConfig => {
-        const viewerWindow = window.open(viewerConfig.url, 'viewerWindow', '');
-        
-        if (viewerWindow) {
-          // Window will navigate to the new URL automatically
-          viewerWindow.focus();
-        }
-      });
     });
-      this.reportingWindow = window.open('about:blank', '_blank', 'width=800,height=600,scrollbars=yes,resizable=yes');
-      if (this.reportingWindow) {
+  }
 
   onClose(): void {
     // Close all child windows before closing the component
