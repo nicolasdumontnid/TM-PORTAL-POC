@@ -199,8 +199,6 @@ export class MainContentComponent implements OnInit, OnDestroy {
   private setupEmptyViewerContent(window: Window): void {
     const currentTheme = this.themeService.currentThemeValue;
     
-    const currentTheme = this.themeService.currentThemeValue;
-    
     window.document.write(`
       <!DOCTYPE html>
       <html lang="en" data-theme="${currentTheme}">

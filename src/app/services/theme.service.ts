@@ -51,6 +51,12 @@ export class ThemeService {
     this.syncThemeToWindow(window, this.currentTheme.value);
   }
 
+  registerViewerWindow(window: Window): void {
+    this.viewerWindows.push(window);
+    // Apply current theme to the new window
+    this.syncThemeToWindow(window, this.currentTheme.value);
+  }
+
   unregisterReportingWindow(window: Window): void {
     const index = this.reportingWindows.indexOf(window);
     if (index > -1) {
