@@ -1225,8 +1225,8 @@ export class VisualPatientComponent implements OnInit, OnDestroy {
       reportingWindow.focus();
       
       // Listen for messages from the child window
-    // Try to get existing reporting window by name
-    const reportingWindow = window.open('', 'reportingWindow', '');
+    // Réutilise la fenêtre existante en utilisant le nom de fenêtre
+    const reportingWindow = window.open('', 'reportingWindow');
     
     if (reportingWindow) {
       // Load reporting data into existing window
@@ -1239,8 +1239,8 @@ export class VisualPatientComponent implements OnInit, OnDestroy {
   public openViewerWindow(): void {
       const windowFeatures = `width=${viewerConfig.window.width},height=${viewerConfig.window.height},left=${viewerConfig.window.left},top=${viewerConfig.window.top},scrollbars=yes,resizable=yes`;
       const viewerWindow = window.open(viewerConfig.url, '_blank', windowFeatures);
-      
-      if (viewerWindow) {
+      // Réutilise la fenêtre existante en utilisant le nom de fenêtre
+      const viewerWindow = window.open('', 'viewerWindow');
         // Stocker la référence de la nouvelle fenêtre viewer
         this.currentViewerWindow = viewerWindow;
         
