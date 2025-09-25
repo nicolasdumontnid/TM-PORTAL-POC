@@ -1225,25 +1225,18 @@ export class VisualPatientComponent implements OnInit, OnDestroy {
       reportingWindow.focus();
       
       // Listen for messages from the child window
-      const messageHandler = (event: MessageEvent) => {
-        if (event.data.type === 'saveWindowPosition') {
-          this.configService.saveReportingWindowPosition(reportingWindow);
-        }
-      };
-      
-      window.addEventListener('message', messageHandler);
-      
-      checkClosedHandler();
-      
-      // Ouvrir la seconde fenêtre viewer
-      this.openViewerWindow();
-      }
-    });
-    });
+    // Try to get existing reporting window by name
+    const reportingWindow = window.open('', 'reportingWindow', '');
+    
+    if (reportingWindow) {
+      // Load reporting data into existing window
+      this.visualPatientService.getReportingData().subscribe(data => {
+        this.loadReportingContent(reportingWindow, data);
+      });
+    }
   }
 
   public openViewerWindow(): void {
-    this.configService.getViewerConfig().subscribe(viewerConfig => {
       const windowFeatures = `width=${viewerConfig.window.width},height=${viewerConfig.window.height},left=${viewerConfig.window.left},top=${viewerConfig.window.top},scrollbars=yes,resizable=yes`;
       const viewerWindow = window.open(viewerConfig.url, '_blank', windowFeatures);
       
@@ -1258,13 +1251,13 @@ export class VisualPatientComponent implements OnInit, OnDestroy {
             if (this.currentViewerWindow === viewerWindow) {
               this.currentViewerWindow = null;
             }
-          } else {
-            setTimeout(checkClosedHandler, 1000);
-          }
-        };
-        
+    // Try to get existing viewer window by name and load new URL
+    this.configService.getViewerConfig().subscribe(viewerConfig => {
+      const viewerWindow = window.open(viewerConfig.url, 'viewerWindow', '');
+      
+      if (viewerWindow) {
+        // Window will navigate to the new URL automatically
         viewerWindow.focus();
-        checkClosedHandler();
       }
     });
   }
