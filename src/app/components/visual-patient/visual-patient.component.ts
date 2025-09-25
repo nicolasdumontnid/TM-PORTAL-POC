@@ -2,11 +2,11 @@ import { Component, ChangeDetectionStrategy, Input, OnInit, OnDestroy, Output, E
 import { CommonModule } from '@angular/common';
 import { Observable, BehaviorSubject, combineLatest, of } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { takeUntil, combineLatest } from 'rxjs/operators';
+import { takeUntil } from 'rxjs/operators';
 import { WindowManagerService } from '../../services/window-manager.service';
 import { ConfigService } from '../../services/config.service';
 import { ThemeService } from '../../services/theme.service';
-import { ConfigService } from '../../services/config.service';
+import { VisualPatientService } from '../../services/visual-patient.service';
 import { PatientInfo, RadiologicalRequest, AISummary, RadioReport, PatientRecord, ExamPoint, ImagesByDate, VisualPatientBlock, GraphicFilter, Department, AnatomyRegion } from '../../models/visual-patient.model';
 
 @Component({
@@ -83,7 +83,6 @@ export class VisualPatientComponent implements OnInit, OnDestroy {
   constructor(
     private visualPatientService: VisualPatientService,
     private windowManagerService: WindowManagerService,
-    private configService: ConfigService
     private configService: ConfigService,
     private themeService: ThemeService
   ) {
@@ -448,7 +447,7 @@ export class VisualPatientComponent implements OnInit, OnDestroy {
       const getAbsoluteImagePath = (relativePath: string) => `${baseUrl}/${relativePath}`;
       
       const windowFeatures = `width=${windowConfig.width},height=${windowConfig.height},left=${windowConfig.left},top=${windowConfig.top},scrollbars=yes,resizable=yes`;
-      console.log("Open reporting with param", windowFeatures)
+      console.log("Open reporting with param", windowFeatures);
       const reportingWindow = window.open('about:blank', '_blank', windowFeatures);
       
       if (reportingWindow) {
@@ -1316,6 +1315,7 @@ export class VisualPatientComponent implements OnInit, OnDestroy {
         reportingWindow.focus();
       }
       console.log('Images config:', imagesConfig);
+    });
   }
 
   private updateReportingWindowContent(window: Window, imagesConfig: any): void {
