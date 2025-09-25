@@ -1,5 +1,6 @@
 import { Component, ChangeDetectionStrategy, OnInit, Output, EventEmitter } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
 import { NavigationService } from '../../services/navigation.service';
 import { ExamService } from '../../services/exam.service';
 
@@ -34,7 +35,7 @@ interface KPI {
 @Component({
   selector: 'app-dashboard',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, FormsModule],
   templateUrl: './dashboard.component.html',
   styleUrl: './dashboard.component.css',
   changeDetection: ChangeDetectionStrategy.OnPush

@@ -1,5 +1,6 @@
 import { Component, ChangeDetectionStrategy, Input, OnInit, OnDestroy, Output, EventEmitter, ViewChild, ElementRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
 import { Observable, BehaviorSubject, of } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { takeUntil } from 'rxjs/operators';
@@ -13,8 +14,7 @@ import { PatientInfo, RadiologicalRequest, AISummary, RadioReport, PatientRecord
   standalone: true,
   imports: [CommonModule, FormsModule],
   standalone: true,
-  imports: [CommonModule],
-  templateUrl: './visual-patient.component.html',
+  imports: [CommonModule, FormsModule],
   styleUrl: './visual-patient.component.css',
   changeDetection: ChangeDetectionStrategy.OnPush
 })
