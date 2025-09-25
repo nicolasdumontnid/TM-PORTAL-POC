@@ -182,28 +182,13 @@ export class MainContentComponent implements OnInit, OnDestroy {
             font-size: 1rem;
             line-height: 1.5;
           }
-
-          .spinner {
-            display: inline-block;
-            width: 20px;
-            height: 20px;
-            border: 3px solid var(--border-color);
-            border-radius: 50%;
-            border-top-color: var(--primary-color);
-            animation: spin 1s ease-in-out infinite;
-            margin-right: 10px;
-          }
-
-          @keyframes spin {
-            to { transform: rotate(360deg); }
-          }
         </style>
       </head>
       <body>
         <div class="empty-container">
           <div class="icon">📋</div>
           <h1>Telemis Reporting Module</h1>
-          <p><span class="spinner"></span>Waiting for content...</p>
+          <p>Waiting for content...</p>
         </div>
       </body>
       </html>
@@ -289,28 +274,13 @@ export class MainContentComponent implements OnInit, OnDestroy {
             font-size: 1rem;
             line-height: 1.5;
           }
-
-          .spinner {
-            display: inline-block;
-            width: 20px;
-            height: 20px;
-            border: 3px solid var(--border-color);
-            border-radius: 50%;
-            border-top-color: var(--primary-color);
-            animation: spin 1s ease-in-out infinite;
-            margin-right: 10px;
-          }
-
-          @keyframes spin {
-            to { transform: rotate(360deg); }
-          }
         </style>
       </head>
       <body>
         <div class="empty-container">
           <div class="icon">🔍</div>
           <h1>Telemis Medical Viewer</h1>
-          <p><span class="spinner"></span>Waiting for content...</p>
+          <p>Waiting for content...</p>
         </div>
       </body>
       </html>
