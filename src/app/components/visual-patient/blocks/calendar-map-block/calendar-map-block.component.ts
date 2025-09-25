@@ -1,11 +1,12 @@
 import { Component, ChangeDetectionStrategy, Input, Output, EventEmitter } from '@angular/core';
-import { CommonModule } from '@angular/common';
 import { Observable } from 'rxjs';
 import { ExamPoint, GraphicFilter, Department, AnatomyRegion } from '../../../../models/visual-patient.model';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-calendar-map-block',
   standalone: true,
+  imports: [CommonModule],
   templateUrl: './calendar-map-block.component.html',
   styleUrls: ['./calendar-map-block.component.css'],
   changeDetection: ChangeDetectionStrategy.OnPush
@@ -23,7 +24,7 @@ export class CalendarMapBlockComponent {
   @Output() anatomyFilterChange = new EventEmitter<string>();
   @Output() timelineFilterChange = new EventEmitter<string>();
   @Output() examPointClick = new EventEmitter<ExamPoint>();
-  @Output() examPointHover = new EventEmitter<{examPoint: ExamPoint, event: Event}>();
+  @Output() examPointHover = new EventEmitter<{examPoint: ExamPoint, event: MouseEvent}>();
   @Output() examPointLeave = new EventEmitter<void>();
   @Output() regionHover = new EventEmitter<string>();
   @Output() regionLeave = new EventEmitter<void>();
@@ -50,7 +51,7 @@ export class CalendarMapBlockComponent {
     this.examPointClick.emit(examPoint);
   }
 
-  onExamPointHover(examPoint: ExamPoint, event: Event): void {
+  onExamPointHover(examPoint: ExamPoint, event: MouseEvent): void {
     this.examPointHover.emit({examPoint, event});
   }
 
