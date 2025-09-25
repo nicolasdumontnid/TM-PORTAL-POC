@@ -116,6 +116,10 @@ export class VisualPatientComponent implements OnInit, OnDestroy {
     this.closeAllChildWindows();
   }
 
+  trackByBlockId(index: number, block: any): string {
+    return block.id;
+  }
+
   private closeAllChildWindows(): void {
     // Close reporting window
     if (this.currentReportingWindow && !this.currentReportingWindow.closed) {
