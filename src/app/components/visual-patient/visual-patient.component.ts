@@ -4,6 +4,7 @@ import { Observable, BehaviorSubject, combineLatest, map, of } from 'rxjs';
 import { VisualPatientService } from '../../services/visual-patient.service';
 import { WindowManagerService } from '../../services/window-manager.service';
 import { ThemeService } from '../../services/theme.service';
+import { WindowManagerService } from '../../services/window-manager.service';
 import { ConfigService } from '../../services/config.service';
 import { PatientInfo, RadiologicalRequest, AISummary, RadioReport, PatientRecord, ExamPoint, ImagesByDate, VisualPatientBlock, GraphicFilter, Department, AnatomyRegion } from '../../models/visual-patient.model';
 
@@ -82,7 +83,8 @@ export class VisualPatientComponent implements OnInit, OnDestroy {
     private visualPatientService: VisualPatientService,
     private windowManagerService: WindowManagerService,
     private configService: ConfigService,
-    private themeService: ThemeService
+    private themeService: ThemeService,
+    private windowManagerService: WindowManagerService
   ) {
     // Listen for beforeunload event to close child windows
     window.addEventListener('beforeunload', () => {
@@ -1333,15 +1335,16 @@ export class VisualPatientComponent implements OnInit, OnDestroy {
       return;
     }
 
-    // Load the reporting HTML content into the existing window
-    fetch('src/app/reporting.html')
-      .then(response => response.text())
-      .then(htmlTemplate => {
-        if (reportingWindow) {
-          reportingWindow.document.open();
-          reportingWindow.document.write(htmlTemplate);
-          reportingWindow.document.close();
-        }
+          const patientName = reportingData.patient ? `${reportingData.patient.firstName} ${reportingData.patient.lastName}` : 'Patient Inconnu';
+          const patientId = reportingData.patient ? `${reportingData.patient.firstName}_${reportingData.patient.lastName}` : 'unknown';
+          const examDate = examPoint?.date || new Date().toLocaleDateString();
+          
+          const populatedHtml = htmlTemplate
+            .replace(/{{patientName}}/g, patientName)
+            .replace(/{{patientId}}/g, patientId)
+            .replace(/{{examDate}}/g, examDate);
+          
+          this.windowManagerService.openAndPopulateReportingWindow(populatedHtml);
       });
   }
 
