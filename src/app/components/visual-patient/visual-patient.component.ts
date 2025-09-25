@@ -4,6 +4,7 @@ import { Observable, BehaviorSubject, combineLatest, map, of } from 'rxjs';
 import { VisualPatientService } from '../../services/visual-patient.service';
 import { WindowManagerService } from '../../services/window-manager.service';
 import { ThemeService } from '../../services/theme.service';
+import { ConfigService } from '../../services/config.service';
 import { PatientInfo, RadiologicalRequest, AISummary, RadioReport, PatientRecord, ExamPoint, ImagesByDate, VisualPatientBlock, GraphicFilter, Department, AnatomyRegion } from '../../models/visual-patient.model';
 
 @Component({
@@ -80,6 +81,7 @@ export class VisualPatientComponent implements OnInit, OnDestroy {
   constructor(
     private visualPatientService: VisualPatientService,
     private windowManagerService: WindowManagerService,
+    private configService: ConfigService,
     private themeService: ThemeService
   ) {
     // Listen for beforeunload event to close child windows
