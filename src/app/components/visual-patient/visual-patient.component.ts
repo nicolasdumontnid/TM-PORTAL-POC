@@ -1,9 +1,8 @@
 import { Component, ChangeDetectionStrategy, Input, OnInit, OnDestroy, Output, EventEmitter, ViewChild, ElementRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { Observable, BehaviorSubject, combineLatest, of } from 'rxjs';
+import { Observable, BehaviorSubject, of } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { takeUntil } from 'rxjs/operators';
-import { WindowManagerService } from '../../services/window-manager.service';
 import { ConfigService } from '../../services/config.service';
 import { ThemeService } from '../../services/theme.service';
 import { VisualPatientService } from '../../services/visual-patient.service';
@@ -11,6 +10,8 @@ import { PatientInfo, RadiologicalRequest, AISummary, RadioReport, PatientRecord
 
 @Component({
   selector: 'app-visual-patient',
+  standalone: true,
+  imports: [CommonModule, FormsModule],
   standalone: true,
   imports: [CommonModule],
   templateUrl: './visual-patient.component.html',
