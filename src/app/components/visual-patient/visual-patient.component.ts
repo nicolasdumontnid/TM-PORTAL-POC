@@ -22,6 +22,164 @@ export class VisualPatientComponent implements OnInit, OnDestroy {
   @Input() selectedExamId: string | null = null;
   @Output() closeVisualPatient = new EventEmitter<void>();
 
+  // Mock data - must be declared before BehaviorSubjects that use them
+  medicalRecords = [
+    {
+      date: new Date('2024-01-10'),
+      name: 'Dr. Smith',
+      description: 'Initial consultation for chest pain. Patient reports intermittent chest discomfort over the past month.'
+    },
+    {
+      date: new Date('2024-01-20'),
+      name: 'Dr. Johnson',
+      description: 'Follow-up after cardiac CT. Results show normal coronary arteries with no significant stenosis.'
+    },
+    {
+      date: new Date('2024-02-15'),
+      name: 'Dr. Williams',
+      description: 'Neurological consultation for headaches. Recommended brain MRI to rule out structural abnormalities.'
+    },
+    {
+      date: new Date('2024-03-05'),
+      name: 'Dr. Brown',
+      description: 'Orthopedic evaluation for knee pain. Physical examination reveals mild joint effusion.'
+    }
+  ];
+
+  examPoints = [
+    {
+      id: 'exam1',
+      date: new Date('2024-01-15'),
+      department: 'Cardiology',
+      anatomy: 'Chest',
+      modality: 'CT',
+      examName: 'Cardiac CT',
+      description: 'Routine cardiac examination',
+      isFuture: false,
+      images: [
+        'https://images.pexels.com/photos/4386466/pexels-photo-4386466.jpeg?auto=compress&cs=tinysrgb&w=120&h=120&fit=crop',
+        'https://images.pexels.com/photos/4386467/pexels-photo-4386467.jpeg?auto=compress&cs=tinysrgb&w=120&h=120&fit=crop'
+      ]
+    },
+    {
+      id: 'exam2',
+      date: new Date('2024-02-20'),
+      department: 'Neurology',
+      anatomy: 'Head',
+      modality: 'MRI',
+      examName: 'Brain MRI',
+      description: 'Follow-up brain scan',
+      isFuture: false,
+      images: [
+        'https://images.pexels.com/photos/4386468/pexels-photo-4386468.jpeg?auto=compress&cs=tinysrgb&w=120&h=120&fit=crop'
+      ]
+    },
+    {
+      id: 'exam3',
+      date: new Date('2024-03-10'),
+      department: 'Orthopedics',
+      anatomy: 'Lower Extremities',
+      modality: 'X-Ray',
+      examName: 'Knee X-Ray',
+      description: 'Knee pain evaluation',
+      isFuture: false,
+      images: []
+    },
+    {
+      id: 'exam4',
+      date: new Date('2024-04-05'),
+      department: 'Radiology',
+      anatomy: 'Abdomen',
+      modality: 'Ultrasound',
+      examName: 'Abdominal US',
+      description: 'Abdominal ultrasound',
+      isFuture: false,
+      images: [
+        'https://images.pexels.com/photos/4386469/pexels-photo-4386469.jpeg?auto=compress&cs=tinysrgb&w=120&h=120&fit=crop',
+        'https://images.pexels.com/photos/4386470/pexels-photo-4386470.jpeg?auto=compress&cs=tinysrgb&w=120&h=120&fit=crop',
+        'https://images.pexels.com/photos/4386471/pexels-photo-4386471.jpeg?auto=compress&cs=tinysrgb&w=120&h=120&fit=crop'
+      ]
+    },
+    {
+      id: 'exam5',
+      date: new Date('2024-05-15'),
+      department: 'Emergency',
+      anatomy: 'Chest',
+      modality: 'CT',
+      examName: 'Emergency CT',
+      description: 'Emergency chest CT',
+      isFuture: false,
+      images: []
+    },
+    {
+      id: 'exam6',
+      date: new Date('2024-06-20'),
+      department: 'Cardiology',
+      anatomy: 'Chest',
+      modality: 'PET',
+      examName: 'Cardiac PET',
+      description: 'Cardiac PET scan',
+      isFuture: true,
+      images: [
+        'https://images.pexels.com/photos/4386472/pexels-photo-4386472.jpeg?auto=compress&cs=tinysrgb&w=120&h=120&fit=crop'
+      ]
+    }
+  ];
+
+  imagesByDate = [
+    {
+      date: '2024-01-15',
+      images: [
+        {
+          filename: 'cardiac_ct_001.dcm',
+          url: 'https://images.pexels.com/photos/4386466/pexels-photo-4386466.jpeg?auto=compress&cs=tinysrgb&w=120&h=120&fit=crop'
+        },
+        {
+          filename: 'cardiac_ct_002.dcm',
+          url: 'https://images.pexels.com/photos/4386467/pexels-photo-4386467.jpeg?auto=compress&cs=tinysrgb&w=120&h=120&fit=crop'
+        },
+        {
+          filename: 'cardiac_ct_003.dcm',
+          url: 'https://images.pexels.com/photos/4386468/pexels-photo-4386468.jpeg?auto=compress&cs=tinysrgb&w=120&h=120&fit=crop'
+        }
+      ]
+    },
+    {
+      date: '2024-02-20',
+      images: [
+        {
+          filename: 'brain_mri_001.dcm',
+          url: 'https://images.pexels.com/photos/4386469/pexels-photo-4386469.jpeg?auto=compress&cs=tinysrgb&w=120&h=120&fit=crop'
+        },
+        {
+          filename: 'brain_mri_002.dcm',
+          url: 'https://images.pexels.com/photos/4386470/pexels-photo-4386470.jpeg?auto=compress&cs=tinysrgb&w=120&h=120&fit=crop'
+        }
+      ]
+    },
+    {
+      date: '2024-04-05',
+      images: [
+        {
+          filename: 'abdominal_us_001.dcm',
+          url: 'https://images.pexels.com/photos/4386471/pexels-photo-4386471.jpeg?auto=compress&cs=tinysrgb&w=120&h=120&fit=crop'
+        },
+        {
+          filename: 'abdominal_us_002.dcm',
+          url: 'https://images.pexels.com/photos/4386472/pexels-photo-4386472.jpeg?auto=compress&cs=tinysrgb&w=120&h=120&fit=crop'
+        },
+        {
+          filename: 'abdominal_us_003.dcm',
+          url: 'https://images.pexels.com/photos/4386473/pexels-photo-4386473.jpeg?auto=compress&cs=tinysrgb&w=120&h=120&fit=crop'
+        },
+        {
+          filename: 'abdominal_us_004.dcm',
+          url: 'https://images.pexels.com/photos/4386474/pexels-photo-4386474.jpeg?auto=compress&cs=tinysrgb&w=120&h=120&fit=crop'
+        }
+      ]
+    }
+  ];
+
   private showBurgerMenuSubject = new BehaviorSubject<boolean>(false);
   showBurgerMenu$ = this.showBurgerMenuSubject.asObservable();
 
@@ -168,110 +326,6 @@ export class VisualPatientComponent implements OnInit, OnDestroy {
   showBurgerMenu = false;
   departmentsList: string[] = [];
 
-  // Mock data - moved before BehaviorSubjects that use them
-  medicalRecords = [
-    {
-      date: new Date('2024-01-10'),
-      name: 'Dr. Smith',
-      description: 'Initial consultation for chest pain. Patient reports intermittent chest discomfort over the past month.'
-    },
-    {
-      date: new Date('2024-01-20'),
-      name: 'Dr. Johnson',
-      description: 'Follow-up after cardiac CT. Results show normal coronary arteries with no significant stenosis.'
-    },
-    {
-      date: new Date('2024-02-15'),
-      name: 'Dr. Williams',
-      description: 'Neurological consultation for headaches. Recommended brain MRI to rule out structural abnormalities.'
-    },
-    {
-      date: new Date('2024-03-05'),
-      name: 'Dr. Brown',
-      description: 'Orthopedic evaluation for knee pain. Physical examination reveals mild joint effusion.'
-    }
-  ];
-
-  examPoints = [
-    {
-      id: 'exam1',
-      date: new Date('2024-01-15'),
-      department: 'Cardiology',
-      anatomy: 'Chest',
-      modality: 'CT',
-      examName: 'Cardiac CT',
-      description: 'Routine cardiac examination',
-      isFuture: false,
-      images: [
-        'https://images.pexels.com/photos/4386466/pexels-photo-4386466.jpeg?auto=compress&cs=tinysrgb&w=120&h=120&fit=crop',
-        'https://images.pexels.com/photos/4386467/pexels-photo-4386467.jpeg?auto=compress&cs=tinysrgb&w=120&h=120&fit=crop'
-      ]
-    },
-    {
-      id: 'exam2',
-      date: new Date('2024-02-20'),
-      department: 'Neurology',
-      anatomy: 'Head',
-      modality: 'MRI',
-      examName: 'Brain MRI',
-      description: 'Follow-up brain scan',
-      isFuture: false,
-      images: [
-        'https://images.pexels.com/photos/4386468/pexels-photo-4386468.jpeg?auto=compress&cs=tinysrgb&w=120&h=120&fit=crop'
-      ]
-    },
-    {
-      id: 'exam3',
-      date: new Date('2024-03-10'),
-      department: 'Orthopedics',
-      anatomy: 'Lower Extremities',
-      modality: 'X-Ray',
-      examName: 'Knee X-Ray',
-      description: 'Knee pain evaluation',
-      isFuture: false,
-      images: []
-    },
-    {
-      id: 'exam4',
-      date: new Date('2024-04-05'),
-      department: 'Radiology',
-      anatomy: 'Abdomen',
-      modality: 'Ultrasound',
-      examName: 'Abdominal US',
-      description: 'Abdominal ultrasound',
-      isFuture: false,
-      images: [
-        'https://images.pexels.com/photos/4386469/pexels-photo-4386469.jpeg?auto=compress&cs=tinysrgb&w=120&h=120&fit=crop',
-        'https://images.pexels.com/photos/4386470/pexels-photo-4386470.jpeg?auto=compress&cs=tinysrgb&w=120&h=120&fit=crop',
-        'https://images.pexels.com/photos/4386471/pexels-photo-4386471.jpeg?auto=compress&cs=tinysrgb&w=120&h=120&fit=crop'
-      ]
-    },
-    {
-      id: 'exam5',
-      date: new Date('2024-05-15'),
-      department: 'Emergency',
-      anatomy: 'Chest',
-      modality: 'CT',
-      examName: 'Emergency CT',
-      description: 'Emergency chest CT',
-      isFuture: false,
-      images: []
-    },
-    {
-      id: 'exam6',
-      date: new Date('2024-06-20'),
-      department: 'Cardiology',
-      anatomy: 'Chest',
-      modality: 'PET',
-      examName: 'Cardiac PET',
-      description: 'Cardiac PET scan',
-      isFuture: true,
-      images: [
-        'https://images.pexels.com/photos/4386472/pexels-photo-4386472.jpeg?auto=compress&cs=tinysrgb&w=120&h=120&fit=crop'
-      ]
-    }
-  ];
-
   private subscriptions: Subscription[] = [];
 
   availableBlocks = [
@@ -319,58 +373,6 @@ export class VisualPatientComponent implements OnInit, OnDestroy {
   ];
 
   imagesByDate = [
-    {
-      date: '2024-01-15',
-      images: [
-        {
-          filename: 'cardiac_ct_001.dcm',
-          url: 'https://images.pexels.com/photos/4386466/pexels-photo-4386466.jpeg?auto=compress&cs=tinysrgb&w=120&h=120&fit=crop'
-        },
-        {
-          filename: 'cardiac_ct_002.dcm',
-          url: 'https://images.pexels.com/photos/4386467/pexels-photo-4386467.jpeg?auto=compress&cs=tinysrgb&w=120&h=120&fit=crop'
-        },
-        {
-          filename: 'cardiac_ct_003.dcm',
-          url: 'https://images.pexels.com/photos/4386468/pexels-photo-4386468.jpeg?auto=compress&cs=tinysrgb&w=120&h=120&fit=crop'
-        }
-      ]
-    },
-    {
-      date: '2024-02-20',
-      images: [
-        {
-          filename: 'brain_mri_001.dcm',
-          url: 'https://images.pexels.com/photos/4386469/pexels-photo-4386469.jpeg?auto=compress&cs=tinysrgb&w=120&h=120&fit=crop'
-        },
-        {
-          filename: 'brain_mri_002.dcm',
-          url: 'https://images.pexels.com/photos/4386470/pexels-photo-4386470.jpeg?auto=compress&cs=tinysrgb&w=120&h=120&fit=crop'
-        }
-      ]
-    },
-    {
-      date: '2024-04-05',
-      images: [
-        {
-          filename: 'abdominal_us_001.dcm',
-          url: 'https://images.pexels.com/photos/4386471/pexels-photo-4386471.jpeg?auto=compress&cs=tinysrgb&w=120&h=120&fit=crop'
-        },
-        {
-          filename: 'abdominal_us_002.dcm',
-          url: 'https://images.pexels.com/photos/4386472/pexels-photo-4386472.jpeg?auto=compress&cs=tinysrgb&w=120&h=120&fit=crop'
-        },
-        {
-          filename: 'abdominal_us_003.dcm',
-          url: 'https://images.pexels.com/photos/4386473/pexels-photo-4386473.jpeg?auto=compress&cs=tinysrgb&w=120&h=120&fit=crop'
-        },
-        {
-          filename: 'abdominal_us_004.dcm',
-          url: 'https://images.pexels.com/photos/4386474/pexels-photo-4386474.jpeg?auto=compress&cs=tinysrgb&w=120&h=120&fit=crop'
-        }
-      ]
-    }
-  ];
 
   constructor(
     private navigationService: NavigationService,
