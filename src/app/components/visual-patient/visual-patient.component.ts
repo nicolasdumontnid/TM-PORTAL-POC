@@ -224,6 +224,7 @@ export class VisualPatientComponent implements OnInit, OnDestroy {
       modality: 'CT',
       name: 'Cardiac CT',
       description: 'Routine cardiac examination',
+      isFuture: false,
       images: [
         'https://images.pexels.com/photos/4386466/pexels-photo-4386466.jpeg?auto=compress&cs=tinysrgb&w=120&h=120&fit=crop',
         'https://images.pexels.com/photos/4386467/pexels-photo-4386467.jpeg?auto=compress&cs=tinysrgb&w=120&h=120&fit=crop'
@@ -237,6 +238,7 @@ export class VisualPatientComponent implements OnInit, OnDestroy {
       modality: 'MRI',
       name: 'Brain MRI',
       description: 'Follow-up brain scan',
+      isFuture: false,
       images: [
         'https://images.pexels.com/photos/4386468/pexels-photo-4386468.jpeg?auto=compress&cs=tinysrgb&w=120&h=120&fit=crop'
       ]
@@ -249,6 +251,7 @@ export class VisualPatientComponent implements OnInit, OnDestroy {
       modality: 'X-Ray',
       name: 'Knee X-Ray',
       description: 'Knee pain evaluation',
+      isFuture: false,
       images: []
     },
     {
@@ -259,6 +262,7 @@ export class VisualPatientComponent implements OnInit, OnDestroy {
       modality: 'Ultrasound',
       name: 'Abdominal US',
       description: 'Abdominal ultrasound',
+      isFuture: false,
       images: [
         'https://images.pexels.com/photos/4386469/pexels-photo-4386469.jpeg?auto=compress&cs=tinysrgb&w=120&h=120&fit=crop',
         'https://images.pexels.com/photos/4386470/pexels-photo-4386470.jpeg?auto=compress&cs=tinysrgb&w=120&h=120&fit=crop',
@@ -273,6 +277,7 @@ export class VisualPatientComponent implements OnInit, OnDestroy {
       modality: 'CT',
       name: 'Emergency CT',
       description: 'Emergency chest CT',
+      isFuture: false,
       images: []
     },
     {
@@ -283,6 +288,7 @@ export class VisualPatientComponent implements OnInit, OnDestroy {
       modality: 'PET',
       name: 'Cardiac PET',
       description: 'Cardiac PET scan',
+      isFuture: true,
       images: [
         'https://images.pexels.com/photos/4386472/pexels-photo-4386472.jpeg?auto=compress&cs=tinysrgb&w=120&h=120&fit=crop'
       ]
