@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { Observable, BehaviorSubject, combineLatest, of } from 'rxjs';
 import { Subscription } from 'rxjs';
+import { map } from 'rxjs/operators';
 import { NavigationService } from '../../services/navigation.service';
 import { ExamService } from '../../services/exam.service';
 import { VisualPatientService } from '../../services/visual-patient.service';
@@ -49,6 +50,123 @@ export class VisualPatientComponent implements OnInit, OnDestroy {
 
   private tooltipPositionSubject = new BehaviorSubject<{x: number, y: number} | null>(null);
   tooltipPosition$ = this.tooltipPositionSubject.asObservable();
+
+  // Graphic filter properties
+  private graphicFilterSubject = new BehaviorSubject<{
+    view: 'department' | 'anatomy';
+    department: string;
+    anatomy: string;
+    timeline: string;
+  }>({
+    view: 'department',
+    department: 'ALL',
+    anatomy: 'ALL',
+    timeline: 'ALL'
+  });
+  graphicFilter$ = this.graphicFilterSubject.asObservable();
+
+  // Records filter
+  private recordsFilterSubject = new BehaviorSubject<string>('All');
+  recordsFilter$ = this.recordsFilterSubject.asObservable();
+
+  // Data observables
+  patientInfo$ = of({
+    name: 'John Doe',
+    dateOfBirth: new Date('1979-05-15'),
+    patientNumber: 'P12345',
+    examNumber: 'E67890',
+    gender: 'Male',
+    photo: 'https://images.pexels.com/photos/2379004/pexels-photo-2379004.jpeg?auto=compress&cs=tinysrgb&w=150&h=150&fit=crop'
+  });
+
+  radiologicalRequest$ = of({
+    description: 'Cardiac CT scan requested due to chest pain and abnormal ECG findings.'
+  });
+
+  aiSummary$ = of({
+    medicalSector: 'Cardiology',
+    status: 'Active',
+    healthSummary: 'Patient presents with intermittent chest pain. Recent cardiac imaging shows normal coronary arteries.'
+  });
+
+  radioReport$ = of({
+    conclusion: 'No significant coronary artery stenosis. Normal cardiac function.'
+  });
+
+  departments$ = of([
+    { name: 'Cardiology' },
+    { name: 'Neurology' },
+    { name: 'Orthopedics' },
+    { name: 'Radiology' },
+    { name: 'Emergency' }
+  ]);
+
+  anatomyRegions$ = of([
+    { name: 'Head' },
+    { name: 'Chest' },
+    { name: 'Abdomen' },
+    { name: 'Pelvis' },
+    { name: 'Extremities' }
+  ]);
+
+  // Visible blocks
+  private visibleBlocksSubject = new BehaviorSubject<Array<{id: string, type: string, title: string}>>([
+    { id: '1', type: 'patient-info', title: 'Patient Information' },
+    { id: '2', type: 'calendar-map', title: 'Calendar Map' }
+  ]);
+  visibleBlocks$ = this.visibleBlocksSubject.asObservable();
+
+  // Patient records
+  private patientRecordsSubject = new BehaviorSubject(this.medicalRecords.map(record => ({
+    ...record,
+    examName: 'Medical Record',
+    type: 'Reports'
+  })));
+  patientRecords$ = this.patientRecordsSubject.asObservable();
+
+  filteredPatientRecords$ = combineLatest([
+    this.patientRecords$,
+    this.recordsFilter$
+  ]).pipe(
+    map(([records, filter]) => {
+      if (filter === 'All') return records;
+      return records.filter(record => record.type === filter);
+    })
+  );
+
+  // Exam points
+  private examPointsSubject = new BehaviorSubject(this.examPoints);
+  examPoints$ = this.examPointsSubject.asObservable();
+
+  filteredExamPoints$ = combineLatest([
+    this.examPoints$,
+    this.graphicFilter$
+  ]).pipe(
+    map(([examPoints, filter]) => {
+      return examPoints.filter(exam => {
+        if (filter.department !== 'ALL' && exam.department !== filter.department) return false;
+        if (filter.anatomy !== 'ALL' && exam.anatomy !== filter.anatomy) return false;
+        return true;
+      });
+    })
+  );
+
+  // Images by date
+  imagesByDate$ = of(this.imagesByDate.map(group => ({
+    ...group,
+    displayDate: new Date(group.date).toLocaleDateString('en-US', { 
+      year: 'numeric', 
+      month: 'long', 
+      day: 'numeric' 
+    })
+  })));
+
+  // Hover state
+  hoveredExamPoint: any = null;
+  tooltipPosition = { x: 0, y: 0 };
+  hoveredRegion: string | null = null;
+  showBurgerMenu = false;
+  departmentsList: string[] = [];
 
   private subscriptions: Subscription[] = [];
 
@@ -257,7 +375,9 @@ export class VisualPatientComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit(): void {
-    // Initialize component
+    this.departments$.subscribe(departments => {
+      this.departmentsList = departments.map(d => d.name);
+    });
   }
 
   ngOnDestroy(): void {
@@ -403,8 +523,213 @@ export class VisualPatientComponent implements OnInit, OnDestroy {
     return labels;
   }
 
-  openReporting(examPoint: any): void {
-    const reportingData$ = this.visualPatientService.getReportingData(examPoint.id);
+  // Block management methods
+  addBlock(blockType: string): void {
+    const blockTitles: { [key: string]: string } = {
+      'patient-info': 'Patient Information',
+      'radiological-request': 'Radiological Request',
+      'ai-summary': 'AI Summary',
+      'radio-report': 'Radio Report',
+      'patient-records': 'Patient Records',
+      'calendar-map': 'Calendar Map',
+      'images-preview': 'Images Preview'
+    };
+
+    const currentBlocks = this.visibleBlocksSubject.value;
+    const newBlock = {
+      id: Date.now().toString(),
+      type: blockType,
+      title: blockTitles[blockType] || blockType
+    };
+    
+    if (!currentBlocks.find(block => block.type === blockType)) {
+      this.visibleBlocksSubject.next([...currentBlocks, newBlock]);
+    }
+    this.showBurgerMenu = false;
+  }
+
+  removeBlock(blockId: string): void {
+    const currentBlocks = this.visibleBlocksSubject.value;
+    this.visibleBlocksSubject.next(currentBlocks.filter(block => block.id !== blockId));
+  }
+
+  trackByBlockId(index: number, block: any): string {
+    return block.id;
+  }
+
+  trackByIndex(index: number, item: any): number {
+    return index;
+  }
+
+  // Graphic filter methods
+  setGraphicView(view: 'department' | 'anatomy'): void {
+    const currentFilter = this.graphicFilterSubject.value;
+    this.graphicFilterSubject.next({ ...currentFilter, view });
+  }
+
+  setDepartmentFilter(department: string): void {
+    const currentFilter = this.graphicFilterSubject.value;
+    this.graphicFilterSubject.next({ ...currentFilter, department });
+  }
+
+  setAnatomyFilter(anatomy: string): void {
+    const currentFilter = this.graphicFilterSubject.value;
+    this.graphicFilterSubject.next({ ...currentFilter, anatomy });
+  }
+
+  setTimelineFilter(timeline: string): void {
+    const currentFilter = this.graphicFilterSubject.value;
+    this.graphicFilterSubject.next({ ...currentFilter, timeline });
+  }
+
+  setRecordsFilter(filter: string): void {
+    this.recordsFilterSubject.next(filter);
+  }
+
+  getYAxisLabels(): Observable<string[]> {
+    return this.graphicFilter$.pipe(
+      map(filter => {
+        if (filter.view === 'department') {
+          return this.departmentsList;
+        } else {
+          return ['Head', 'Chest', 'Abdomen', 'Pelvis', 'Extremities'];
+        }
+      })
+    );
+  }
+
+  // Chart interaction methods
+  onRegionHover(region: string): void {
+    this.hoveredRegion = region;
+  }
+
+  onRegionLeave(): void {
+    this.hoveredRegion = null;
+  }
+
+  isRegionFiltered(region: string): boolean {
+    const currentFilter = this.graphicFilterSubject.value;
+    if (currentFilter.view === 'department') {
+      return currentFilter.department === region;
+    } else {
+      return currentFilter.anatomy === region;
+    }
+  }
+
+  onExamPointHover(examPoint: any, event: MouseEvent): void {
+    this.hoveredExamPoint = examPoint;
+    this.tooltipPosition = { x: event.clientX, y: event.clientY };
+  }
+
+  onExamPointLeave(): void {
+    this.hoveredExamPoint = null;
+  }
+
+  onTooltipEnter(): void {
+    // Keep tooltip visible
+  }
+
+  onTooltipLeave(): void {
+    this.hoveredExamPoint = null;
+  }
+
+  // Chart positioning methods
+  getTodayPosition(examPoints: any[]): number {
+    if (!examPoints.length) return 50;
+    
+    const dates = examPoints.map(exam => new Date(exam.date).getTime());
+    const minDate = Math.min(...dates);
+    const maxDate = Math.max(...dates);
+    const today = new Date().getTime();
+    
+    if (today < minDate) return 0;
+    if (today > maxDate) return 100;
+    
+    return ((today - minDate) / (maxDate - minDate)) * 100;
+  }
+
+  getExamPointPosition(examPoint: any, examPoints: any[]): { x: number, y: number } {
+    const dates = examPoints.map(exam => new Date(exam.date).getTime());
+    const minDate = Math.min(...dates);
+    const maxDate = Math.max(...dates);
+    const examDate = new Date(examPoint.date).getTime();
+    
+    const x = maxDate > minDate ? ((examDate - minDate) / (maxDate - minDate)) * 100 : 50;
+    
+    const currentFilter = this.graphicFilterSubject.value;
+    let y = 0;
+    
+    if (currentFilter.view === 'department') {
+      const departmentIndex = this.departmentsList.indexOf(examPoint.department);
+      y = (departmentIndex + 0.5) * 40;
+    } else {
+      const anatomyRegions = ['Head', 'Chest', 'Abdomen', 'Pelvis', 'Extremities'];
+      const anatomyIndex = anatomyRegions.indexOf(examPoint.anatomy);
+      y = ((anatomyIndex + 0.5) / anatomyRegions.length) * 100;
+    }
+    
+    return { x, y };
+  }
+
+  getTimelineLabels(examPoints: any[]): { position: number, label: string }[] {
+    if (!examPoints.length) return [];
+    
+    const dates = examPoints.map(exam => new Date(exam.date));
+    const minDate = new Date(Math.min(...dates.map(d => d.getTime())));
+    const maxDate = new Date(Math.max(...dates.map(d => d.getTime())));
+    
+    const labels = [];
+    const monthsDiff = (maxDate.getFullYear() - minDate.getFullYear()) * 12 + 
+                      (maxDate.getMonth() - minDate.getMonth());
+    
+    if (monthsDiff <= 12) {
+      // Show months
+      for (let i = 0; i <= monthsDiff; i++) {
+        const date = new Date(minDate.getFullYear(), minDate.getMonth() + i, 1);
+        const position = (i / Math.max(monthsDiff, 1)) * 100;
+        labels.push({
+          position,
+          label: date.toLocaleDateString('en-US', { month: 'short' })
+        });
+      }
+    } else {
+      // Show years
+      const yearsDiff = maxDate.getFullYear() - minDate.getFullYear();
+      for (let i = 0; i <= yearsDiff; i++) {
+        const position = (i / Math.max(yearsDiff, 1)) * 100;
+        labels.push({
+          position,
+          label: (minDate.getFullYear() + i).toString()
+        });
+      }
+    }
+    
+    return labels;
+  }
+
+  // Scroll synchronization methods
+  onDepartmentLabelsScroll(event: Event): void {
+    // Sync with chart scroll if needed
+  }
+
+  onChartVerticalScroll(event: Event): void {
+    // Sync with department labels scroll if needed
+  }
+
+  // Utility methods
+  getExamThumbnails(examPoint: any): any[] {
+    return examPoint.images?.map((url: string, index: number) => ({
+      url,
+      filename: `image_${index + 1}.dcm`
+    })) || [];
+  }
+
+  toggleBurgerMenu(): void {
+    this.showBurgerMenu = !this.showBurgerMenu;
+  }
+
+  openReporting(examPoint: any, image?: any): void {
+    const reportingData$ = this.visualPatientService.getReportingData(examPoint?.id || 'default');
     const imagesConfig$ = this.configService.getImagesConfig();
     const reportingTemplate$ = this.configService.getReportingTemplate();
 
