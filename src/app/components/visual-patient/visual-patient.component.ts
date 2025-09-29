@@ -170,7 +170,110 @@ export class VisualPatientComponent implements OnInit, OnDestroy {
 
   private subscriptions: Subscription[] = [];
 
-  // Mock data
+  // Mock data - moved before BehaviorSubjects that use them
+  medicalRecords = [
+    {
+      date: new Date('2024-01-10'),
+      name: 'Dr. Smith',
+      description: 'Initial consultation for chest pain. Patient reports intermittent chest discomfort over the past month.'
+    },
+    {
+      date: new Date('2024-01-20'),
+      name: 'Dr. Johnson',
+      description: 'Follow-up after cardiac CT. Results show normal coronary arteries with no significant stenosis.'
+    },
+    {
+      date: new Date('2024-02-15'),
+      name: 'Dr. Williams',
+      description: 'Neurological consultation for headaches. Recommended brain MRI to rule out structural abnormalities.'
+    },
+    {
+      date: new Date('2024-03-05'),
+      name: 'Dr. Brown',
+      description: 'Orthopedic evaluation for knee pain. Physical examination reveals mild joint effusion.'
+    }
+  ];
+
+  examPoints = [
+    {
+      id: 'exam1',
+      date: new Date('2024-01-15'),
+      department: 'Cardiology',
+      anatomy: 'Chest',
+      modality: 'CT',
+      examName: 'Cardiac CT',
+      description: 'Routine cardiac examination',
+      isFuture: false,
+      images: [
+        'https://images.pexels.com/photos/4386466/pexels-photo-4386466.jpeg?auto=compress&cs=tinysrgb&w=120&h=120&fit=crop',
+        'https://images.pexels.com/photos/4386467/pexels-photo-4386467.jpeg?auto=compress&cs=tinysrgb&w=120&h=120&fit=crop'
+      ]
+    },
+    {
+      id: 'exam2',
+      date: new Date('2024-02-20'),
+      department: 'Neurology',
+      anatomy: 'Head',
+      modality: 'MRI',
+      examName: 'Brain MRI',
+      description: 'Follow-up brain scan',
+      isFuture: false,
+      images: [
+        'https://images.pexels.com/photos/4386468/pexels-photo-4386468.jpeg?auto=compress&cs=tinysrgb&w=120&h=120&fit=crop'
+      ]
+    },
+    {
+      id: 'exam3',
+      date: new Date('2024-03-10'),
+      department: 'Orthopedics',
+      anatomy: 'Lower Extremities',
+      modality: 'X-Ray',
+      examName: 'Knee X-Ray',
+      description: 'Knee pain evaluation',
+      isFuture: false,
+      images: []
+    },
+    {
+      id: 'exam4',
+      date: new Date('2024-04-05'),
+      department: 'Radiology',
+      anatomy: 'Abdomen',
+      modality: 'Ultrasound',
+      examName: 'Abdominal US',
+      description: 'Abdominal ultrasound',
+      isFuture: false,
+      images: [
+        'https://images.pexels.com/photos/4386469/pexels-photo-4386469.jpeg?auto=compress&cs=tinysrgb&w=120&h=120&fit=crop',
+        'https://images.pexels.com/photos/4386470/pexels-photo-4386470.jpeg?auto=compress&cs=tinysrgb&w=120&h=120&fit=crop',
+        'https://images.pexels.com/photos/4386471/pexels-photo-4386471.jpeg?auto=compress&cs=tinysrgb&w=120&h=120&fit=crop'
+      ]
+    },
+    {
+      id: 'exam5',
+      date: new Date('2024-05-15'),
+      department: 'Emergency',
+      anatomy: 'Chest',
+      modality: 'CT',
+      examName: 'Emergency CT',
+      description: 'Emergency chest CT',
+      isFuture: false,
+      images: []
+    },
+    {
+      id: 'exam6',
+      date: new Date('2024-06-20'),
+      department: 'Cardiology',
+      anatomy: 'Chest',
+      modality: 'PET',
+      examName: 'Cardiac PET',
+      description: 'Cardiac PET scan',
+      isFuture: true,
+      images: [
+        'https://images.pexels.com/photos/4386472/pexels-photo-4386472.jpeg?auto=compress&cs=tinysrgb&w=120&h=120&fit=crop'
+      ]
+    }
+  ];
+
   availableBlocks = [
     { id: 'patient-info', name: 'Patient Info', icon: '👤' },
     { id: 'calendar-map', name: 'Calendar Map', icon: '📅' },
@@ -213,109 +316,6 @@ export class VisualPatientComponent implements OnInit, OnDestroy {
     'Pelvis',
     'Upper Extremities',
     'Lower Extremities'
-  ];
-
-  examPoints = [
-    {
-      id: 'exam1',
-      date: new Date('2024-01-15'),
-      department: 'Cardiology',
-      anatomy: 'Chest',
-      modality: 'CT',
-      name: 'Cardiac CT',
-      description: 'Routine cardiac examination',
-      isFuture: false,
-      images: [
-        'https://images.pexels.com/photos/4386466/pexels-photo-4386466.jpeg?auto=compress&cs=tinysrgb&w=120&h=120&fit=crop',
-        'https://images.pexels.com/photos/4386467/pexels-photo-4386467.jpeg?auto=compress&cs=tinysrgb&w=120&h=120&fit=crop'
-      ]
-    },
-    {
-      id: 'exam2',
-      date: new Date('2024-02-20'),
-      department: 'Neurology',
-      anatomy: 'Head',
-      modality: 'MRI',
-      name: 'Brain MRI',
-      description: 'Follow-up brain scan',
-      isFuture: false,
-      images: [
-        'https://images.pexels.com/photos/4386468/pexels-photo-4386468.jpeg?auto=compress&cs=tinysrgb&w=120&h=120&fit=crop'
-      ]
-    },
-    {
-      id: 'exam3',
-      date: new Date('2024-03-10'),
-      department: 'Orthopedics',
-      anatomy: 'Lower Extremities',
-      modality: 'X-Ray',
-      name: 'Knee X-Ray',
-      description: 'Knee pain evaluation',
-      isFuture: false,
-      images: []
-    },
-    {
-      id: 'exam4',
-      date: new Date('2024-04-05'),
-      department: 'Radiology',
-      anatomy: 'Abdomen',
-      modality: 'Ultrasound',
-      name: 'Abdominal US',
-      description: 'Abdominal ultrasound',
-      isFuture: false,
-      images: [
-        'https://images.pexels.com/photos/4386469/pexels-photo-4386469.jpeg?auto=compress&cs=tinysrgb&w=120&h=120&fit=crop',
-        'https://images.pexels.com/photos/4386470/pexels-photo-4386470.jpeg?auto=compress&cs=tinysrgb&w=120&h=120&fit=crop',
-        'https://images.pexels.com/photos/4386471/pexels-photo-4386471.jpeg?auto=compress&cs=tinysrgb&w=120&h=120&fit=crop'
-      ]
-    },
-    {
-      id: 'exam5',
-      date: new Date('2024-05-15'),
-      department: 'Emergency',
-      anatomy: 'Chest',
-      modality: 'CT',
-      name: 'Emergency CT',
-      description: 'Emergency chest CT',
-      isFuture: false,
-      images: []
-    },
-    {
-      id: 'exam6',
-      date: new Date('2024-06-20'),
-      department: 'Cardiology',
-      anatomy: 'Chest',
-      modality: 'PET',
-      name: 'Cardiac PET',
-      description: 'Cardiac PET scan',
-      isFuture: true,
-      images: [
-        'https://images.pexels.com/photos/4386472/pexels-photo-4386472.jpeg?auto=compress&cs=tinysrgb&w=120&h=120&fit=crop'
-      ]
-    }
-  ];
-
-  medicalRecords = [
-    {
-      date: new Date('2024-01-10'),
-      name: 'Dr. Smith',
-      description: 'Initial consultation for chest pain. Patient reports intermittent chest discomfort over the past month.'
-    },
-    {
-      date: new Date('2024-01-20'),
-      name: 'Dr. Johnson',
-      description: 'Follow-up after cardiac CT. Results show normal coronary arteries with no significant stenosis.'
-    },
-    {
-      date: new Date('2024-02-15'),
-      name: 'Dr. Williams',
-      description: 'Neurological consultation for headaches. Recommended brain MRI to rule out structural abnormalities.'
-    },
-    {
-      date: new Date('2024-03-05'),
-      name: 'Dr. Brown',
-      description: 'Orthopedic evaluation for knee pain. Physical examination reveals mild joint effusion.'
-    }
   ];
 
   imagesByDate = [
@@ -736,11 +736,11 @@ export class VisualPatientComponent implements OnInit, OnDestroy {
 
   openReporting(examPoint: any, image?: any): void {
     const reportingData$ = this.visualPatientService.getReportingData(examPoint?.id || 'default');
-    const imagesConfig$ = this.configService.getImagesConfig();
-    const reportingTemplate$ = this.configService.getReportingTemplate();
+    const reportingTemplate$ = this.windowManagerService.loadReportingHtmlTemplate();
 
-    combineLatest([reportingData$, imagesConfig$, reportingTemplate$]).subscribe(
-      ([reportingData, imagesConfig, template]) => {
+    combineLatest([reportingData$, reportingTemplate$]).subscribe(
+      ([reportingData, template]) => {
+        if (template) {
         const patientName = `${this.patientData.name}`;
         const patientId = examPoint?.id || 'Unknown';
         const examDate = examPoint ? examPoint.date.toLocaleDateString() : new Date().toLocaleDateString();
@@ -752,6 +752,7 @@ export class VisualPatientComponent implements OnInit, OnDestroy {
         if (this.windowManagerService.reportingWindow && !this.windowManagerService.reportingWindow.closed) {
           this.windowManagerService.reportingWindow.document.body.innerHTML = populatedHtml;
           this.windowManagerService.reportingWindow.focus();
+        }
         }
       }
     );
