@@ -372,8 +372,6 @@ export class VisualPatientComponent implements OnInit, OnDestroy {
     'Lower Extremities'
   ];
 
-  imagesByDate = [
-
   constructor(
     private navigationService: NavigationService,
     private examService: ExamService,
@@ -531,36 +529,6 @@ export class VisualPatientComponent implements OnInit, OnDestroy {
     return labels;
   }
 
-  // Block management methods
-  addBlock(blockType: string): void {
-    const blockTitles: { [key: string]: string } = {
-      'patient-info': 'Patient Information',
-      'radiological-request': 'Radiological Request',
-      'ai-summary': 'AI Summary',
-      'radio-report': 'Radio Report',
-      'patient-records': 'Patient Records',
-      'calendar-map': 'Calendar Map',
-      'images-preview': 'Images Preview'
-    };
-
-    const currentBlocks = this.visibleBlocksSubject.value;
-    const newBlock = {
-      id: Date.now().toString(),
-      type: blockType,
-      title: blockTitles[blockType] || blockType
-    };
-    
-    if (!currentBlocks.find(block => block.type === blockType)) {
-      this.visibleBlocksSubject.next([...currentBlocks, newBlock]);
-    }
-    this.showBurgerMenu = false;
-  }
-
-  removeBlock(blockId: string): void {
-    const currentBlocks = this.visibleBlocksSubject.value;
-    this.visibleBlocksSubject.next(currentBlocks.filter(block => block.id !== blockId));
-  }
-
   trackByBlockId(index: number, block: any): string {
     return block.id;
   }
@@ -606,15 +574,6 @@ export class VisualPatientComponent implements OnInit, OnDestroy {
     );
   }
 
-  // Chart interaction methods
-  onRegionHover(region: string): void {
-    this.hoveredRegion = region;
-  }
-
-  onRegionLeave(): void {
-    this.hoveredRegion = null;
-  }
-
   isRegionFiltered(region: string): boolean {
     const currentFilter = this.graphicFilterSubject.value;
     if (currentFilter.view === 'department') {
@@ -622,15 +581,6 @@ export class VisualPatientComponent implements OnInit, OnDestroy {
     } else {
       return currentFilter.anatomy === region;
     }
-  }
-
-  onExamPointHover(examPoint: any, event: MouseEvent): void {
-    this.hoveredExamPoint = examPoint;
-    this.tooltipPosition = { x: event.clientX, y: event.clientY };
-  }
-
-  onExamPointLeave(): void {
-    this.hoveredExamPoint = null;
   }
 
   onTooltipEnter(): void {
@@ -730,10 +680,6 @@ export class VisualPatientComponent implements OnInit, OnDestroy {
       url,
       filename: `image_${index + 1}.dcm`
     })) || [];
-  }
-
-  toggleBurgerMenu(): void {
-    this.showBurgerMenu = !this.showBurgerMenu;
   }
 
   openReporting(examPoint: any, image?: any): void {
