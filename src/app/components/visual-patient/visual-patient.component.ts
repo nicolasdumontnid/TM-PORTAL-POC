@@ -168,8 +168,6 @@ export class VisualPatientComponent implements OnInit, OnDestroy {
   showBurgerMenu = false;
   departmentsList: string[] = [];
 
-  private subscriptions: Subscription[] = [];
-
   // Mock data - moved before BehaviorSubjects that use them
   medicalRecords = [
     {
@@ -273,6 +271,8 @@ export class VisualPatientComponent implements OnInit, OnDestroy {
       ]
     }
   ];
+
+  private subscriptions: Subscription[] = [];
 
   availableBlocks = [
     { id: 'patient-info', name: 'Patient Info', icon: '👤' },
