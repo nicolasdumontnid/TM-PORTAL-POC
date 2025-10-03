@@ -132,15 +132,15 @@ export class VisualPatientComponent implements OnInit, OnDestroy {
       images: [
         {
           filename: 'cardiac_ct_001.dcm',
-          url: 'https://images.pexels.com/photos/4386466/pexels-photo-4386466.jpeg?auto=compress&cs=tinysrgb&w=120&h=120&fit=crop'
+          url: 'assets/public/images/radio/radio1.jpg'
         },
         {
           filename: 'cardiac_ct_002.dcm',
-          url: 'https://images.pexels.com/photos/4386467/pexels-photo-4386467.jpeg?auto=compress&cs=tinysrgb&w=120&h=120&fit=crop'
+          url: 'assets/public/images/radio/radio2.jpg'
         },
         {
           filename: 'cardiac_ct_003.dcm',
-          url: 'https://images.pexels.com/photos/4386468/pexels-photo-4386468.jpeg?auto=compress&cs=tinysrgb&w=120&h=120&fit=crop'
+          url: 'assets/public/images/radio/radio3.jpg'
         }
       ]
     },
@@ -149,11 +149,11 @@ export class VisualPatientComponent implements OnInit, OnDestroy {
       images: [
         {
           filename: 'brain_mri_001.dcm',
-          url: 'https://images.pexels.com/photos/4386469/pexels-photo-4386469.jpeg?auto=compress&cs=tinysrgb&w=120&h=120&fit=crop'
+          url: 'assets/public/images/radio/radio4.png'
         },
         {
           filename: 'brain_mri_002.dcm',
-          url: 'https://images.pexels.com/photos/4386470/pexels-photo-4386470.jpeg?auto=compress&cs=tinysrgb&w=120&h=120&fit=crop'
+          url: 'assets/public/images/radio/radio5.jpg'
         }
       ]
     },
@@ -162,19 +162,19 @@ export class VisualPatientComponent implements OnInit, OnDestroy {
       images: [
         {
           filename: 'abdominal_us_001.dcm',
-          url: 'https://images.pexels.com/photos/4386471/pexels-photo-4386471.jpeg?auto=compress&cs=tinysrgb&w=120&h=120&fit=crop'
+          url: 'assets/public/images/radio/radio6.JPG'
         },
         {
           filename: 'abdominal_us_002.dcm',
-          url: 'https://images.pexels.com/photos/4386472/pexels-photo-4386472.jpeg?auto=compress&cs=tinysrgb&w=120&h=120&fit=crop'
+          url: 'assets/public/images/radio/radio7.JPG'
         },
         {
           filename: 'abdominal_us_003.dcm',
-          url: 'https://images.pexels.com/photos/4386473/pexels-photo-4386473.jpeg?auto=compress&cs=tinysrgb&w=120&h=120&fit=crop'
+          url: 'assets/public/images/radio/radio8.JPG'
         },
         {
           filename: 'abdominal_us_004.dcm',
-          url: 'https://images.pexels.com/photos/4386474/pexels-photo-4386474.jpeg?auto=compress&cs=tinysrgb&w=120&h=120&fit=crop'
+          url: 'assets/public/images/radio/radio9.JPG'
         }
       ]
     }
