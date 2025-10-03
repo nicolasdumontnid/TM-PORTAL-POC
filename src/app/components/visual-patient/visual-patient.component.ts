@@ -304,6 +304,38 @@ export class VisualPatientComponent implements OnInit, OnDestroy {
       return examPoints.filter(exam => {
         if (filter.department !== 'ALL' && exam.department !== filter.department) return false;
         if (filter.anatomy !== 'ALL' && exam.anatomy !== filter.anatomy) return false;
+
+        if (filter.timeline !== 'ALL') {
+          const now = new Date();
+          const examDate = new Date(exam.date);
+          const diffTime = now.getTime() - examDate.getTime();
+          const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+
+          switch (filter.timeline) {
+            case '1 Week':
+              if (diffDays > 7 || diffDays < 0) return false;
+              break;
+            case '1 Month':
+              if (diffDays > 30 || diffDays < 0) return false;
+              break;
+            case '3 Months':
+              if (diffDays > 90 || diffDays < 0) return false;
+              break;
+            case '6 Months':
+              if (diffDays > 180 || diffDays < 0) return false;
+              break;
+            case '1 Year':
+              if (diffDays > 365 || diffDays < 0) return false;
+              break;
+            case '3 Years':
+              if (diffDays > 1095 || diffDays < 0) return false;
+              break;
+            case 'More than 3 years':
+              if (diffDays <= 1095 || diffDays < 0) return false;
+              break;
+          }
+        }
+
         return true;
       });
     })
