@@ -1,5 +1,6 @@
 .dashboard-container {
   padding: 20px;
+  padding-bottom: 40px;
   background-color: var(--bg-main);
   min-height: 100vh;
   max-height: 100vh;
@@ -293,6 +294,7 @@
   gap: 15px;
   justify-content: center;
   flex-wrap: wrap;
+  padding-bottom: 20px;
 }
 
 .action-btn {
