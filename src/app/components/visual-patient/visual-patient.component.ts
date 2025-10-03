@@ -270,7 +270,12 @@ export class VisualPatientComponent implements OnInit, OnDestroy {
   // Visible blocks
   private visibleBlocksSubject = new BehaviorSubject<Array<{id: string, type: string, title: string}>>([
     { id: '1', type: 'patient-info', title: 'Patient Information' },
-    { id: '2', type: 'calendar-map', title: 'Calendar Map' }
+    { id: '2', type: 'radiological-request', title: 'Radiological Request' },
+    { id: '3', type: 'ai-summary', title: 'IA Summary' },
+    { id: '4', type: 'radio-report', title: 'Last Radio Report Conclusion' },
+    { id: '5', type: 'patient-records', title: 'Top 10 Patient Record Information' },
+    { id: '6', type: 'calendar-map', title: 'Calendar Map' },
+    { id: '7', type: 'images-preview', title: 'All Images preview' }
   ]);
   visibleBlocks$ = this.visibleBlocksSubject.asObservable();
 
@@ -430,17 +435,35 @@ export class VisualPatientComponent implements OnInit, OnDestroy {
     this.showBurgerMenuSubject.next(!this.showBurgerMenuSubject.value);
   }
 
-  addBlock(blockId: string): void {
-    const currentBlocks = this.selectedBlocksSubject.value;
-    if (!currentBlocks.includes(blockId)) {
-      this.selectedBlocksSubject.next([...currentBlocks, blockId]);
+  addBlock(blockType: string): void {
+    const currentBlocks = this.visibleBlocksSubject.value;
+    const blockExists = currentBlocks.some(block => block.type === blockType);
+
+    if (!blockExists) {
+      const blockTitles: {[key: string]: string} = {
+        'patient-info': 'Patient Information',
+        'radiological-request': 'Radiological Request',
+        'ai-summary': 'IA Summary',
+        'radio-report': 'Last Radio Report Conclusion',
+        'patient-records': 'Top 10 Patient Record Information',
+        'calendar-map': 'Calendar Map',
+        'images-preview': 'All Images preview'
+      };
+
+      const newBlock = {
+        id: (currentBlocks.length + 1).toString(),
+        type: blockType,
+        title: blockTitles[blockType] || blockType
+      };
+
+      this.visibleBlocksSubject.next([...currentBlocks, newBlock]);
     }
     this.showBurgerMenuSubject.next(false);
   }
 
   removeBlock(blockId: string): void {
-    const currentBlocks = this.selectedBlocksSubject.value;
-    this.selectedBlocksSubject.next(currentBlocks.filter(id => id !== blockId));
+    const currentBlocks = this.visibleBlocksSubject.value;
+    this.visibleBlocksSubject.next(currentBlocks.filter(block => block.id !== blockId));
   }
 
   isBlockSelected(blockId: string): boolean {

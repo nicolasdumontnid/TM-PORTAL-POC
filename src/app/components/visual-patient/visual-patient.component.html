@@ -10,8 +10,8 @@
     <button class="burger-menu-btn" (click)="toggleBurgerMenu()">
       <i class="fas fa-bars"></i>
     </button>
-    
-    <div class="burger-menu" [class.show]="showBurgerMenu">
+
+    <div class="burger-menu" [class.show]="showBurgerMenu$ | async">
       <a href="javascript:void(0)" (click)="addBlock('patient-info')">Patient Information</a>
       <a href="javascript:void(0)" (click)="addBlock('radiological-request')">Radiological Request</a>
       <a href="javascript:void(0)" (click)="addBlock('ai-summary')">IA Summary</a>
