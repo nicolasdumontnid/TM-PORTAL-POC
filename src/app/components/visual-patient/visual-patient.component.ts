@@ -497,7 +497,7 @@ export class VisualPatientComponent implements OnInit, OnDestroy {
     return this.hoveredRegionSubject.value === region;
   }
 
-  onExamPointHover(event: MouseEvent, exam: any): void {
+  onExamPointHover(exam: any, event: MouseEvent): void {
     this.tooltipDataSubject.next(exam);
     this.tooltipPositionSubject.next({ x: event.clientX, y: event.clientY });
   }
@@ -507,15 +507,6 @@ export class VisualPatientComponent implements OnInit, OnDestroy {
     this.tooltipPositionSubject.next(null);
   }
 
-  getTodayPosition(): number {
-    const startDate = new Date('2024-01-01');
-    const endDate = new Date('2024-12-31');
-    const today = new Date();
-    const totalDays = (endDate.getTime() - startDate.getTime()) / (1000 * 60 * 60 * 24);
-    const todayDays = (today.getTime() - startDate.getTime()) / (1000 * 60 * 60 * 24);
-    
-    return (todayDays / totalDays) * 100;
-  }
 
   generateTimeLabels(): { position: number, label: string }[] {
     const labels = [];
@@ -683,7 +674,7 @@ export class VisualPatientComponent implements OnInit, OnDestroy {
   }
 
   openReporting(examPoint: any, image?: any): void {
-    const reportingData$ = this.visualPatientService.getReportingData(examPoint?.id || 'default');
+    const reportingData$ = this.visualPatientService.getReportingData();
     const reportingTemplate$ = this.windowManagerService.loadReportingHtmlTemplate();
 
     combineLatest([reportingData$, reportingTemplate$]).subscribe(
