@@ -2,6 +2,7 @@ import { Component, ChangeDetectionStrategy, Input, ChangeDetectorRef } from '@a
 import { CommonModule } from '@angular/common';
 import { Exam } from '../../../../models/exam.model';
 import { ExamService } from '../../../../services/exam.service';
+import { NavigationService } from '../../../../services/navigation.service';
 
 @Component({
   selector: 'app-exam-item',
@@ -15,7 +16,8 @@ export class ExamItemComponent {
   @Input() exam!: Exam;
 
   constructor(
-    private examService: ExamService
+    private examService: ExamService,
+    private navigationService: NavigationService
   ) {}
 
   toggleExpansion(): void {
@@ -33,5 +35,10 @@ export class ExamItemComponent {
       case 'orange': return 'orange';
       default: return 'green';
     }
+  }
+
+  openReporting(): void {
+    this.examService.selectExam(this.exam);
+    this.navigationService.triggerNavigationChange('reporting');
   }
 }

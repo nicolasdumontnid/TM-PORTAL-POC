@@ -1,6 +1,8 @@
-import { Component, ChangeDetectionStrategy } from '@angular/core';
+import { Component, ChangeDetectionStrategy, OnInit, OnDestroy, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { ExamService } from '../../services/exam.service';
+import { Subscription } from 'rxjs';
 
 interface Nodule {
   id: number;
@@ -24,7 +26,13 @@ interface Measurement {
   styleUrl: './reporting.component.css',
   changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class ReportingComponent {
+export class ReportingComponent implements OnInit, OnDestroy {
+  private subscription: Subscription | null = null;
+
+  constructor(
+    private examService: ExamService,
+    private cdr: ChangeDetectorRef
+  ) {}
   patientData = {
     name: 'Jean Dupont',
     dateOfBirth: 'March 15, 1975',
@@ -133,5 +141,91 @@ export class ReportingComponent {
         size: nodule?.size || 0
       };
     });
+  }
+
+  ngOnInit(): void {
+    this.subscription = this.examService.getSelectedExam().subscribe(exam => {
+      if (exam) {
+        this.updateReportingData(exam);
+        this.cdr.markForCheck();
+      }
+    });
+  }
+
+  ngOnDestroy(): void {
+    if (this.subscription) {
+      this.subscription.unsubscribe();
+    }
+  }
+
+  private updateReportingData(exam: any): void {
+    this.patientData = {
+      name: exam.patientName,
+      dateOfBirth: this.calculateDateOfBirth(exam.indication),
+      address: '123 Rue de la Paix, 75001 Paris, France'
+    };
+
+    this.doctorData = {
+      name: exam.assignedDoctor || 'Unassigned',
+      specialty: this.getSpecialtyFromExamType(exam.examType),
+      hospital: 'Clinique du Parc'
+    };
+
+    this.reportSections = {
+      indication: exam.indication,
+      technicalInformation: this.generateTechnicalInfo(exam.examType),
+      report: 'Report pending analysis...',
+      conclusion: 'Pending review.',
+      billing: this.generateBillingCode(exam.examType),
+      findings: ''
+    };
+  }
+
+  private calculateDateOfBirth(indication: string): string {
+    const ageMatch = indication.match(/(\d+)y/);
+    if (ageMatch) {
+      const age = parseInt(ageMatch[1], 10);
+      const currentYear = new Date().getFullYear();
+      const birthYear = currentYear - age;
+      return `January 1, ${birthYear}`;
+    }
+    return 'Unknown';
+  }
+
+  private getSpecialtyFromExamType(examType: string): string {
+    if (examType.includes('Brain') || examType.includes('Head')) return 'Neurologist';
+    if (examType.includes('Chest') || examType.includes('Thorax') || examType.includes('Lung')) return 'Pulmonologist';
+    if (examType.includes('Abdomen') || examType.includes('Pelvis')) return 'Gastroenterologist';
+    if (examType.includes('Cardiac') || examType.includes('Heart')) return 'Cardiologist';
+    if (examType.includes('Mammography')) return 'Oncologist';
+    if (examType.includes('Knee') || examType.includes('Shoulder') || examType.includes('Hip') || examType.includes('Spine')) return 'Orthopedist';
+    return 'Radiologist';
+  }
+
+  private generateTechnicalInfo(examType: string): string {
+    if (examType.includes('CT')) {
+      return 'CT scan with IV contrast. Slice thickness: 5mm. Reconstruction: axial, coronal, and sagittal planes.';
+    } else if (examType.includes('MRI')) {
+      return 'MRI examination. Sequences: T1, T2, FLAIR. Slice thickness: 3mm.';
+    } else if (examType.includes('X-RAY')) {
+      return 'Digital radiography. Standard AP and lateral views.';
+    } else if (examType.includes('Ultrasound')) {
+      return 'Ultrasound examination with Doppler imaging where applicable.';
+    } else if (examType.includes('Mammography')) {
+      return 'Digital mammography. CC and MLO views bilaterally.';
+    }
+    return 'Standard imaging protocol applied.';
+  }
+
+  private generateBillingCode(examType: string): string {
+    if (examType.includes('CT') && examType.includes('Abdomen')) return 'CT Abdomen with contrast - Code: 74177';
+    if (examType.includes('CT') && examType.includes('Chest')) return 'CT Chest with contrast - Code: 71260';
+    if (examType.includes('CT') && examType.includes('Head')) return 'CT Head without contrast - Code: 70450';
+    if (examType.includes('MRI') && examType.includes('Brain')) return 'MRI Brain with contrast - Code: 70553';
+    if (examType.includes('MRI') && examType.includes('Spine')) return 'MRI Spine - Code: 72148';
+    if (examType.includes('X-RAY')) return 'X-RAY - Code: 71010';
+    if (examType.includes('Ultrasound')) return 'Ultrasound - Code: 76700';
+    if (examType.includes('Mammography')) return 'Mammography - Code: 77067';
+    return 'Standard imaging - Code: 00000';
   }
 }

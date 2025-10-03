@@ -11,6 +11,7 @@ export class ExamService {
   private currentSortSubject = new BehaviorSubject<string>('date-desc');
   private searchQuerySubject = new BehaviorSubject<string>('');
   private currentCategoryFilterSubject = new BehaviorSubject<string>('inbox');
+  private selectedExamSubject = new BehaviorSubject<Exam | null>(null);
   private allMockExams: Exam[] = [
     // Inbox exams (17 examens)
     {
@@ -624,5 +625,13 @@ export class ExamService {
     this._applyFiltersAndSortAndEmit();
     console.log('ExamService: All exams collapsed, applied sort and emitted new state');
     return of(true).pipe(delay(50));
+  }
+
+  selectExam(exam: Exam): void {
+    this.selectedExamSubject.next(exam);
+  }
+
+  getSelectedExam(): Observable<Exam | null> {
+    return this.selectedExamSubject.asObservable();
   }
 }

@@ -1,17 +1,17 @@
 <div class="exam-item">
-  <div class="exam-info-bar">
+  <div class="exam-info-bar" (click)="openReporting()">
     <div class="patient-name">{{exam.patientName}}</div>
     <div class="exam-id">{{exam.examId}}</div>
     <div class="exam-type">{{exam.examType}}</div>
     <div class="indication">Indication: {{exam.indication}}</div>
-    <button [class]="'ai-btn ' + getAiButtonClass()">AI</button>
+    <button [class]="'ai-btn ' + getAiButtonClass()" (click)="$event.stopPropagation()">AI</button>
     <div class="actions">
-      <i class="ph ph-user-circle"></i>
-      <i class="ph ph-push-pin" (click)="togglePin()"></i>
-      <i 
+      <i class="ph ph-user-circle" (click)="$event.stopPropagation()"></i>
+      <i class="ph ph-push-pin" (click)="$event.stopPropagation(); togglePin()"></i>
+      <i
         class="ph ph-caret-down-bold toggle-btn"
         [class.open]="exam.isExpanded"
-        (click)="toggleExpansion()"
+        (click)="$event.stopPropagation(); toggleExpansion()"
       ></i>
     </div>
   </div>
