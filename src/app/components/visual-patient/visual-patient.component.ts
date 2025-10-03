@@ -57,8 +57,8 @@ export class VisualPatientComponent implements OnInit, OnDestroy {
       description: 'Routine cardiac examination',
       isFuture: false,
       images: [
-        'https://images.pexels.com/photos/4386466/pexels-photo-4386466.jpeg?auto=compress&cs=tinysrgb&w=120&h=120&fit=crop',
-        'https://images.pexels.com/photos/4386467/pexels-photo-4386467.jpeg?auto=compress&cs=tinysrgb&w=120&h=120&fit=crop'
+        'assets/public/images/radio/radio1.jpg',
+        'assets/public/images/radio/radio2.jpg'
       ]
     },
     {
@@ -71,7 +71,7 @@ export class VisualPatientComponent implements OnInit, OnDestroy {
       description: 'Follow-up brain scan',
       isFuture: false,
       images: [
-        'https://images.pexels.com/photos/4386468/pexels-photo-4386468.jpeg?auto=compress&cs=tinysrgb&w=120&h=120&fit=crop'
+        'assets/public/images/radio/radio3.jpg'
       ]
     },
     {
@@ -83,7 +83,9 @@ export class VisualPatientComponent implements OnInit, OnDestroy {
       examName: 'Knee X-Ray',
       description: 'Knee pain evaluation',
       isFuture: false,
-      images: []
+      images: [
+        'assets/public/images/radio/radio4.png'
+      ]
     },
     {
       id: 'exam4',
@@ -95,9 +97,9 @@ export class VisualPatientComponent implements OnInit, OnDestroy {
       description: 'Abdominal ultrasound',
       isFuture: false,
       images: [
-        'https://images.pexels.com/photos/4386469/pexels-photo-4386469.jpeg?auto=compress&cs=tinysrgb&w=120&h=120&fit=crop',
-        'https://images.pexels.com/photos/4386470/pexels-photo-4386470.jpeg?auto=compress&cs=tinysrgb&w=120&h=120&fit=crop',
-        'https://images.pexels.com/photos/4386471/pexels-photo-4386471.jpeg?auto=compress&cs=tinysrgb&w=120&h=120&fit=crop'
+        'assets/public/images/radio/radio5.jpg',
+        'assets/public/images/radio/radio6.JPG',
+        'assets/public/images/radio/radio7.JPG'
       ]
     },
     {
@@ -109,7 +111,9 @@ export class VisualPatientComponent implements OnInit, OnDestroy {
       examName: 'Emergency CT',
       description: 'Emergency chest CT',
       isFuture: false,
-      images: []
+      images: [
+        'assets/public/images/radio/radio8.JPG'
+      ]
     },
     {
       id: 'exam6',
@@ -121,7 +125,7 @@ export class VisualPatientComponent implements OnInit, OnDestroy {
       description: 'Cardiac PET scan',
       isFuture: true,
       images: [
-        'https://images.pexels.com/photos/4386472/pexels-photo-4386472.jpeg?auto=compress&cs=tinysrgb&w=120&h=120&fit=crop'
+        'assets/public/images/radio/radio9.JPG'
       ]
     }
   ];
@@ -729,26 +733,28 @@ export class VisualPatientComponent implements OnInit, OnDestroy {
   }
 
   openReporting(examPoint: any, image?: any): void {
-    const reportingData$ = this.visualPatientService.getReportingData();
-    const reportingTemplate$ = this.windowManagerService.loadReportingHtmlTemplate();
+    if (!examPoint) return;
 
-    combineLatest([reportingData$, reportingTemplate$]).subscribe(
-      ([reportingData, template]) => {
-        if (template) {
-        const patientName = `${this.patientData.name}`;
-        const patientId = examPoint?.id || 'Unknown';
-        const examDate = examPoint ? examPoint.date.toLocaleDateString() : new Date().toLocaleDateString();
-        
-        const populatedHtml = template.replace(/{{patientName}}/g, patientName)
-                                    .replace(/{{patientId}}/g, patientId)
-                                    .replace(/{{examDate}}/g, examDate);
-        
-        if (this.windowManagerService.reportingWindow && !this.windowManagerService.reportingWindow.closed) {
-          this.windowManagerService.reportingWindow.document.body.innerHTML = populatedHtml;
-          this.windowManagerService.reportingWindow.focus();
-        }
-        }
-      }
-    );
+    const mockExam = {
+      id: examPoint.id,
+      patientName: this.patientData.name,
+      examId: `${examPoint.id}_001`,
+      examType: `${examPoint.modality} - ${examPoint.anatomy} - ${examPoint.date.toISOString().split('T')[0]}`,
+      date: examPoint.date,
+      indication: examPoint.description,
+      aiStatus: 'green' as 'green' | 'red' | 'orange',
+      isPinned: false,
+      isExpanded: false,
+      category: 'inbox' as 'inbox' | 'pending' | 'second-opinion' | 'completed',
+      thumbnails: examPoint.images.map((url: string, index: number) => ({
+        id: `${examPoint.id}-${index}`,
+        filename: `image_${index + 1}.dcm`,
+        imageUrl: url
+      })),
+      assignedDoctor: `Dr. ${examPoint.department}`
+    };
+
+    this.examService.selectExam(mockExam);
+    this.navigationService.triggerNavigationChange('reporting');
   }
 }

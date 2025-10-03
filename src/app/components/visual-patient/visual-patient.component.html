@@ -374,26 +374,27 @@
   </div>
 
   <!-- Exam Point Tooltip -->
-  <div *ngIf="hoveredExamPoint" 
+  <div *ngIf="hoveredExamPoint"
        class="exam-tooltip"
        [style.left.px]="tooltipPosition.x + 10"
        [style.top.px]="tooltipPosition.y - 10"
        (mouseenter)="onTooltipEnter()"
-       (mouseleave)="onTooltipLeave()">
+       (mouseleave)="onTooltipLeave()"
+       (click)="openReporting(hoveredExamPoint)">
     <div class="tooltip-header">
       <h4>{{hoveredExamPoint.examName}}</h4>
       <p class="tooltip-date">{{hoveredExamPoint.date | date:'dd/MM/yyyy'}}</p>
     </div>
     <div class="tooltip-content">
       <p><strong>Department:</strong> {{hoveredExamPoint.department}}</p>
-      <p><strong>Anatomical Region:</strong> {{hoveredExamPoint.anatomicalRegion}}</p>
+      <p><strong>Anatomical Region:</strong> {{hoveredExamPoint.anatomy}}</p>
       <p><strong>Description:</strong> {{hoveredExamPoint.description}}</p>
     </div>
     <div class="tooltip-thumbnails" *ngIf="getExamThumbnails(hoveredExamPoint).length > 0">
       <h5>Medical Images:</h5>
       <div class="thumbnails-grid">
-        <img *ngFor="let thumbnail of getExamThumbnails(hoveredExamPoint)" 
-             [src]="thumbnail.url" 
+        <img *ngFor="let thumbnail of getExamThumbnails(hoveredExamPoint)"
+             [src]="thumbnail.url"
              [alt]="thumbnail.filename"
              class="tooltip-thumbnail">
       </div>
